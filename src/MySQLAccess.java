@@ -13,7 +13,6 @@ public class MySQLAccess {
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-
     public void readDataBase() throws Exception {
         try {
             // This will load the MySQL driver, each DB has its own driver
