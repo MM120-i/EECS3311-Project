@@ -1,4 +1,9 @@
 public class User {
+
+    private int ID;
+    private String firstName;
+    private String lastName;
+
     private boolean isMale;
     private boolean isFemale;
 
@@ -9,6 +14,30 @@ public class User {
     private int weight;
 
     private boolean prefersMetric;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public boolean isMale() {
         return isMale;
