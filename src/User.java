@@ -1,19 +1,28 @@
+import java.util.Date;
+
 public class User {
 
     private int ID;
     private String firstName;
     private String lastName;
 
-    private boolean isMale;
-    private boolean isFemale;
+    private int isMale; // male is 1 female is 0
 
-    private int dobYear;
-    private int dobMonth;
-    private int dobDay;
+    private Date dob;
     private int height;
     private int weight;
 
-    private boolean prefersMetric;
+    private int prefersMetric;
+
+    private int BMR;
+
+    public int getBMR() {
+        return BMR;
+    }
+
+    public void setBMR(int BMR) {
+        this.BMR = BMR;
+    }
 
     public int getID() {
         return ID;
@@ -39,44 +48,28 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isMale() {
+    public int isMale() {
         return isMale;
     }
 
-    public void setMale(boolean male) {
+    public void setMale(int male) {
         isMale = male;
     }
 
-    public boolean isFemale() {
-        return isFemale;
+    public int getIsMale() {
+        return isMale;
     }
 
-    public void setFemale(boolean female) {
-        isFemale = female;
+    public void setIsMale(int isMale) {
+        this.isMale = isMale;
     }
 
-    public int getDobYear() {
-        return dobYear;
+    public Date getDob() {
+        return dob;
     }
 
-    public void setDobYear(int dobYear) {
-        this.dobYear = dobYear;
-    }
-
-    public int getDobMonth() {
-        return dobMonth;
-    }
-
-    public void setDobMonth(int dobMonth) {
-        this.dobMonth = dobMonth;
-    }
-
-    public int getDobDay() {
-        return dobDay;
-    }
-
-    public void setDobDay(int dobDay) {
-        this.dobDay = dobDay;
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 
     public int getHeight() {
@@ -95,11 +88,11 @@ public class User {
         this.weight = weight;
     }
 
-    public boolean isPrefersMetric() {
+    public int getPrefersMetric() {
         return prefersMetric;
     }
 
-    public void setPrefersMetric(boolean prefersMetric) {
+    public void setPrefersMetric(int prefersMetric) {
         this.prefersMetric = prefersMetric;
     }
 }
