@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 public class ProfileCreationWindow extends JFrame {
 	
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 	
-	private JTextField dateOfBirthField, heightField, weightField;
+    private JTextField dateOfBirthField, heightField, weightField;
     private JRadioButton maleRadioButton, femaleRadioButton;
     private ButtonGroup genderGroup;
     private JRadioButton metricRadioButton, imperialRadioButton;
