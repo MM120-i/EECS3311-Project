@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-
-//Use Case 2:
+/**
+ * Use Case 2: Diet Log Window
+ * 
+ */
 public class DietLogWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -22,18 +24,23 @@ public class DietLogWindow extends JFrame {
     private GridBagConstraints cons;
     private List<JTextField> snackTypeFields;
 
+    /**
+     * Constructor to create the Diet Log Window
+     */
     public DietLogWindow() {
-
         setTitle("Diet Log");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 14)); // Set the font for the entire UI
         createUI();
-        
+
         ingredientFields = new ArrayList<>();
         quantityFields = new ArrayList<>();
         snackTypeFields = new ArrayList<JTextField>();
     }
 
+    /**
+     * Create the user interface elements and layout
+     */
     private void createUI() {
     	
         mainPanel = new JPanel(new GridBagLayout());
@@ -47,7 +54,7 @@ public class DietLogWindow extends JFrame {
 
         // Add tabs for Breakfast, Lunch, Dinner, and Snack
         for (String mealType : new String[]{"Breakfast", "Lunch", "Dinner", "Snack"}) {
-
+        	
             JPanel mealPanel = createMealPanel(mealType);
             tabbedPane.addTab(mealType, mealPanel);
         }
@@ -67,13 +74,24 @@ public class DietLogWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Show an error dialog with a given message.
+     *
+     * @param message The error message to display.
+     */
     private void showErrorDialog(String message) {
-
+    	
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Create a panel for a specific meal type.
+     *
+     * @param mealType The type of the meal (e.g., Breakfast, Lunch, Dinner, Snack).
+     * @return The created panel for the meal type.
+     */
     private JPanel createMealPanel(String mealType) {
-
+    	
         JPanel mealPanel = new JPanel(new GridBagLayout());
         GridBagConstraints mealCons = new GridBagConstraints();
         mealCons.fill = GridBagConstraints.HORIZONTAL;
@@ -99,9 +117,9 @@ public class DietLogWindow extends JFrame {
             addIngredientsButton.setBackground(new Color(0, 102, 204)); // Button color
             addIngredientsButton.setForeground(Color.WHITE); // Button text color
             addIngredientsButton.setFont(new Font("Arial", Font.BOLD, 14)); // Button font
-            
-            addIngredientsButton.addActionListener(new ActionListener() {
 
+            addIngredientsButton.addActionListener(new ActionListener() {
+            	
                 @Override
                 public void actionPerformed(ActionEvent e) {
                 	
@@ -115,7 +133,9 @@ public class DietLogWindow extends JFrame {
                         else {
                             createIngredientFields(mealPanel, numIngredients);
                         }
-                    } catch (NumberFormatException ex) {
+                        
+                    }
+                    catch (NumberFormatException ex) {
                     	
                         showErrorDialog("Invalid input. Please enter a valid number.");
                     }
@@ -124,7 +144,7 @@ public class DietLogWindow extends JFrame {
         }
 
         if (mealType.equals("Snack")) {
-
+        	
             JButton addSnackButton = new JButton("Add Snack Entries");
             mealCons.gridx = 0;
             mealCons.gridy = 3;
@@ -134,7 +154,7 @@ public class DietLogWindow extends JFrame {
             addSnackButton.setFont(new Font("Arial", Font.BOLD, 14)); // Button font
 
             addSnackButton.addActionListener(new ActionListener() {
-
+            	
                 @Override
                 public void actionPerformed(ActionEvent e) {
                 	
@@ -148,8 +168,9 @@ public class DietLogWindow extends JFrame {
                         else {
                             createSnackFields(numSnacks);
                         }
-                    } catch (NumberFormatException exception) {
-                    	
+                        
+                    }
+                    catch (NumberFormatException exception) {
                         showErrorDialog("Invalid input. Please enter a valid number.");
                     }
                 }
@@ -159,10 +180,16 @@ public class DietLogWindow extends JFrame {
         return mealPanel;
     }
 
+    /**
+     * Create fields for inputting ingredients based on the number of ingredients.
+     *
+     * @param mealPanel     The panel for the meal type.
+     * @param numIngredients The number of ingredient fields to create.
+     */
     private void createIngredientFields(JPanel mealPanel, int numIngredients) {
-
+    	
         for (int i = 0; i < numIngredients; i++) {
-
+        	
             GridBagConstraints mealCons = new GridBagConstraints();
             mealCons.fill = GridBagConstraints.HORIZONTAL;
             mealCons.insets = new Insets(5, 5, 5, 5);
@@ -189,15 +216,20 @@ public class DietLogWindow extends JFrame {
             quantityFields.add(quantityField);
             mealPanel.add(quantityField, mealCons);
         }
-
+        
         mealPanel.revalidate();
         mealPanel.repaint();
     }
 
+    /**
+     * Create fields for inputting snack details based on the number of snacks.
+     *
+     * @param numSnacks The number of snack fields to create.
+     */
     private void createSnackFields(int numSnacks) {
-
+    	
         for (int i = 0; i < numSnacks; i++) {
-
+        	
             cons.gridx = 0;
             cons.gridy = 4 + i;
 
@@ -210,14 +242,18 @@ public class DietLogWindow extends JFrame {
             snackTypeFields.add(snackTypeField); // Add to the list
             mainPanel.add(snackTypeField, cons);
         }
-
+        
         mainPanel.revalidate();
         mainPanel.repaint();
     }
 
+    /**
+     * Set the font for the entire Swing UI.
+     *
+     * @param f The font to set for the entire UI.
+     */
     public static void setUIFont(javax.swing.plaf.FontUIResource f) {
     	
-        // Set the font for the entire UI
         Enumeration<Object> keys = UIManager.getDefaults().keys();
         
         while (keys.hasMoreElements()) {
@@ -226,13 +262,19 @@ public class DietLogWindow extends JFrame {
             Object value = UIManager.get(key);
             
             if (value instanceof javax.swing.plaf.FontUIResource) {
+            	
                 UIManager.put(key, f);
             }
         }
     }
 
+    /**
+     * Main method to launch the Diet Log Window.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
-
+    	
         SwingUtilities.invokeLater(() -> new DietLogWindow());
     }
 }
