@@ -1,15 +1,15 @@
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * The type Exercise.
  */
 public class Exercise {
-    private Date date;
-    private Time duration;
+    private LocalDate date;
+    private int duration;
     private String type;
     private int intensity; //1,2,3,4,5
     private int calBurned;
+
 
 
     /**
@@ -17,11 +17,16 @@ public class Exercise {
      *
      * @return the date
      */
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -30,7 +35,7 @@ public class Exercise {
      *
      * @return the duration
      */
-    public Time getDuration() {
+    public int getDuration() {
         return duration;
     }
 
@@ -39,7 +44,7 @@ public class Exercise {
      *
      * @param duration the duration
      */
-    public void setDuration(Time duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
@@ -94,6 +99,14 @@ public class Exercise {
      * @param calBurned the cal burned
      */
     public void setCalBurned(int calBurned) {
+        this.calBurned = calBurned;
+    }
+
+    public Exercise( LocalDate date, int duration, String type, int intensity, int calBurned) {
+        this.date = date;
+        this.duration = duration;
+        this.type = type;
+        this.intensity = intensity;
         this.calBurned = calBurned;
     }
 }

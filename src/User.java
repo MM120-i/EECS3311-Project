@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -5,25 +8,54 @@ import java.util.Date;
  */
 public class User {
 
+
     private int ID;
     private String name;
 
     private int isMale; // male is 1 female is 0
 
-    private Date dob;
+    private LocalDate dob;
     private int height;
     private int weight;
 
     private int prefersMetric;
 
-    private int BMR;
+    private double BMR;
+    private ArrayList<Meal> meals = new ArrayList<>();
+
+    /**
+     * Sets is male.
+     *
+     * @param isMale the is male
+     */
+    public void setIsMale(int isMale) {
+        this.isMale = isMale;
+    }
+
+    /**
+     * Gets meals.
+     *
+     * @return the meals
+     */
+    public ArrayList<Meal> getMeals() {
+        return meals;
+    }
+
+    /**
+     * Sets meals.
+     *
+     * @param meals the meals
+     */
+    public void setMeals(ArrayList<Meal> meals) {
+        this.meals = meals;
+    }
 
     /**
      * Gets bmr.
      *
      * @return the bmr
      */
-    public int getBMR() {
+    public double getBMR() {
         return BMR;
     }
 
@@ -32,7 +64,7 @@ public class User {
      *
      * @param BMR the bmr
      */
-    public void setBMR(int BMR) {
+    public void setBMR(double BMR) {
         this.BMR = BMR;
     }
 
@@ -97,7 +129,7 @@ public class User {
      *
      * @return the dob
      */
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
@@ -106,7 +138,7 @@ public class User {
      *
      * @param dob the dob
      */
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
@@ -164,7 +196,18 @@ public class User {
         this.prefersMetric = prefersMetric;
     }
 
-    public User(String name, int isMale, Date dob, int height, int weight, int prefersMetric, int BMR) {
+    /**
+     * Instantiates a new User.
+     *
+     * @param name          the name
+     * @param isMale        the is male
+     * @param dob           the dob
+     * @param height        the height
+     * @param weight        the weight
+     * @param prefersMetric the prefers metric
+     * @param BMR           the bmr
+     */
+    public User(String name, int isMale, LocalDate dob, int height, int weight, int prefersMetric, int BMR) {
         this.name = name;
         this.isMale = isMale;
         this.dob = dob;
@@ -174,14 +217,38 @@ public class User {
         this.BMR = BMR;
     }
 
+    /**
+     * Instantiates a new User.
+     */
     public User() {
         this.name = null;
         this.isMale = 1;
-        this.dob = new Date();
+        this.dob = LocalDate.now();
         this.height = 0;
         this.weight = 0;
         this.prefersMetric = 0;
         this.BMR = 0;
+    }
+
+    /**
+     * Calculate bmr.
+     */
+    public void calculateBMR() {
+        LocalDate currentDate = LocalDate.now();
+
+        if (prefersMetric == 1) {
+            if (isMale == 1) {
+                setBMR(10 * getWeight() + 6.25 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears());
+            } else {
+                setBMR(10 * getWeight() + 6.25 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears() - 161);
+            }
+        } else {
+            if (isMale == 1) {
+                setBMR(4.53592 * getWeight() + 15.875 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears());
+            } else {
+                setBMR(4.53592 * getWeight() + 15.875 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears() - 161);
+            }
+        }
     }
 }
 
