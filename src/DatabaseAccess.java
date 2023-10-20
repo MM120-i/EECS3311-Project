@@ -17,7 +17,6 @@ public class DatabaseAccess {
     private static final String DB_PASS = System.getenv("SQLPASS");
 
 
-
     /**
      * Add user.
      *
@@ -151,6 +150,48 @@ public class DatabaseAccess {
         return false;
     }
 
+    private static boolean findDupMeal(Meal m) {
+        System.out.println(m.getMealType());
+        if (m.getMealType() == 4) {
+            return false;
+        }
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+
+            Statement statement = connection.createStatement();
+
+            //CHANGE to delete based on ID NOT name
+            ResultSet rs = statement.executeQuery("select mealType,date from meals;");
+            while (rs.next()) {
+                if (rs.getInt("mealtype") == (m.getMealType()) && rs.getString("date").equals(String.valueOf(java.sql.Date.valueOf(m.getDate())))) {
+                    System.out.println("This meal has already been entered for this date");
+                    return true;
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static int findNextMealID() {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement();
+            ResultSet r = statement.executeQuery("select max(mealid) from meals");
+            if (r.next()) {
+                return r.getInt(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Duplicated");
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     /**
      * Add meal.
@@ -163,12 +204,14 @@ public class DatabaseAccess {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
             Statement statement = connection.createStatement();
-
-            for (Ingredient i : meal.getIngredients()) {
-                statement.execute("insert into meals (person," +
-                        "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
-                        + "',' " + meal.getMealID() + "',' " + sqlDate + "',' "
-                        + i.getIngredientNum() + "',' " + i.getAmount() +  "',' " + meal.getMealType() + "');");
+            if (!findDupMeal(meal)) {
+                int mid = findNextMealID() + 1;
+                for (Ingredient i : meal.getIngredients()) {
+                    statement.execute("insert into meals (person," +
+                            "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
+                            + "',' " + mid + "',' " + sqlDate + "',' "
+                            + i.getIngredientNum() + "',' " + i.getAmount() + "',' " + meal.getMealType() + "');");
+                }
             }
 
         } catch (Exception e) {
