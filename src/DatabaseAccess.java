@@ -51,53 +51,57 @@ public class DatabaseAccess {
     public void updateUser(User newUser, int field, Object newObject) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-                Statement statement = connection.createStatement();
-                System.out.println("FIELD: " + field);
+            Statement statement = connection.createStatement();
+            System.out.println("FIELD: " + field);
 
-                switch (field) {
-                    case 1:
-                        if (!findDup(newUser.getName())) {
-                            statement.execute("update person set name='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+            switch (field) {
+                case 1:
+                    if (!findDup(newUser.getName())) {
+                        statement.execute("update person set name='" + (String) newObject + "' where name='" + newUser.getName() + "';");
 
-                        } else {
-                            System.out.println("The name you are trying to set is already taken.");
-                        }
-                        break;
-                    case 2:
-                        newUser.setIsMale((int) newObject);
-                        newUser.calculateBMR();
-                        statement.execute("update person set isMale='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        break;
-                    case 3:
-                        newUser.setDob((LocalDate) newObject);
-                        newUser.calculateBMR();
-                        java.sql.Date sqlDate = new java.sql.Date(((Date) newObject).getTime());
-                        statement.execute("update person set dob='" + sqlDate + "' where name='" + newUser.getName() + "';");
-                        statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        break;
-                    case 4:
-                        newUser.setHeight((int) newObject);
-                        newUser.calculateBMR();
-                        System.out.println((Integer) newObject);
-                        statement.execute("update person set height='" + (Integer) newObject + "' where name='" + newUser.getName() + "';");
-                        statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        System.out.println("test");
-                        break;
-                    case 5:
-                        newUser.setWeight((int) newObject);
-                        newUser.calculateBMR();
-                        statement.execute("update person set weight='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        break;
-                    case 6:
-                        statement.execute("update person set prefermetric='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        break;
-                    case 7:
-                        statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                        break;
-                }
-                //CHANGE to delete based on ID NOT name
+                    } else {
+                        System.out.println("The name you are trying to set is already taken.");
+                    }
+                    break;
+                case 2:
+                    newUser.setIsMale((int) newObject);
+                    newUser.calculateBMR();
+                    statement.execute("update person set isMale='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                    break;
+                case 3:
+                    newUser.setDob((LocalDate) newObject);
+                    newUser.calculateBMR();
+                    java.sql.Date sqlDate = new java.sql.Date(((Date) newObject).getTime());
+                    statement.execute("update person set dob='" + sqlDate + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newUser.getBMR() + "' where name='" + newUser.getName() + "';");
+                    break;
+                case 4:
+                    newUser.setHeight((int) newObject);
+                    newUser.calculateBMR();
+                    System.out.println((Integer) newObject);
+                    statement.execute("update person set height='" + newUser.getHeight() + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newUser.getBMR() + "' where name='" + newUser.getName() + "';");
+                    System.out.println("test");
+                    break;
+                case 5:
+                    newUser.setWeight((int) newObject);
+                    newUser.calculateBMR();
+                    statement.execute("update person set weight='" + newUser.getWeight() + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newUser.getBMR() + "' where name='" + newUser.getName() + "';");
+                    break;
+                case 6:
+                    newUser.setPrefersMetric((Integer) newObject);
+                    newUser.calculateBMR();
+                    statement.execute("update person set prefermetric='" + newObject + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newUser.getBMR() + "' where name='" + newUser.getName() + "';");
+
+                    break;
+                case 7:
+                    statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                    break;
+            }
+            //CHANGE to delete based on ID NOT name
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,15 +156,15 @@ public class DatabaseAccess {
     public void addMeal(User newUser, Meal meal) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-                java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
-                Statement statement = connection.createStatement();
+            java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
+            Statement statement = connection.createStatement();
 
-                for (Ingredient i : meal.getIngredients()) {
-                    statement.execute("insert into meals (person," +
-                            "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
-                            + "',' " + meal.getMealID() + "',' " + sqlDate + "',' "
-                            + i.getIngredientNum() + "',' " + i.getAmount() +  "',' " + meal.getMealType() + "');");
-                }
+            for (Ingredient i : meal.getIngredients()) {
+                statement.execute("insert into meals (person," +
+                        "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
+                        + "',' " + meal.getMealID() + "',' " + sqlDate + "',' "
+                        + i.getIngredientNum() + "',' " + i.getAmount() +  "',' " + meal.getMealType() + "');");
+            }
 
         } catch (Exception e) {
             System.out.println("Duplicated");
@@ -182,7 +186,7 @@ public class DatabaseAccess {
             Statement statement = connection.createStatement();
             statement.execute("insert into exercise (person," +
                     "date, duration, type, intensity, calburned) values ('" + newUser.getName()
-                     + "',' " + sqlDate + "',' "
+                    + "',' " + sqlDate + "',' "
                     + exercise.getDuration() + "',' " + exercise.getType() +  "',' " + exercise.getIntensity() + "',' " + exercise.getCalBurned() + "');");
 
         } catch (Exception e) {
