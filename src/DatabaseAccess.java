@@ -1,7 +1,11 @@
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 /**
  * The type Database access.
@@ -11,6 +15,7 @@ public class DatabaseAccess {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
+
 
 
     /**
@@ -238,7 +243,8 @@ public class DatabaseAccess {
      *
      * @param foodID the food id
      */
-    public void findNutrients(int foodID) {
+    public List findNutrients(int foodID) {
+        List<Nutrient> nutrients = new ArrayList<>();
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
@@ -246,11 +252,12 @@ public class DatabaseAccess {
                     "SELECT B.name, B.nutrientunit, A.nutrientvalue FROM nutrientname B JOIN nutrientamounts A ON B.NutrientID = A.NutrientID WHERE A.FOODID = '" + foodID + "';");
 
             while (rs.next()) {
-                System.out.println(rs.getString("name")  +"    " + rs.getString("nutrientvalue") + rs.getString("nutrientunit"));
+                nutrients.add(new Nutrient(rs.getString("name"), rs.getString("nutrientvalue")));
             }
         } catch (Exception e) {
             System.out.println("Duplicated");
             e.printStackTrace();
         }
+        return nutrients;
     }
 }
