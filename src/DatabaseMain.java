@@ -8,7 +8,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The DatabaseMain class is the entry point for the application that interacts with a database.
+ * It demonstrates various database operations, such as adding users, meals, and exercises.
+ */
 public class DatabaseMain {
+    /**
+     * The main method of the application that demonstrates database operations.
+     *
+     * @param args Command-line arguments (not used).
+     * @throws SQLException if a database-related error occurs.
+     */
     public static void main(String[] args) throws SQLException {
         LocalDate d = LocalDate.of(2003,05,28);
         DatabaseAccess dba = new DatabaseAccess();
