@@ -52,6 +52,11 @@ public class PieChartExample extends JFrame {
         setContentPane(panel);
     }
 
+    /**
+     * Creates a PieDataset for the chart by retrieving nutrient information from the database.
+     *
+     * @return A PieDataset containing nutrient names and their corresponding amounts.
+     */
     private PieDataset createDataset(){
 
         DatabaseAccess da = new DatabaseAccess();
