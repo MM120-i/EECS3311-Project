@@ -129,7 +129,13 @@ public class DatabaseAccess {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Checks for duplicate user names in the database.
+     *
+     * @param name the user name to check for duplicates
+     * @return true if a duplicate user name is found; otherwise, false
+     */
     private static boolean findDup(String name) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -150,6 +156,12 @@ public class DatabaseAccess {
         return false;
     }
 
+    /**
+     * Checks for duplicate meals in the database.
+     *
+     * @param m the meal to check for duplicates
+     * @return true if a duplicate meal is found; otherwise, false
+     */
     private static boolean findDupMeal(Meal m) {
         System.out.println(m.getMealType());
         if (m.getMealType() == 4) {
@@ -176,6 +188,11 @@ public class DatabaseAccess {
         return false;
     }
 
+    /**
+     * Finds the next available meal ID in the database.
+     *
+     * @return the next available meal ID
+     */
     private static int findNextMealID() {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
