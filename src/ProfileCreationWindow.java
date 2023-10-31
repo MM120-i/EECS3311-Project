@@ -123,7 +123,7 @@ public class ProfileCreationWindow extends JFrame {
                 u.setWeight(Integer.parseInt(weightField.getText()));
 
                 DatabaseAccess da = new DatabaseAccess();
-                da.addUser(u);
+                da.add(u, u);
 
 
                 // Handle user inputs here:

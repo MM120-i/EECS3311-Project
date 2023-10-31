@@ -16,33 +16,46 @@ public class DatabaseAccess {
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
 
-
-    /**
-     * Add user.
-     *
-     * @param newUser the new user
-     */
-    public void addUser(User newUser) {
-        newUser.calculateBMR();
+    public void add(User newUser, Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement();
 
-            if (!findDup(newUser.getName())) {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(newUser.getDob());
-                Statement statement = connection.createStatement();
-                statement.execute("insert into person (name," +
-                        "isMale, dob, height, weight, prefermetric, bmr) values ('" + newUser.getName()
-                        + "',' " + newUser.getIsMale() + "',' " + sqlDate + "',' "
-                        + newUser.getHeight() + "',' " + newUser.getWeight() + "',' " + newUser.getPrefersMetric()
-                        + "',' " + newUser.getBMR() + "');");
-            } else {
-                System.out.println("The name you are trying to set is already taken.");
+            if (obj instanceof User) {
+                newUser.calculateBMR();
+                    if (!findDup(newUser)) {
+                        java.sql.Date sqlDate = java.sql.Date.valueOf(newUser.getDob());
+                        statement.execute("insert into person (name," +
+                                "isMale, dob, height, weight, prefermetric, bmr) values ('" + newUser.getName()
+                                + "',' " + newUser.getIsMale() + "',' " + sqlDate + "',' "
+                                + newUser.getHeight() + "',' " + newUser.getWeight() + "',' " + newUser.getPrefersMetric()
+                                + "',' " + newUser.getBMR() + "');");
+                    } else {
+                        System.out.println("The name you are trying to set is already taken.");
+                    }
+            } else if (obj instanceof Meal) {
+                Meal meal = (Meal) obj;
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
+                    if (!findDup(meal)) {
+                        int mid = findNextMealID() + 1;
+                        for (Ingredient i : meal.getIngredients()) {
+                            statement.execute("insert into meals (person," +
+                                    "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
+                                    + "',' " + mid + "',' " + sqlDate + "',' "
+                                    + i.getIngredientNum() + "',' " + i.getAmount() + "',' " + meal.getMealType() + "');");
+                        }
+                    }
+            } else if (obj instanceof Exercise) {
+                Exercise exercise = (Exercise) obj;
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(exercise.getDate());
+                    statement.execute("insert into exercise (person," +
+                            "date, duration, type, intensity, calburned) values ('" + newUser.getName()
+                            + "',' " + sqlDate + "',' "
+                            + exercise.getDuration() + "',' " + exercise.getType() + "',' " + exercise.getIntensity() + "',' " + exercise.getCalBurned() + "');");
             }
-        } catch (Exception e) {
-            System.out.println("Duplicated");
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     /**
@@ -60,7 +73,7 @@ public class DatabaseAccess {
 
             switch (field) {
                 case 1:
-                    if (!findDup(newUser.getName())) {
+                    if (!findDup(newUser)) {
                         statement.execute("update person set name='" + (String) newObject + "' where name='" + newUser.getName() + "';");
 
                     } else {
@@ -136,17 +149,34 @@ public class DatabaseAccess {
      * @param name the user name to check for duplicates
      * @return true if a duplicate user name is found; otherwise, false
      */
-    private static boolean findDup(String name) {
+    private static boolean findDup(Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
             Statement statement = connection.createStatement();
 
-            //CHANGE to delete based on ID NOT name
-            ResultSet rs = statement.executeQuery("select name from person;");
-            while (rs.next()) {
-                if (rs.getString("name").equals(name)) {
-                    return true;
+            if (obj instanceof User) {
+                //CHANGE to delete based on ID NOT name
+                ResultSet rs = statement.executeQuery("select name from person;");
+                while (rs.next()) {
+                    if (rs.getString("name").equals(((User) obj).getName())) {
+                        return true;
+                    }
+                }
+            } else if (obj instanceof Meal) {
+                if (((Meal) obj).getMealType() == 4) {
+                    return false;
+                }
+
+                //CHANGE to delete based on ID NOT name
+                ResultSet rs = statement.executeQuery("select mealType,date from meals;");
+                while (rs.next()) {
+                    if (rs.getInt("mealtype") == (((Meal) obj).getMealType()) && rs.getString("date").equals
+                            (String.valueOf(java.sql.Date.valueOf(((Meal) obj).getDate())))) {
+                        System.out.println("This meal has already been entered for this date");
+                        return true;
+
+                    }
                 }
             }
 
@@ -156,37 +186,6 @@ public class DatabaseAccess {
         return false;
     }
 
-    /**
-     * Checks for duplicate meals in the database.
-     *
-     * @param m the meal to check for duplicates
-     * @return true if a duplicate meal is found; otherwise, false
-     */
-    private static boolean findDupMeal(Meal m) {
-        System.out.println(m.getMealType());
-        if (m.getMealType() == 4) {
-            return false;
-        }
-        try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-
-            Statement statement = connection.createStatement();
-
-            //CHANGE to delete based on ID NOT name
-            ResultSet rs = statement.executeQuery("select mealType,date from meals;");
-            while (rs.next()) {
-                if (rs.getInt("mealtype") == (m.getMealType()) && rs.getString("date").equals(String.valueOf(java.sql.Date.valueOf(m.getDate())))) {
-                    System.out.println("This meal has already been entered for this date");
-                    return true;
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     /**
      * Finds the next available meal ID in the database.
@@ -207,58 +206,6 @@ public class DatabaseAccess {
             e.printStackTrace();
         }
         return 0;
-    }
-
-
-    /**
-     * Add meal.
-     *
-     * @param newUser the new user
-     * @param meal    the meal
-     */
-    public void addMeal(User newUser, Meal meal) {
-        try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
-            Statement statement = connection.createStatement();
-            if (!findDupMeal(meal)) {
-                int mid = findNextMealID() + 1;
-                for (Ingredient i : meal.getIngredients()) {
-                    statement.execute("insert into meals (person," +
-                            "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
-                            + "',' " + mid + "',' " + sqlDate + "',' "
-                            + i.getIngredientNum() + "',' " + i.getAmount() + "',' " + meal.getMealType() + "');");
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Duplicated");
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Add exercise.
-     *
-     * @param newUser  the new user
-     * @param exercise the exercise
-     */
-    public void addExercise(User newUser, Exercise exercise) {
-        try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            java.sql.Date sqlDate = java.sql.Date.valueOf(exercise.getDate());
-            Statement statement = connection.createStatement();
-            statement.execute("insert into exercise (person," +
-                    "date, duration, type, intensity, calburned) values ('" + newUser.getName()
-                    + "',' " + sqlDate + "',' "
-                    + exercise.getDuration() + "',' " + exercise.getType() +  "',' " + exercise.getIntensity() + "',' " + exercise.getCalBurned() + "');");
-
-        } catch (Exception e) {
-            System.out.println("Duplicated");
-            e.printStackTrace();
-        }
-
     }
 
     /**
