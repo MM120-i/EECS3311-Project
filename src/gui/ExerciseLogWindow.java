@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 
 
@@ -23,18 +26,18 @@ public class ExerciseLogWindow extends JFrame {
     /**
      * Constructs a new gui.ExerciseLogWindow.
     */
-    public ExerciseLogWindow() {
+    public ExerciseLogWindow(UIController controller) {
     	
         setTitle("dataObjects.Exercise Log");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 14));
-        createUI();
+        createUI(controller);
     }
 
     /**
      * Constructs a new gui.ExerciseLogWindow.
     */
-    private void createUI() {
+    private void createUI(UIController controller) {
     	
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(new Color(240, 240, 240));
@@ -124,8 +127,9 @@ public class ExerciseLogWindow extends JFrame {
             	
                 // Handle calculations for calories burnt and BMR here
                 // Update caloriesBurntLabel and bmrLabel accordingly
-
-                UIController uic = new UIController();
+                DateTimeFormatter formatter
+                        = DateTimeFormatter.ISO_LOCAL_TIME;
+                controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
             	
             }
         });
@@ -170,6 +174,11 @@ public class ExerciseLogWindow extends JFrame {
     */
     public static void main(String[] args) {
     	
-        SwingUtilities.invokeLater(() -> new ExerciseLogWindow());
+        SwingUtilities.invokeLater(() -> new ExerciseLogWindow(null));
+    }
+
+    public void call(UIController controller) {
+
+        SwingUtilities.invokeLater(() -> new ExerciseLogWindow(controller));
     }
 }

@@ -1,6 +1,5 @@
 package controller;
 
-import dataObjects.Exercise;
 import dataObjects.Ingredient;
 import dataObjects.Meal;
 import dataObjects.User;
@@ -21,7 +20,7 @@ public class DatabaseMain {
      * @throws SQLException if a database-related error occurs.
      */
     public static void main(String[] args) throws SQLException {
-        LocalDate d = LocalDate.of(2003,05,28);
+        LocalDate d = LocalDate.of(2003, 5,28);
         DBAccess dba = new DBAccess();
         User user1 = new User("Bob Smith", 1, d, 150,  100, 0, 0);
         dba.add(user1, user1);
@@ -37,7 +36,7 @@ public class DatabaseMain {
        // ing.add(new dataObjects.Ingredient(10, 2));
         //dba.addMeal(user1, new dataObjects.Meal(2, LocalDate.now(), 1, ing));
         //dba.add(user1, new Exercise( LocalDate.now(), 5, "Biking", 1, 150));
-        dba.breakdownMeal(user1, LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20));
+        //dba.breakdownMeal(user1, LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20));
         //System.out.println(user1.getMeals().size());
 
         for (Meal m : user1.getMeals()) {

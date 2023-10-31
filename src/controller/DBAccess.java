@@ -143,12 +143,7 @@ public class DBAccess {
         }
     }
     
-    /**
-     * Checks for duplicate user names in the database.
-     *
-     * @param name the user name to check for duplicates
-     * @return true if a duplicate user name is found; otherwise, false
-     */
+
     private static boolean findDup(Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -213,28 +208,48 @@ public class DBAccess {
      *
      * @param user the user
      */
-    public List breakdownMeal(User user, LocalDate d1, LocalDate d2) {
+    public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
         Date date1 = Date.valueOf(d1);
         Date date2 = Date.valueOf(d2);
-        ArrayList<Nutrient> nutrients = null;
+        String mealCall = "select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
+        String exerciseCall = "select * from exercise where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
+        List<Nutrient> nutrients = null;
+        List<Exercise> exercises = new ArrayList<>();
         double calSum = 0;
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            System.out.println("select * from meals where date between " + date1 + " and " + date2 + " AND person='" + user.getName() + "';");
-            ResultSet rs = statement.executeQuery("select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';");
-            System.out.println(rs.getFetchSize());
-            while (rs.next()) { //for each foodID
-                nutrients = (ArrayList<Nutrient>) findNutrients((rs.getInt("ingredient")), rs.getDouble("amount"));
-                System.out.println(" ");
-                for (Nutrient n : nutrients) {
-                    System.out.println(n.getName());
-                    //System.out.println("calories");
-                    System.out.println(n.getAmount() + n.getUnit());
-                    calSum += n.getAmount() * rs.getDouble("amount");
 
+            if (obj instanceof Meal) {
+                ResultSet rs = statement.executeQuery(mealCall);
+                System.out.println(rs.getFetchSize());
+                while (rs.next()) { //for each foodID
+                    nutrients = findNutrients(
+                            (rs.getInt("ingredient")),
+                            rs.getDouble("amount"));
+                    System.out.println(" ");
+                    for (Nutrient n : nutrients) {
+                        System.out.println(n.getName());
+                        //System.out.println("calories");
+                        System.out.println(n.getAmount() + n.getUnit());
+                        calSum += n.getAmount() * rs.getDouble("amount");
+
+                    }
                 }
+                return nutrients;
+            } else if (obj instanceof Exercise) {
+                ResultSet rs = statement.executeQuery(exerciseCall);
+                while (rs.next()) {
+                    exercises.add(new Exercise(
+                            rs.getDate("date").toLocalDate(),
+                            rs.getInt("duration"),
+                            rs.getString("type"),
+                            rs.getInt("intensity"),
+                            rs.getInt("calburned")));
+                }
+                return exercises;
             }
+
 
         } catch (Exception e) {
             System.out.println("Duplicated");
@@ -249,7 +264,7 @@ public class DBAccess {
      *
      * @param foodID the food id
      */
-    public List findNutrients(int foodID, double amount) {
+    private List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
         System.out.println("current food id: " + foodID);
         try {
@@ -268,4 +283,5 @@ public class DBAccess {
         }
         return nutrients;
     }
+
 }
