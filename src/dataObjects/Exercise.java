@@ -104,11 +104,40 @@ public class Exercise {
         this.calBurned = calBurned;
     }
 
-    public Exercise( LocalDate date, int duration, String type, int intensity, int calBurned) {
+    public void calBurned(double bmr) {
+        switch (intensity) {
+            case 0:
+                calBurned = (int) (bmr * 1.375 - bmr);
+                break;
+            case 1:
+                calBurned = (int) (bmr * 1.55 - bmr);
+                break;
+            case 2:
+                calBurned = (int) (bmr * 1.725 - bmr);
+                break;
+            case 3:
+                calBurned = (int) (bmr * 1.9 - bmr);
+                break;
+            default:
+                calBurned = 0;
+        }
+    }
+
+    public Exercise( LocalDate date, int duration, String type, int intensity) {
+        this.date = date;
+        this.duration = duration;
+        this.type = type;
+        this.intensity = intensity;
+    }
+
+    public Exercise(LocalDate date, int duration, String type, int intensity, int calBurned) {
         this.date = date;
         this.duration = duration;
         this.type = type;
         this.intensity = intensity;
         this.calBurned = calBurned;
+    }
+
+    public Exercise() {
     }
 }

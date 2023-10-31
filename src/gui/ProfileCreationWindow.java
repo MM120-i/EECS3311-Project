@@ -1,6 +1,7 @@
 package gui;
 
 import controller.DBAccess;
+import controller.UIController;
 import dataObjects.User;
 
 import javax.swing.*;
@@ -116,21 +117,9 @@ public class ProfileCreationWindow extends JFrame {
         createProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                User u = new User();
-                u.setName("no Name");
-                if (maleRadioButton.isSelected()) {
-                    u.setMale(1);
-                } else {
-                    u.setMale(0);
-                }
-                u.setHeight(Integer.parseInt(heightField.getText()));
-                u.setWeight(Integer.parseInt(weightField.getText()));
 
-                DBAccess da = new DBAccess();
-                da.add(u, u);
-
-
-                // Handle user inputs here:
+                UIController uic = new UIController();
+                uic.profileCreation(maleRadioButton.isSelected(), heightField.getText(), weightField.getText());
             }
         });
 

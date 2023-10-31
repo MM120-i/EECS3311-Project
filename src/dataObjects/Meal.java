@@ -99,4 +99,7 @@ public class Meal {
         this.mealType = mealType;
         this.ingredients = ingredients;
     }
+
+    public Meal() {
+    }
 }

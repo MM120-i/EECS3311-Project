@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import controller.DBAccess;
+import dataObjects.Meal;
 import dataObjects.Nutrient;
 import dataObjects.User;
 import org.jfree.chart.ChartFactory;
@@ -25,7 +26,7 @@ import org.jfree.data.general.PieDataset;
 /**
  * The type Pie chart example.
  */
-public class PieChartExample extends JFrame {
+public class CaloriePie extends JFrame {
 
 
     /**
@@ -33,7 +34,7 @@ public class PieChartExample extends JFrame {
      *
      * @param title the title
      */
-    public PieChartExample(String title){
+    public CaloriePie(String title){
         super(title);
 
         // Create dataset
@@ -79,7 +80,7 @@ public class PieChartExample extends JFrame {
     private PieDataset createDataset(){
 
         DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.breakdownMeal(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20));
+        List<Nutrient> nutrients = da.findBetween(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
         DefaultPieDataset dataset=new DefaultPieDataset();
         int counter = 0;
         for (int i = 0; i < 10; i++) {
@@ -100,7 +101,7 @@ public class PieChartExample extends JFrame {
     private PieDataset createDefaultSet(){
 
         DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.breakdownMeal(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20));
+        List<Nutrient> nutrients = da.findBetween(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
         DefaultPieDataset dataset=new DefaultPieDataset();
         int counter = 0;
         for (int i = 0; i < 10; i++) {
@@ -126,8 +127,8 @@ public class PieChartExample extends JFrame {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            PieChartExample example = null;
-            example = new PieChartExample("Nutrients");
+            CaloriePie example = null;
+            example = new CaloriePie("Nutrients");
             example.setSize(800, 400);
             example.setLocationRelativeTo(null);
             example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
