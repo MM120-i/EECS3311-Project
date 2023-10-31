@@ -1,8 +1,12 @@
+package gui;
+
+import controller.DBAccess;
+import dataObjects.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 /**
  * This class represents a Profile Creation Window for a user's profile information.
@@ -18,7 +22,7 @@ public class ProfileCreationWindow extends JFrame {
     private ButtonGroup unitsGroup;
 
     /**
-     * Constructor for the ProfileCreationWindow.
+     * Constructor for the gui.ProfileCreationWindow.
      * Sets up the UI components for profile creation.
      */
     public ProfileCreationWindow() {
@@ -122,7 +126,7 @@ public class ProfileCreationWindow extends JFrame {
                 u.setHeight(Integer.parseInt(heightField.getText()));
                 u.setWeight(Integer.parseInt(weightField.getText()));
 
-                DatabaseAccess da = new DatabaseAccess();
+                DBAccess da = new DBAccess();
                 da.add(u, u);
 
 

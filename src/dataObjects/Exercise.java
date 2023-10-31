@@ -1,7 +1,9 @@
+package dataObjects;
+
 import java.time.LocalDate;
 
 /**
- * The type Exercise.
+ * The type dataObjects.Exercise.
  */
 public class Exercise {
     private LocalDate date;

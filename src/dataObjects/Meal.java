@@ -1,8 +1,10 @@
+package dataObjects;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * The type Meal.
+ * The type dataObjects.Meal.
  */
 public class Meal {
     private int mealID;
@@ -84,7 +86,7 @@ public class Meal {
     }
 
     /**
-     * Instantiates a new Meal.
+     * Instantiates a new dataObjects.Meal.
      *
      * @param mealID      the meal id
      * @param date        the date

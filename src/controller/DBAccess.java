@@ -1,7 +1,7 @@
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
+package controller;
+
+import dataObjects.*;
+
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * The type Database access.
  */
-public class DatabaseAccess {
+public class DBAccess {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
@@ -213,35 +213,34 @@ public class DatabaseAccess {
      *
      * @param user the user
      */
-    public void breakdownMeal(User user) {
-
+    public List breakdownMeal(User user, LocalDate d1, LocalDate d2) {
+        Date date1 = Date.valueOf(d1);
+        Date date2 = Date.valueOf(d2);
+        ArrayList<Nutrient> nutrients = null;
+        double calSum = 0;
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = statement.executeQuery("select * from meals where person='" + user.getName() + "';");
+            System.out.println("select * from meals where date between " + date1 + " and " + date2 + " AND person='" + user.getName() + "';");
+            ResultSet rs = statement.executeQuery("select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';");
+            System.out.println(rs.getFetchSize());
+            while (rs.next()) { //for each foodID
+                nutrients = (ArrayList<Nutrient>) findNutrients((rs.getInt("ingredient")), rs.getDouble("amount"));
+                System.out.println(" ");
+                for (Nutrient n : nutrients) {
+                    System.out.println(n.getName());
+                    //System.out.println("calories");
+                    System.out.println(n.getAmount() + n.getUnit());
+                    calSum += n.getAmount() * rs.getDouble("amount");
 
-            int currentID = 1;
-            ArrayList<Ingredient> ingredients = new ArrayList<>();
-            int mealType = 0;
-            LocalDate date = LocalDate.now();
-            while (rs.next())  {
-                if (rs.getInt("mealid") == (currentID)) {
-                    ingredients.add(new Ingredient(rs.getInt("ingredient"), rs.getDouble("amount")));
-                    System.out.println(ingredients.size());
-                    date = rs.getDate("date").toLocalDate();
-                    mealType = rs.getInt("mealtype");
-                } else {
-                    rs.previous();
-                    user.getMeals().add(new Meal(currentID, rs.getDate("date").toLocalDate(), rs.getInt("mealtype"), ingredients));
-                    ingredients = new ArrayList<>();
-                    currentID++;
                 }
             }
-            user.getMeals().add(new Meal(currentID, date, mealType, ingredients));
+
         } catch (Exception e) {
             System.out.println("Duplicated");
             e.printStackTrace();
         }
+        return nutrients;
 
     }
 
@@ -250,17 +249,19 @@ public class DatabaseAccess {
      *
      * @param foodID the food id
      */
-    public List findNutrients(int foodID) {
+    public List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
+        System.out.println("current food id: " + foodID);
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(
-                    "SELECT B.name, B.nutrientunit, A.nutrientvalue FROM nutrientname B JOIN nutrientamounts A ON B.NutrientID = A.NutrientID WHERE A.FOODID = '" + foodID + "';");
+                    "SELECT B.nutrientunit, B.name, B.nutrientunit, A.nutrientvalue * " + amount + " AS modified_value FROM nutrientname B JOIN nutrientamounts A ON B.NutrientID = A.NutrientID WHERE A.nutrientvalue > 0 AND A.FOODID = '" + foodID + "';");
 
             while (rs.next()) {
-                nutrients.add(new Nutrient(rs.getString("name"), rs.getString("nutrientvalue")));
+                nutrients.add(new Nutrient(rs.getString("name"), rs.getDouble("modified_value"), rs.getString("nutrientunit")));
             }
+
         } catch (Exception e) {
             System.out.println("Duplicated");
             e.printStackTrace();

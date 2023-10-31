@@ -1,9 +1,14 @@
+package dataObjects;
+
 /**
- * The Nutrient class represents a nutrient with a name and an amount.
+ * The dataObjects.Nutrient class represents a nutrient with a name and an amount.
 */
 public class Nutrient {
-    public String name;
-    public double amount;
+    private String name;
+    private double amount;
+
+    private String unit;
+
 
     /**
      * Get the name of the nutrient.
@@ -38,14 +43,24 @@ public class Nutrient {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     /**
-     * Constructs a Nutrient object with the given name and amount.
+     * Constructs a dataObjects.Nutrient object with the given name and amount.
      *
      * @param name   the name of the nutrient
      * @param amount the amount of the nutrient
      */
-    public Nutrient(String name, String amount) {
+    public Nutrient(String name, double amount, String unit) {
         this.name = name;
-        this.amount = Double.parseDouble(amount);
+        this.amount = amount;
+        this.unit = unit;
     }
 }

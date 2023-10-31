@@ -1,3 +1,5 @@
+package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -195,7 +197,7 @@ public class DietLogWindow extends JFrame {
             mealCons.gridy = 4 + i;
 
             // Label for the ingredient field
-            JLabel ingredientLabel = new JLabel("Ingredient #" + (i + 1) + ":");
+            JLabel ingredientLabel = new JLabel("dataObjects.Ingredient #" + (i + 1) + ":");
             mealPanel.add(ingredientLabel, mealCons);
 
             mealCons.gridx = 1;
