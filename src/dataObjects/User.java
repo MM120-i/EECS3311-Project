@@ -1,10 +1,12 @@
+package dataObjects;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * The type User.
+ * The type dataObjects.User.
  */
 public class User {
 
@@ -197,7 +199,7 @@ public class User {
     }
 
     /**
-     * Instantiates a new User.
+     * Instantiates a new dataObjects.User.
      *
      * @param name          the name
      * @param isMale        the is male
@@ -218,7 +220,7 @@ public class User {
     }
 
     /**
-     * Instantiates a new User.
+     * Instantiates a new dataObjects.User.
      */
     public User() {
         this.name = null;

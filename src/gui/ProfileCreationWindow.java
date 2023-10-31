@@ -1,8 +1,13 @@
+package gui;
+
+import controller.DBAccess;
+import controller.UIController;
+import dataObjects.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 /**
  * This class represents a Profile Creation Window for a user's profile information.
@@ -18,7 +23,7 @@ public class ProfileCreationWindow extends JFrame {
     private ButtonGroup unitsGroup;
 
     /**
-     * Constructor for the ProfileCreationWindow.
+     * Constructor for the gui.ProfileCreationWindow.
      * Sets up the UI components for profile creation.
      */
     public ProfileCreationWindow() {
@@ -112,21 +117,9 @@ public class ProfileCreationWindow extends JFrame {
         createProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                User u = new User();
-                u.setName("no Name");
-                if (maleRadioButton.isSelected()) {
-                    u.setMale(1);
-                } else {
-                    u.setMale(0);
-                }
-                u.setHeight(Integer.parseInt(heightField.getText()));
-                u.setWeight(Integer.parseInt(weightField.getText()));
 
-                DatabaseAccess da = new DatabaseAccess();
-                da.addUser(u);
-
-
-                // Handle user inputs here:
+                UIController uic = new UIController();
+                uic.profileCreation(maleRadioButton.isSelected(), heightField.getText(), weightField.getText());
             }
         });
 
