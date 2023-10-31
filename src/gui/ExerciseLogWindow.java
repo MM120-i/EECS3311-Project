@@ -1,5 +1,7 @@
 package gui;
 
+import controller.UIController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -122,7 +124,8 @@ public class ExerciseLogWindow extends JFrame {
             	
                 // Handle calculations for calories burnt and BMR here
                 // Update caloriesBurntLabel and bmrLabel accordingly
-            	
+
+                UIController uic = new UIController();
             	
             }
         });
