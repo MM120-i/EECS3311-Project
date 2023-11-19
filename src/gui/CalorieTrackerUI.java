@@ -5,6 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The CalorieTrackerUI class represents a simple graphical user interface for
+ * tracking and visualizing calorie-related data within a specified time period.
+ * Users can input start and end dates, and the application fetches and displays
+ * data for that time range.
+ */
 public class CalorieTrackerUI {
 	
     private JFrame frame;
@@ -12,6 +18,10 @@ public class CalorieTrackerUI {
     private JTextArea dataTextArea;
     private JButton visualizeButton;
 
+    /**
+     * Constructs a new instance of the CalorieTrackerUI class.
+     * Initializes the frame, control panel, and components.
+     */
     public CalorieTrackerUI() {
     	
         frame = new JFrame("Calorie Tracker");
@@ -54,11 +64,19 @@ public class CalorieTrackerUI {
         });
     }
 
+  /**
+   * Displays the UI by setting the frame visibility to true.
+   */
     public void showUI() {
     	
         frame.setVisible(true);
     }
 
+  /**
+    * The main method to launch the CalorieTrackerUI application.
+    *
+    * @param args Command-line arguments (not used).
+    */
     public static void main(String[] args) {
     	
         SwingUtilities.invokeLater(new Runnable() {
