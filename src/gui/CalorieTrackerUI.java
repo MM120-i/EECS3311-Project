@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
+ * Use case 4
  * The CalorieTrackerUI class represents a simple graphical user interface for
  * tracking and visualizing calorie-related data within a specified time period.
  * Users can input start and end dates, and the application fetches and displays
