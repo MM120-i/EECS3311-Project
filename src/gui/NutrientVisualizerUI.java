@@ -92,7 +92,6 @@ public class NutrientVisualizerUI {
         setButtonStyle(visualizeButton);
     }
 
-
     /**
      * Visualizes the nutrient data on the UI.
      *
@@ -112,7 +111,7 @@ public class NutrientVisualizerUI {
                 	
                     double percentage = (entry.getValue() / total) * 100;
                     resultText.append(entry.getKey()).append(": ")
-                    		   .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
+                            .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
 
                 });
 
@@ -124,11 +123,10 @@ public class NutrientVisualizerUI {
             if (count >= 5) {
                 break;
             }
-            
+
             double percentage = (entry.getValue() / total) * 100;
             resultText.append(entry.getKey()).append(": ")
-            		  .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
-            
+                    .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
 
             count++;
         }
@@ -171,7 +169,8 @@ public class NutrientVisualizerUI {
         // Replace this with the logic to determine the notification
         if (totalPercentage >= 80) {
             return "You have reached or exceeded the recommended daily nutrient intake.";
-        } else {
+        } 
+        else {
             return "You are below the recommended daily nutrient intake.";
         }
     }
@@ -215,9 +214,16 @@ public class NutrientVisualizerUI {
         // Check if start and end dates are in a valid format (add more validation if needed)
         try {
         	
-            LocalDate.parse(startDate);
-            LocalDate.parse(endDate);
-            
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+
+            // Check if start date is before or equal to end date
+            if (start.isAfter(end)) {
+            	
+                showError("Start date must be before or equal to end date.");
+                return false;
+            }
+
         } catch (DateTimeParseException e) {
         	
             showError("Invalid date format. Please use yyyy-MM-dd.");
@@ -263,7 +269,6 @@ public class NutrientVisualizerUI {
     public static void main(String[] args) {
     	
         SwingUtilities.invokeLater(() -> {
-        	
             NutrientVisualizerUI ui = new NutrientVisualizerUI();
             ui.showUI();
         });
@@ -276,7 +281,7 @@ public class NutrientVisualizerUI {
  */
 class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener {
 
-    private String hint; 	 // The hint text to be displayed
+    private String hint;     // The hint text to be displayed
     private Color hintColor; // The color of the hint text
 
     /**
