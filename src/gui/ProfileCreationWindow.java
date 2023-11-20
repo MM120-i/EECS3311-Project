@@ -1,7 +1,6 @@
 package gui;
 
 import controller.UIController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -53,9 +52,20 @@ public class ProfileCreationWindow extends JFrame {
         genderPanel.add(femaleRadioButton);
         mainPanel.add(genderPanel, cons);
 
+        // Add Full Name input
+        cons.gridx = 0;
+        cons.gridy = 1; 
+        JLabel fullNameLabel = new JLabel("Full Name:");
+        fullNameLabel.setFont(new Font("Arial", Font.BOLD, 16)); 
+        mainPanel.add(fullNameLabel, cons);
+
+        cons.gridx = 1;
+        JTextField fullNameField = new JTextField(15);
+        mainPanel.add(fullNameField, cons);
+
         // Add Date of Birth input
         cons.gridx = 0;
-        cons.gridy = 1;
+        cons.gridy = 2;
         JLabel DOB = new JLabel("Date of Birth (yyyy-mm-dd):");
         mainPanel.add(DOB, cons);
 
@@ -65,17 +75,17 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Height input
         cons.gridx = 0;
-        cons.gridy = 2;
+        cons.gridy = 3;
         JLabel height = new JLabel("Height (cm):");
         mainPanel.add(height, cons);
 
         cons.gridx = 1;
         heightField = new JTextField(15);
         mainPanel.add(heightField, cons);
-
+        
         // Add Weight input
         cons.gridx = 0;
-        cons.gridy = 3;
+        cons.gridy = 4;
         JLabel weight = new JLabel("Weight (kg):");
         mainPanel.add(weight, cons);
 
@@ -85,7 +95,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Units of Measurement
         cons.gridx = 0;
-        cons.gridy = 4;
+        cons.gridy = 5;
         JLabel unit = new JLabel("Units of Measurement:");
         mainPanel.add(unit, cons);
 
@@ -104,7 +114,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Create "Create Profile" button
         cons.gridx = 0;
-        cons.gridy = 5;
+        cons.gridy = 7; 
         cons.gridwidth = 2;
         cons.anchor = GridBagConstraints.CENTER;
         cons.weightx = 0;
