@@ -1,19 +1,14 @@
 package gui;
 
 import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import controller.DBAccess;
+import controller.UIController;
 import dataObjects.Exercise;
-import dataObjects.Nutrient;
-import dataObjects.User;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -81,23 +76,20 @@ public class ExercisePie extends JFrame {
      * @return A PieDataset containing nutrient names and their corresponding amounts.
      */
     private PieDataset createDataset(){
-
-        DBAccess da = new DBAccess();
-        List<Exercise> exercises = da.findBetween(new User("Testing12223", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2021, 05, 28), LocalDate.of(2023, 11,20), new Exercise());
         DefaultPieDataset dataset=new DefaultPieDataset();
-        int counter = 0;
+        UIController uic = new UIController();
+
+
+        List<Exercise> exercises = uic.getExercises();
+
         for (int i = 0; i < exercises.size(); i++) {
             dataset.setValue(exercises.get(i).getType(), exercises.get(i).getCalBurned());
+            sum += exercises.get(i).getCalBurned();
         }
 
-        total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), ChronoUnit.DAYS);
-        System.out.println(total);
-        totalCals = (int) (total * 2000);
-        System.out.println(totalCals);
-        for (int i = 0; i < exercises.size(); i++) {
-            sum += exercises.get(i).getCalBurned();
-            System.out.println(sum);
-        }
+        sum = uic.getCalsBurned();
+        totalCals = (int) uic.getRegularBurnOverTime(exercises);
+
         return dataset;
     }
     /**
@@ -108,7 +100,7 @@ public class ExercisePie extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ExercisePie example = null;
-            example = new ExercisePie("Nutrients");
+            example = new ExercisePie("Exercise");
             example.setSize(800, 400);
             example.setLocationRelativeTo(null);
             example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

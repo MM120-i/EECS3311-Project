@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+
 /**
  * Use case 4
  * The CalorieTrackerUI class represents a simple graphical user interface for
@@ -151,6 +152,9 @@ public class CalorieTrackerUI {
                 // Fetch and display data in the dataTextArea.
                 dataTextArea.setText("Data from " + startDate + " to " + endDate + ":\n");
                 // Add visualization logic here.
+
+                Case4 c4 = new Case4("Calories", LocalDate.parse(startDate), LocalDate.parse(endDate));
+                c4.start(LocalDate.parse(startDate), LocalDate.parse(endDate));
             }
         }
     }

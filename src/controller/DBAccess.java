@@ -15,6 +15,7 @@ public class DBAccess {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
+    protected User user;
 
     public void add(User newUser, Object obj) {
         try {
@@ -23,20 +24,21 @@ public class DBAccess {
 
             if (obj instanceof User) {
                 newUser.calculateBMR();
-                    if (!findDup(newUser)) {
+                    if (safeToAdd(newUser)) {
                         java.sql.Date sqlDate = java.sql.Date.valueOf(newUser.getDob());
                         statement.execute("insert into person (name," +
                                 "isMale, dob, height, weight, prefermetric, bmr) values ('" + newUser.getName()
                                 + "',' " + newUser.getIsMale() + "',' " + sqlDate + "',' "
                                 + newUser.getHeight() + "',' " + newUser.getWeight() + "',' " + newUser.getPrefersMetric()
                                 + "',' " + newUser.getBMR() + "');");
+                        user= user;
                     } else {
                         System.out.println("The name you are trying to set is already taken.");
                     }
             } else if (obj instanceof Meal) {
                 Meal meal = (Meal) obj;
                     java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
-                    if (!findDup(meal)) {
+                    if (safeToAdd(meal)) {
                         int mid = findNextMealID() + 1;
                         for (Ingredient i : meal.getIngredients()) {
                             statement.execute("insert into meals (person," +
@@ -44,6 +46,8 @@ public class DBAccess {
                                     + "',' " + mid + "',' " + sqlDate + "',' "
                                     + i.getIngredientNum() + "',' " + i.getAmount() + "',' " + meal.getMealType() + "');");
                         }
+                    } else {
+                        System.out.println("You've already added this meal for this day");
                     }
             } else if (obj instanceof Exercise) {
                 Exercise exercise = (Exercise) obj;
@@ -73,7 +77,7 @@ public class DBAccess {
 
             switch (field) {
                 case 1:
-                    if (!findDup(newUser)) {
+                    if (safeToAdd(newUser)) {
                         statement.execute("update person set name='" + (String) newObject + "' where name='" + newUser.getName() + "';");
 
                     } else {
@@ -144,7 +148,7 @@ public class DBAccess {
     }
     
 
-    private static boolean findDup(Object obj) {
+    private static boolean safeToAdd(Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
@@ -155,12 +159,12 @@ public class DBAccess {
                 ResultSet rs = statement.executeQuery("select name from person;");
                 while (rs.next()) {
                     if (rs.getString("name").equals(((User) obj).getName())) {
-                        return true;
+                        return false;
                     }
                 }
             } else if (obj instanceof Meal) {
                 if (((Meal) obj).getMealType() == 4) {
-                    return false;
+                    return true;
                 }
 
                 //CHANGE to delete based on ID NOT name
@@ -169,7 +173,7 @@ public class DBAccess {
                     if (rs.getInt("mealtype") == (((Meal) obj).getMealType()) && rs.getString("date").equals
                             (String.valueOf(java.sql.Date.valueOf(((Meal) obj).getDate())))) {
                         System.out.println("This meal has already been entered for this date");
-                        return true;
+                        return false;
 
                     }
                 }
@@ -178,7 +182,7 @@ public class DBAccess {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
 
@@ -213,7 +217,7 @@ public class DBAccess {
         Date date2 = Date.valueOf(d2);
         String mealCall = "select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
         String exerciseCall = "select * from exercise where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
-        List<Nutrient> nutrients = null;
+        List<Nutrient> nutrients = new ArrayList<>();
         List<Exercise> exercises = new ArrayList<>();
         double calSum = 0;
         try {
@@ -224,16 +228,21 @@ public class DBAccess {
                 ResultSet rs = statement.executeQuery(mealCall);
                 System.out.println(rs.getFetchSize());
                 while (rs.next()) { //for each foodID
-                    nutrients = findNutrients(
+                    List<Nutrient> temp = findNutrients(
                             (rs.getInt("ingredient")),
                             rs.getDouble("amount"));
+
+                    for (Nutrient n : temp) {
+                        nutrients.add(n);
+                    }
+
                     System.out.println(" ");
                     for (Nutrient n : nutrients) {
-                        System.out.println(n.getName());
+                        //System.out.println(n.getName());
                         //System.out.println("calories");
-                        System.out.println(n.getAmount() + n.getUnit());
+                        //System.out.println(n.getAmount() + n.getUnit());
                         calSum += n.getAmount() * rs.getDouble("amount");
-
+                        System.out.println(n.getName() + " " + n.getAmount());
                     }
                 }
                 return nutrients;
@@ -264,7 +273,7 @@ public class DBAccess {
      *
      * @param foodID the food id
      */
-    private List findNutrients(int foodID, double amount) {
+    List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
         System.out.println("current food id: " + foodID);
         try {
@@ -284,4 +293,11 @@ public class DBAccess {
         return nutrients;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
