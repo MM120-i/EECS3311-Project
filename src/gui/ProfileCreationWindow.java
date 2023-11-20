@@ -1,8 +1,6 @@
 package gui;
 
-import controller.DBAccess;
 import controller.UIController;
-import dataObjects.User;
 
 import javax.swing.*;
 import java.awt.*;

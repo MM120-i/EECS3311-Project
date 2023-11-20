@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
@@ -8,10 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import controller.DBAccess;
-import dataObjects.Meal;
+import controller.UIController;
 import dataObjects.Nutrient;
-import dataObjects.User;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -39,7 +38,6 @@ public class CaloriePie extends JFrame {
 
         // Create dataset
         PieDataset dataset = createDataset();
-        PieDataset dataset2 = createDefaultSet();
 
 
         // Create chart
@@ -78,46 +76,23 @@ public class CaloriePie extends JFrame {
      * @return A PieDataset containing nutrient names and their corresponding amounts.
      */
     private PieDataset createDataset(){
-
-        DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.findBetween(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
-        DefaultPieDataset dataset=new DefaultPieDataset();
-        int counter = 0;
-        for (int i = 0; i < 10; i++) {
-            if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
-                nutrients.remove(i);
-            }
-            dataset.setValue(nutrients.get(i).getName(), nutrients.get(i).getAmount());
-        }
-
         int sum = 0;
-        for (int i = 10; i < nutrients.size(); i++) {
-            sum += nutrients.get(i).getAmount();
-        }
-        dataset.setValue("Other", sum);
-        return dataset;
-    }
 
-    private PieDataset createDefaultSet(){
-
-        DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.findBetween(new User("Bob Smith", 1, LocalDate.of(2003,05,28), 150,  100, 0, 0), LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
         DefaultPieDataset dataset=new DefaultPieDataset();
-        int counter = 0;
-        for (int i = 0; i < 10; i++) {
-            if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
-                nutrients.remove(i);
+        UIController uic = new UIController();
+
+        List<Nutrient> nutrients = uic.getXNutrients(10);
+        for (Nutrient n : nutrients) {
+
+            if (n.getName() == "ENERGY (KILOJOULES)") {
+                sum = (int) (sum + n.getAmount());
             }
-            dataset.setValue(nutrients.get(i).getName(), nutrients.get(i).getAmount());
+            System.out.println(n.getName());
+            System.out.println(n.getAmount());
+            dataset.setValue(n.getName(), n.getAmount());
         }
 
-        int sum = 0;
-        for (int i = 10; i < nutrients.size(); i++) {
-            sum += nutrients.get(i).getAmount();
-        }
-        dataset.setValue("Other", sum);
-        DefaultPieChart dpc = new DefaultPieChart("Nutrients", 50);
-        dpc.start(50);
+        dataset.setValue("Other", uic.getRemainingNutrients(10));
         return dataset;
     }
     /**

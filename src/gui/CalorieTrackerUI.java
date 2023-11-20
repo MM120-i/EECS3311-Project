@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 public class CalorieTrackerUI {
 	
@@ -50,6 +51,9 @@ public class CalorieTrackerUI {
                 // Fetch and display data in the dataTextArea.
                 dataTextArea.setText("Data from " + startDate + " to " + endDate + ":\n");
                 // Add visualization logic here.
+
+                Case4 c4 = new Case4("Calories", LocalDate.parse(startDate), LocalDate.parse(endDate));
+                c4.start(LocalDate.parse(startDate), LocalDate.parse(endDate));
             }
         });
     }
