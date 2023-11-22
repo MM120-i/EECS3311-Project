@@ -106,18 +106,17 @@ public class DBMeal extends DBAccess{
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet rs = statement.executeQuery(mealCall);
-                System.out.println(rs.getFetchSize());
+
                 while (rs.next()) { //for each foodID
                     DBAccess dba = new DBAccess();
                     nutrients = dba.findNutrients(
                             (rs.getInt("ingredient")),
                             rs.getDouble("amount"));
-                    System.out.println(" ");
                     for (Nutrient n : nutrients) {
                         //System.out.println(n.getName());
                         //System.out.println("calories");
                         //System.out.println(n.getAmount() + n.getUnit());
-                        calSum += n.getAmount() * rs.getDouble("amount");
+
 
                     }
                 }

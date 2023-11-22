@@ -14,12 +14,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 public class UIController {
 
-    private User u = new User("Bob Smith", 1, LocalDate.now(), 150,  100, 0, 0);
-    public void profileCreation(Boolean maleRB, String height, String weight) {
+    public User u;
+    public void profileCreation(String name, Boolean maleRB, String height, String weight) {
         u = new User();
-        u.setName("Testing12223");
+        u.setName(name);
         if (maleRB) {
             u.setMale(1);
         } else {
@@ -38,10 +41,11 @@ public class UIController {
 
     public void exerciseCreation(LocalDate date, LocalTime time, int intensity, int duration, String type) {
         System.out.println(u.getName());
+        u.calculateBMR();
         Exercise e = new Exercise(date, duration, type, intensity);
         System.out.println("bmr: " + u.getBMR());
         e.calBurned(u.getBMR());
-        System.out.println(e.getCalBurned());
+        System.out.println("Burned: " + e.getCalBurned());
         DBAccess da = new DBAccess();
         da.add(u, e);
     }
@@ -52,7 +56,7 @@ public class UIController {
     }
 
     public double getRegularBurnOverTime(List<Exercise> exercises) {
-        long total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), ChronoUnit.DAYS);
+        long total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), DAYS);
         System.out.println(total);
         double totalCals = (total * 2000);
         System.out.println(totalCals);
@@ -64,7 +68,6 @@ public class UIController {
         DBAccess da = new DBAccess();
         List<Nutrient> nutrients = da.findBetween(u, LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
         for (int i = 0; i < amount; i++) {
-            System.out.println(nutrients.get(i).getName());
             if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
                 nutrients.remove(i);
             }
@@ -83,16 +86,17 @@ public class UIController {
         return result;
     }
 
-    public int getCalsBurned() {
+    public int getCalsBurned(LocalDate l1, LocalDate l2) {
         DBAccess da = new DBAccess();
-        List<Exercise> exercises = da.findBetween(u, LocalDate.of(2021, 05, 28), LocalDate.of(2023, 11,20), new Exercise());
+        List<Exercise> exercises = da.findBetween(u, l1, l2, new Exercise());
 
         int result = 0;
         for (Exercise e : exercises) {
             result += e.getCalBurned();
         }
 
-        return result;
+        return amountPerDay(result, l1, l2);
+
     }
 
     public List getXNutrients(int amount, LocalDate l1, LocalDate l2) {
@@ -118,15 +122,29 @@ public class UIController {
         for (int i = 0; i < nutrients.size(); i++) {
 
             if (nutrients.get(i).getName().contains("KILOJOULES")) {
-                System.out.println(nutrients.get(i).getName() + " " + nutrients.get(i).getAmount());
+
                 System.out.println("INSIDE" + sum);
                 sum += (int) nutrients.get(i).getAmount();
             }
             result.add(nutrients.get(i));
         }
-        return sum;
+
+        if (amount == 1) {
+            return amountPerDay(sum, l1, l2);
+        } else {
+            return sum;
+        }
     }
 
+    private int amountPerDay(int totalCals, LocalDate l1, LocalDate l2) {
+        long days = DAYS.between(l1, l2) + 1;
+        return (int) (totalCals/days);
+    }
 
+    public UIController(User u) {
+        this.u = u;
+    }
 
+    public UIController() {
+    }
 }

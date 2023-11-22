@@ -1,9 +1,22 @@
-package PROJECT;
+package gui;
+
+import controller.UIController;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -16,13 +29,14 @@ import java.time.format.DateTimeParseException;
  * data for that time range.
  */
 public class CalorieTrackerUI {
-
+    int sum;
     private JFrame frame;
     private JPanel controlPanel;
     private JButton visualizeButton;
     private JTextField startDateField, endDateField;
     private JTextArea dataTextArea;
     private JLabel notificationLabel;
+    private JLabel result;
 
     /**
      * Constructs a new instance of the CalorieTrackerUI class.
@@ -32,9 +46,10 @@ public class CalorieTrackerUI {
     	
         frame = new JFrame("Calorie Tracker");
         frame.setSize(800, 600);
-        frame.setLayout(new BorderLayout());
+        frame.setLayout(new GridLayout(2,1));
 
         controlPanel = new JPanel();
+        controlPanel.setSize(800, 600);
         controlPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints cons = new GridBagConstraints();
@@ -80,6 +95,30 @@ public class CalorieTrackerUI {
         visualizeButton.addActionListener(new VisualizeButtonListener());
 
         setButtonStyle(visualizeButton);
+
+        result = new JLabel();
+
+
+    }
+
+
+    /**
+     * Creates a PieDataset for the chart by retrieving nutrient information from the database.
+     *
+     * @return A PieDataset containing nutrient names and their corresponding amounts.
+     */
+    private PieDataset createDataset(LocalDate l1, LocalDate l2){
+
+        DefaultPieDataset dataset=new DefaultPieDataset();
+        UIController uic = new UIController();
+
+        sum = uic.getCaloriesConsumed(0, l1, l2);
+
+
+        System.out.println(sum);
+
+        dataset.setValue("Burned", sum);
+        return dataset;
     }
 
     /**
@@ -153,8 +192,13 @@ public class CalorieTrackerUI {
                 dataTextArea.setText("Data from " + startDate + " to " + endDate + ":\n");
                 // Add visualization logic here.
 
-                Case4 c4 = new Case4("Calories", LocalDate.parse(startDate), LocalDate.parse(endDate));
-                c4.start(LocalDate.parse(startDate), LocalDate.parse(endDate));
+                createDataset(LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText()));
+                UIController uic = new UIController();
+                dataTextArea.append("Calorie Intake: " + sum);
+                dataTextArea.append("\nExercise Calories Per Day: " + uic.getCalsBurned(LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText())));
+                dataTextArea.append("Current avg daily calorie intake: " + uic.getCaloriesConsumed(1, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText())));
+                dataTextArea.append(uic.u.getName());
+
             }
         }
     }

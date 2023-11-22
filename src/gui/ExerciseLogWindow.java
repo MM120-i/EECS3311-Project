@@ -22,6 +22,7 @@ public class ExerciseLogWindow extends JFrame {
     private JTextField dateField, timeField, durationField;
     private JComboBox<String> exerciseTypeComboBox, intensityComboBox;
     private JLabel caloriesBurntLabel, bmrLabel;
+    private UIController controller;
     
     /**
      * Constructs a new gui.ExerciseLogWindow.
@@ -38,6 +39,7 @@ public class ExerciseLogWindow extends JFrame {
      * Constructs a new gui.ExerciseLogWindow.
     */
     private void createUI(UIController controller) {
+        this.controller = controller;
     	
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(new Color(240, 240, 240));

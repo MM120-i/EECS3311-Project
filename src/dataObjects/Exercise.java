@@ -106,16 +106,16 @@ public class Exercise {
 
     public void calBurned(double bmr) {
         switch (intensity) {
-            case 0:
+            case 1:
                 calBurned = (int) (bmr * 1.375 - bmr);
                 break;
-            case 1:
+            case 2:
                 calBurned = (int) (bmr * 1.55 - bmr);
                 break;
-            case 2:
+            case 3:
                 calBurned = (int) (bmr * 1.725 - bmr);
                 break;
-            case 3:
+            case 4:
                 calBurned = (int) (bmr * 1.9 - bmr);
                 break;
             default:

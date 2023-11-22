@@ -146,6 +146,27 @@ public class DBAccess {
             e.printStackTrace();
         }
     }
+
+
+    public ArrayList<String> getUsers() {
+        ArrayList<String> names = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+
+            Statement statement = connection.createStatement();
+
+            //CHANGE to delete based on ID NOT name
+            ResultSet rs = statement.executeQuery("select name from person;");
+            while (rs.next()) {
+                names.add(rs.getString(1));
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return names;
+    }
     
 
     private static boolean safeToAdd(Object obj) {
@@ -226,7 +247,7 @@ public class DBAccess {
 
             if (obj instanceof Meal) {
                 ResultSet rs = statement.executeQuery(mealCall);
-                System.out.println(rs.getFetchSize());
+
                 while (rs.next()) { //for each foodID
                     List<Nutrient> temp = findNutrients(
                             (rs.getInt("ingredient")),
@@ -236,13 +257,13 @@ public class DBAccess {
                         nutrients.add(n);
                     }
 
-                    System.out.println(" ");
+
                     for (Nutrient n : nutrients) {
                         //System.out.println(n.getName());
                         //System.out.println("calories");
                         //System.out.println(n.getAmount() + n.getUnit());
                         calSum += n.getAmount() * rs.getDouble("amount");
-                        System.out.println(n.getName() + " " + n.getAmount());
+
                     }
                 }
                 return nutrients;

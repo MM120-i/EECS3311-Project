@@ -1,4 +1,4 @@
-package gui;
+package PROJECT;
 
 import controller.UIController;
 
@@ -21,10 +21,11 @@ public class ProfileCreationWindow extends JFrame {
     private ButtonGroup unitsGroup;
 
     /**
-     * Constructor for the gui.ProfileCreationWindow.
+     * Constructor for the ProfileCreationWindow.
      * Sets up the UI components for profile creation.
      */
     public ProfileCreationWindow() {
+
         // Initialize the window
         setTitle("Profile Creation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,9 +54,20 @@ public class ProfileCreationWindow extends JFrame {
         genderPanel.add(femaleRadioButton);
         mainPanel.add(genderPanel, cons);
 
-        // Add Date of Birth input
+        // Add Full Name input
         cons.gridx = 0;
         cons.gridy = 1;
+        JLabel fullNameLabel = new JLabel("Full Name:");
+        fullNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        mainPanel.add(fullNameLabel, cons);
+
+        cons.gridx = 1;
+        JTextField fullNameField = new JTextField(15);
+        mainPanel.add(fullNameField, cons);
+
+        // Add Date of Birth input
+        cons.gridx = 0;
+        cons.gridy = 2;
         JLabel DOB = new JLabel("Date of Birth (yyyy-mm-dd):");
         mainPanel.add(DOB, cons);
 
@@ -65,7 +77,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Height input
         cons.gridx = 0;
-        cons.gridy = 2;
+        cons.gridy = 3;
         JLabel height = new JLabel("Height (cm):");
         mainPanel.add(height, cons);
 
@@ -75,7 +87,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Weight input
         cons.gridx = 0;
-        cons.gridy = 3;
+        cons.gridy = 4;
         JLabel weight = new JLabel("Weight (kg):");
         mainPanel.add(weight, cons);
 
@@ -85,7 +97,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Units of Measurement
         cons.gridx = 0;
-        cons.gridy = 4;
+        cons.gridy = 5;
         JLabel unit = new JLabel("Units of Measurement:");
         mainPanel.add(unit, cons);
 
@@ -104,7 +116,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Create "Create Profile" button
         cons.gridx = 0;
-        cons.gridy = 5;
+        cons.gridy = 7;
         cons.gridwidth = 2;
         cons.anchor = GridBagConstraints.CENTER;
         cons.weightx = 0;
@@ -113,11 +125,12 @@ public class ProfileCreationWindow extends JFrame {
         JButton createProfileButton = new JButton("Create Profile");
         createProfileButton.setPreferredSize(new Dimension(100, 30));
         createProfileButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 UIController uic = new UIController();
-                uic.profileCreation(maleRadioButton.isSelected(), heightField.getText(), weightField.getText());
+                uic.profileCreation(fullNameField.getText(), maleRadioButton.isSelected(), heightField.getText(), weightField.getText());
+                // Handle user inputs here:
             }
         });
 
@@ -164,3 +177,4 @@ public class ProfileCreationWindow extends JFrame {
         SwingUtilities.invokeLater(() -> new ProfileCreationWindow());
     }
 }
+

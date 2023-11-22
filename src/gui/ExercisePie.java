@@ -1,6 +1,7 @@
 package gui;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -87,7 +88,7 @@ public class ExercisePie extends JFrame {
             sum += exercises.get(i).getCalBurned();
         }
 
-        sum = uic.getCalsBurned();
+        sum = uic.getCalsBurned(LocalDate.of(2023, 01, 10), LocalDate.of(2023,9, 10));
         totalCals = (int) uic.getRegularBurnOverTime(exercises);
 
         return dataset;

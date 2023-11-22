@@ -100,7 +100,7 @@ public class CaloriePie extends JFrame {
      *
      * @param args the input arguments
      */
-    public static void main(String[] args) {
+    public void start() {
         SwingUtilities.invokeLater(() -> {
             CaloriePie example = null;
             example = new CaloriePie("Nutrients");

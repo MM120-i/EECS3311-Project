@@ -1,4 +1,8 @@
-package PROJECT;
+package gui;
+
+import controller.UIController;
+import dataObjects.Nutrient;
+import gui.JTextFieldHintUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,13 +11,10 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.List;
 import java.util.Locale;
 import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicTextFieldUI;
-import javax.swing.text.JTextComponent;
 
 /**
  * Use Case 5:
@@ -90,6 +91,19 @@ public class NutrientVisualizerUI {
 
         // Set the style for the visualize button
         setButtonStyle(visualizeButton);
+
+        JButton chart = new JButton();
+        chart.setText("Chart");
+        setButtonStyle(chart);
+        controlPanel.add(chart);
+        chart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CaloriePie cp = new CaloriePie("Nutrients");
+                cp.start();
+            }
+        });
+
     }
 
     /**
@@ -145,15 +159,15 @@ public class NutrientVisualizerUI {
      * @return A map containing nutrient names and their corresponding percentages.
      */
     private Map<String, Double> getSampleNutrientData() {
-    	
-        // Replace this with the backend logic to fetch nutrient data
         Map<String, Double> nutrientData = new HashMap<>();
-        nutrientData.put("Protein", 50.0);
-        nutrientData.put("Carbohydrates", 30.0);
-        nutrientData.put("Fat", 15.0);
-        nutrientData.put("Vitamins", 3.0);
-        nutrientData.put("Minerals", 2.0);
-        nutrientData.put("Fiber", 5.0);
+        UIController uic = new UIController();
+
+        List<Nutrient> nutrients = uic.getXNutrients(10);
+        for (Nutrient n : nutrients) {
+            nutrientData.put(n.getName(), n.getAmount());
+        }
+        // Replace this with the backend logic to fetch nutrient data
+
 
         return nutrientData;
     }
@@ -275,84 +289,3 @@ public class NutrientVisualizerUI {
     }
 }
 
-/**
- * JTextFieldHintUI is a UI class that provides a hint (placeholder text) for JTextField components.
- * This class extends BasicTextFieldUI and implements FocusListener to handle focus events.
- */
-class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener {
-
-    private String hint;     // The hint text to be displayed
-    private Color hintColor; // The color of the hint text
-
-    /**
-     * Constructs a new JTextFieldHintUI with the specified hint text and hint color.
-     *
-     * @param hint      The hint text to be displayed.
-     * @param hintColor The color of the hint text.
-     */
-    public JTextFieldHintUI(String hint, Color hintColor) {
-    	
-        this.hint = hint;
-        this.hintColor = hintColor;
-    }
-
-    /**
-     * Invoked when the component gains focus. If the current text is the hint, it is cleared.
-     *
-     * @param e The focus event.
-     */
-    @Override
-    public void focusGained(FocusEvent e) {
-    	
-        if (e.getSource() instanceof JTextComponent) {
-        	
-            JTextComponent textComponent = (JTextComponent) e.getSource();
-            
-            if (textComponent.getText().equals(hint)) {
-            	
-                textComponent.setText("");
-                textComponent.setForeground(Color.BLACK);
-            }
-        }
-    }
-
-    /**
-     * Invoked when the component loses focus. If the current text is empty, the hint is set and its color is applied.
-     *
-     * @param e The focus event.
-     */
-    @Override
-    public void focusLost(FocusEvent e) {
-    	
-        if (e.getSource() instanceof JTextComponent) {
-        	
-            JTextComponent textComponent = (JTextComponent) e.getSource();
-            
-            if (textComponent.getText().isEmpty()) {
-            	
-                textComponent.setText(hint);
-                textComponent.setForeground(hintColor);
-            }
-        }
-    }
-
-    /**
-     * Installs the necessary listeners, including the FocusListener for handling focus events.
-     */
-    @Override
-    protected void installListeners() {
-    	
-        super.installListeners();
-        getComponent().addFocusListener(this);
-    }
-
-    /**
-     * Uninstalls the previously installed listeners, including the FocusListener.
-     */
-    @Override
-    protected void uninstallListeners() {
-    	
-        super.uninstallListeners();
-        getComponent().removeFocusListener(this);
-    }
-}
