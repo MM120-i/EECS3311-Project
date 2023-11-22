@@ -1,10 +1,13 @@
-package PROJECT;
+package gui;
+
+import controller.UIController;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * Use case 6
@@ -14,7 +17,7 @@ import java.time.LocalDate;
  * the estimated fat loss based on the provided formula (1 kg of fat = 7,700 kcal).
  */
 public class FatLossEstimatorUI {
-
+    private UIController uic;
     private JFrame frame;
     private JPanel controlPanel;
     private JButton calculateButton;
@@ -27,8 +30,8 @@ public class FatLossEstimatorUI {
      * Constructs a new instance of the class.
      * Initializes the main frame, control panel, and user interface components.
      */
-    public FatLossEstimatorUI() {
-    	
+    public FatLossEstimatorUI(UIController uic) {
+    	this.uic = uic;
         // Initialize the main frame
         frame = new JFrame("Fat Loss Estimator");
         frame.setSize(600, 400);
@@ -208,23 +211,25 @@ public class FatLossEstimatorUI {
      * Calculates and displays the estimated fat loss based on the input values.
      */
     private void calculateFatLoss() {
-    	
-        double exerciseLogValue = Double.parseDouble(exerciseLogField.getText().trim());
-        double calorieIntakeValue = Double.parseDouble(calorieIntakeField.getText().trim());
+
+        double exerciseLogValue = uic.getCalsBurned(LocalDate.now().minusMonths(1), LocalDate.now());
+        double calorieIntakeValue = uic.getCaloriesConsumed(1, LocalDate.now().minusMonths(1), LocalDate.now());
         String futureDate = futureDateField.getText().trim();
+
+        int days = Period.between(LocalDate.now(), LocalDate.parse(futureDate)).getDays();
 
         // Calculate fat loss based on the provided formula (1 kg of fat = 7,700 kcal)
         double fatLoss = (calorieIntakeValue - exerciseLogValue) / 7700;
 
         // Display the result
-        resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss) + " kg");
+        resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss * days) + " kg");
     }
 
     public static void main(String[] args) {
     	
         SwingUtilities.invokeLater(() -> {
         	
-            FatLossEstimatorUI ui = new FatLossEstimatorUI();
+            FatLossEstimatorUI ui = new FatLossEstimatorUI(new UIController());
             ui.showUI();
         });
     }

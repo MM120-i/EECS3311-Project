@@ -1,10 +1,16 @@
-package gui;
+package PROJECT;
 
+import com.sun.tools.javac.Main;
 import controller.UIController;
+import gui.MainMenu;
+import gui.ProfileSelector;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 /**
  * This class represents a Profile Creation Window for a user's profile information.
@@ -18,12 +24,22 @@ public class ProfileCreationWindow extends JFrame {
     private ButtonGroup genderGroup;
     private JRadioButton metricRadioButton, imperialRadioButton;
     private ButtonGroup unitsGroup;
+    private UIController uic;
+    private String date;
+    private String name;
+    private boolean male;
+    private String heightA;
+    private String weightA;
+    private String metric;
+    JTextField fullNameField;
 
     /**
-     * Constructor for the gui.ProfileCreationWindow.
+     * Constructor for the ProfileCreationWindow.
      * Sets up the UI components for profile creation.
      */
-    public ProfileCreationWindow() {
+    public ProfileCreationWindow(UIController uic) {
+
+        this.uic = uic;
         // Initialize the window
         setTitle("Profile Creation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,13 +70,13 @@ public class ProfileCreationWindow extends JFrame {
 
         // Add Full Name input
         cons.gridx = 0;
-        cons.gridy = 1; 
+        cons.gridy = 1;
         JLabel fullNameLabel = new JLabel("Full Name:");
-        fullNameLabel.setFont(new Font("Arial", Font.BOLD, 16)); 
+        fullNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         mainPanel.add(fullNameLabel, cons);
 
         cons.gridx = 1;
-        JTextField fullNameField = new JTextField(15);
+        fullNameField = new JTextField(15);
         mainPanel.add(fullNameField, cons);
 
         // Add Date of Birth input
@@ -82,7 +98,7 @@ public class ProfileCreationWindow extends JFrame {
         cons.gridx = 1;
         heightField = new JTextField(15);
         mainPanel.add(heightField, cons);
-        
+
         // Add Weight input
         cons.gridx = 0;
         cons.gridy = 4;
@@ -114,7 +130,7 @@ public class ProfileCreationWindow extends JFrame {
 
         // Create "Create Profile" button
         cons.gridx = 0;
-        cons.gridy = 7; 
+        cons.gridy = 7;
         cons.gridwidth = 2;
         cons.anchor = GridBagConstraints.CENTER;
         cons.weightx = 0;
@@ -123,11 +139,19 @@ public class ProfileCreationWindow extends JFrame {
         JButton createProfileButton = new JButton("Create Profile");
         createProfileButton.setPreferredSize(new Dimension(100, 30));
         createProfileButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                UIController uic = new UIController();
-                uic.profileCreation(maleRadioButton.isSelected(), heightField.getText(), weightField.getText());
+                date = dateOfBirthField.getText();
+                name = fullNameField.getText();
+                male = maleRadioButton.isSelected();
+                heightA = heightField.getText();
+                weightA = weightField.getText();
+                metric = String.valueOf(metricRadioButton.isSelected());
+                if (uic.profileCreation(name, male, heightA, weightA, date)) {
+                    message();
+                }
+                // Handle user inputs here:
             }
         });
 
@@ -165,12 +189,23 @@ public class ProfileCreationWindow extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Main method to launch the Profile Creation Window.
-     *
-     * @param args Command-line arguments (not used).
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ProfileCreationWindow());
+    public void message() {
+        int a = JOptionPane.showConfirmDialog(this, "This name is already taken. Do you want to override?", "Name Unavailable", YES_NO_OPTION);
+        if (a == 0) {
+            System.out.println(name);
+            System.out.println(heightA);
+            System.out.println(weightA);
+            System.out.println("formatted date: " + date);
+            uic.profileCreation(a, name, male, heightA, weightA, date);
+
+            MainMenu mm = new MainMenu(uic);
+            mm.setContentPane(mm.panel);
+            mm.setVisible(true);
+            mm.setSize(300,300);
+            this.dispose();
+        }
+
     }
 }
+
+

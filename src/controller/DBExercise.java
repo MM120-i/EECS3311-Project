@@ -17,7 +17,7 @@ public class DBExercise extends DBAccess{
     private static final String DB_PASS = System.getenv("SQLPASS");
     protected User user;
 
-    public void add(User newUser, Object obj) {
+    public boolean add(User newUser, Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
@@ -30,6 +30,7 @@ public class DBExercise extends DBAccess{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
 

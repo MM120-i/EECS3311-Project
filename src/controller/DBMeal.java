@@ -18,12 +18,13 @@ public class DBMeal extends DBAccess{
     protected User user;
 
     public void add(User newUser, Meal obj) {
+        System.out.println(newUser.getName());
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
                 Meal meal = (Meal) obj;
                 java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
-                if (safeToAdd(meal)) {
+                if (safeToAdd(meal, newUser)) {
                     int mid = findNextMealID() + 1;
                     for (Ingredient i : meal.getIngredients()) {
                         statement.execute("insert into meals (person," +
@@ -40,7 +41,7 @@ public class DBMeal extends DBAccess{
         }
     }
 
-    private static boolean safeToAdd(Object obj) {
+    private static boolean safeToAdd(Object obj, User u) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
@@ -51,8 +52,9 @@ public class DBMeal extends DBAccess{
                 }
 
                 //CHANGE to delete based on ID NOT name
-                ResultSet rs = statement.executeQuery("select mealType,date from meals;");
+                ResultSet rs = statement.executeQuery("select mealType,date from meals where person = '" +  u.getName() + "';");
                 while (rs.next()) {
+                    System.out.println("Date in question: " + ((Meal) obj).getDate());
                     if (rs.getInt("mealtype") == (((Meal) obj).getMealType()) && rs.getString("date").equals
                             (String.valueOf(java.sql.Date.valueOf(((Meal) obj).getDate())))) {
                         System.out.println("This meal has already been entered for this date");
@@ -106,18 +108,17 @@ public class DBMeal extends DBAccess{
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet rs = statement.executeQuery(mealCall);
-                System.out.println(rs.getFetchSize());
+
                 while (rs.next()) { //for each foodID
                     DBAccess dba = new DBAccess();
                     nutrients = dba.findNutrients(
                             (rs.getInt("ingredient")),
                             rs.getDouble("amount"));
-                    System.out.println(" ");
                     for (Nutrient n : nutrients) {
                         //System.out.println(n.getName());
                         //System.out.println("calories");
                         //System.out.println(n.getAmount() + n.getUnit());
-                        calSum += n.getAmount() * rs.getDouble("amount");
+
 
                     }
                 }
@@ -128,6 +129,35 @@ public class DBMeal extends DBAccess{
         }
         return nutrients;
 
+    }
+
+    public ArrayList<Double> getTotals(String name) {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement();
+            ResultSet r = statement.executeQuery("SELECT fn.foodgroupID,\n" +
+                    "       SUM(ft.total_amount) AS total_group_amount,\n" +
+                    "       SUM(ft.total_amount) * 100.0 / SUM(SUM(ft.total_amount)) OVER () AS percentage\n" +
+                    "FROM (\n" +
+                    "    SELECT ingredient, SUM(amount) AS total_amount\n" +
+                    "    FROM meals\n" +
+                    "    WHERE person = '" + name + "'\n" +
+                    "    GROUP BY ingredient\n" +
+                    ") ft\n" +
+                    "JOIN foodname fn ON ft.ingredient = fn.foodID\n" +
+                    "GROUP BY fn.foodgroupID\n");
+            while (r.next()) {
+                System.out.println(r.getString(1));
+                System.out.println(r.getString(2));
+                System.out.println(r.getString(3));
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Duplicated");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public User getUser() {

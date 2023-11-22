@@ -100,6 +100,12 @@ public class Meal {
         this.ingredients = ingredients;
     }
 
+    public Meal(LocalDate date, int mealType, ArrayList<Ingredient> ingredients) {
+        this.date = date;
+        this.mealType = mealType;
+        this.ingredients = ingredients;
+    }
+
     public Meal() {
     }
 }

@@ -13,7 +13,7 @@ public class DBUser extends DBAccess {
     protected User user;
 
 
-    public void add(User newUser) {
+    public boolean add(User newUser) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
@@ -28,10 +28,35 @@ public class DBUser extends DBAccess {
                     user= user;
                 } else {
                     System.out.println("The name you are trying to set is already taken.");
+                    return false;
                 }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return true;
+    }
+
+    public User loadUser(String name) {
+        User u = new User();
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+
+            Statement statement = connection.createStatement();
+            //CHANGE to delete based on ID NOT name
+            ResultSet rs = statement.executeQuery("select * from person where name = '" + name + "';");
+            while (rs.next()) {
+                u.setName(rs.getString("name"));
+                u.setIsMale(rs.getInt("isMale"));
+                u.setDob(LocalDate.parse( rs.getString("dob")));
+                u.setHeight(rs.getInt("height"));
+                u.setWeight(rs.getInt("weight"));
+                u.setPrefersMetric(rs.getInt("prefermetric"));
+                u.setBMR(rs.getDouble("bmr"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return u;
     }
 
     /**
@@ -121,12 +146,13 @@ public class DBUser extends DBAccess {
 
 
     private static boolean safeToAdd(User obj) {
+        System.out.println("im here");
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
             Statement statement = connection.createStatement();
                 //CHANGE to delete based on ID NOT name
-                ResultSet rs = statement.executeQuery("select name from person;");
+                ResultSet rs = statement.executeQuery("select * from person where name = '" + obj.getName() + "';");
                 while (rs.next()) {
                     if (rs.getString("name").equals((obj.getName()))) {
                         return false;
