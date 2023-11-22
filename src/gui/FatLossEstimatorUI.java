@@ -7,6 +7,7 @@ import javax.swing.plaf.basic.BasicTextFieldUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * Use case 6
@@ -215,11 +216,13 @@ public class FatLossEstimatorUI {
         double calorieIntakeValue = uic.getCaloriesConsumed(1, LocalDate.now().minusMonths(1), LocalDate.now());
         String futureDate = futureDateField.getText().trim();
 
+        int days = Period.between(LocalDate.now(), LocalDate.parse(futureDate)).getDays();
+
         // Calculate fat loss based on the provided formula (1 kg of fat = 7,700 kcal)
         double fatLoss = (calorieIntakeValue - exerciseLogValue) / 7700;
 
         // Display the result
-        resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss) + " kg");
+        resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss * days) + " kg");
     }
 
     public static void main(String[] args) {

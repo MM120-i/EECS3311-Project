@@ -13,13 +13,13 @@ public class MainMenu extends JFrame{
     private JButton estimationsButton;
     private JButton calorieVsExerciseButton;
     private JButton nutrientIntakeButton;
-    JPanel panel;
+    public JPanel panel;
 
     public MainMenu(UIController uic) {
         mealsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DietLogWindow dlw = new DietLogWindow();
+                DietLogWindow dlw = new DietLogWindow(uic);
 
             }
         });
@@ -34,6 +34,22 @@ public class MainMenu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 FatLossEstimatorUI fleUI = new FatLossEstimatorUI(uic);
                 fleUI.showUI();
+            }
+        });
+        calorieVsExerciseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalorieTrackerUI ctUI = new CalorieTrackerUI(uic);
+                ctUI.showUI();
+            }
+        });
+
+
+        nutrientIntakeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NutrientVisualizerUI nvUI = new NutrientVisualizerUI(uic);
+                nvUI.showUI();
             }
         });
     }

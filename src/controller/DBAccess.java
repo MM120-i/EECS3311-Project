@@ -17,50 +17,6 @@ public class DBAccess {
     private static final String DB_PASS = System.getenv("SQLPASS");
     protected User user;
 
-    public void add(User newUser, Object obj) {
-        try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            Statement statement = connection.createStatement();
-
-            if (obj instanceof User) {
-                newUser.calculateBMR();
-                    if (safeToAdd(newUser)) {
-                        java.sql.Date sqlDate = java.sql.Date.valueOf(newUser.getDob());
-                        statement.execute("insert into person (name," +
-                                "isMale, dob, height, weight, prefermetric, bmr) values ('" + newUser.getName()
-                                + "',' " + newUser.getIsMale() + "',' " + sqlDate + "',' "
-                                + newUser.getHeight() + "',' " + newUser.getWeight() + "',' " + newUser.getPrefersMetric()
-                                + "',' " + newUser.getBMR() + "');");
-                        user= user;
-                    } else {
-                        System.out.println("The name you are trying to set is already taken.");
-                    }
-            } else if (obj instanceof Meal) {
-                Meal meal = (Meal) obj;
-                    java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
-                    if (safeToAdd(meal)) {
-                        int mid = findNextMealID() + 1;
-                        for (Ingredient i : meal.getIngredients()) {
-                            statement.execute("insert into meals (person," +
-                                    "mealid, date, ingredient, amount, mealtype) values ('" + newUser.getName()
-                                    + "',' " + mid + "',' " + sqlDate + "',' "
-                                    + i.getIngredientNum() + "',' " + i.getAmount() + "',' " + meal.getMealType() + "');");
-                        }
-                    } else {
-                        System.out.println("You've already added this meal for this day");
-                    }
-            } else if (obj instanceof Exercise) {
-                Exercise exercise = (Exercise) obj;
-                    java.sql.Date sqlDate = java.sql.Date.valueOf(exercise.getDate());
-                    statement.execute("insert into exercise (person," +
-                            "date, duration, type, intensity, calburned) values ('" + newUser.getName()
-                            + "',' " + sqlDate + "',' "
-                            + exercise.getDuration() + "',' " + exercise.getType() + "',' " + exercise.getIntensity() + "',' " + exercise.getCalBurned() + "');");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Update user.
@@ -256,6 +212,7 @@ public class DBAccess {
                     for (Nutrient n : temp) {
                         nutrients.add(n);
                     }
+                    System.out.println("ARRAY SIZE: " + nutrients.size());
 
 
                     for (Nutrient n : nutrients) {

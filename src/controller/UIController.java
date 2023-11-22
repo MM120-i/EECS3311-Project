@@ -1,11 +1,13 @@
 package controller;
 
+import PROJECT.ProfileCreationWindow;
 import dataObjects.Exercise;
 import dataObjects.Meal;
 import dataObjects.Nutrient;
 import dataObjects.User;
 import gui.ExerciseLogWindow;
 import gui.ExercisePie;
+import gui.MainMenu;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -20,7 +22,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class UIController {
 
     public User u;
-    public void profileCreation(String name, Boolean maleRB, String height, String weight) {
+
+    public boolean profileCreation(String name, Boolean maleRB, String height, String weight, String dob) {
         u = new User();
         u.setName(name);
         if (maleRB) {
@@ -28,25 +31,55 @@ public class UIController {
         } else {
             u.setMale(0);
         }
+        u.setDob(LocalDate.parse(dob));
         u.setHeight(Integer.parseInt(height));
         u.setWeight(Integer.parseInt(weight));
         u.calculateBMR();
         System.out.println(u.getName());
-        DBAccess da = new DBAccess();
-        da.add(u, u);
+        DBUser da = new DBUser();
+        System.out.println("Here");
+        if (!da.add(u)) {
+            System.out.println("Here2");
+            MainMenu mm = new MainMenu(this);
+            return true;
+        }
+        return false;
+    }
 
-        ExerciseLogWindow ex = new ExerciseLogWindow(this);
-        ex.call(this);
+    public boolean profileCreation(int override, String name, Boolean maleRB, String height, String weight, String dob) {
+
+        u = new User();
+        u.setName(name);
+        if (maleRB) {
+            u.setMale(1);
+        } else {
+            u.setMale(0);
+        }
+        System.out.println("formatted date 2 : " + dob);
+        u.setDob(LocalDate.parse(dob));
+        u.setHeight(Integer.parseInt(height));
+        u.setWeight(Integer.parseInt(weight));
+        u.calculateBMR();
+        System.out.println(u.getName());
+        DBUser da = new DBUser();
+        da.deleteUser(u);
+        System.out.println("Here");
+        if (!da.add(u)) {
+            System.out.println("Here2");
+            MainMenu mm = new MainMenu(this);
+            return true;
+        }
+        return false;
     }
 
     public void exerciseCreation(LocalDate date, LocalTime time, int intensity, int duration, String type) {
-        System.out.println(u.getName());
+        System.out.println("name: " + u.getName());
         u.calculateBMR();
         Exercise e = new Exercise(date, duration, type, intensity);
         System.out.println("bmr: " + u.getBMR());
         e.calBurned(u.getBMR());
         System.out.println("Burned: " + e.getCalBurned());
-        DBAccess da = new DBAccess();
+        DBExercise da = new DBExercise();
         da.add(u, e);
     }
 
@@ -63,11 +96,12 @@ public class UIController {
         return totalCals;
     }
 
-    public List getXNutrients(int amount) {
+    public List getXNutrients2(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
         DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.findBetween(u, LocalDate.of(2023, 05, 28), LocalDate.of(2023, 9,20), new Meal());
-        for (int i = 0; i < amount; i++) {
+        List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
+        System.out.println("NAME: " + u.getName());
+        for (int i = 0; i < amount && i < nutrients.size(); i++) {
             if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
                 nutrients.remove(i);
             }
@@ -103,12 +137,10 @@ public class UIController {
         List<Nutrient> result = new ArrayList<>();
         DBAccess da = new DBAccess();
         List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
-        for (int i = 0; i < amount; i++) {
+        for (int i = 0; i < nutrients.size(); i++) {
             System.out.println(nutrients.get(i).getName() + " " + nutrients.get(i).getAmount());
-            if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
-                nutrients.remove(i);
-            }
             result.add(nutrients.get(i));
+
         }
         return result;
     }

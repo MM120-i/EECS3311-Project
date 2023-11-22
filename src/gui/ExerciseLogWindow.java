@@ -30,7 +30,7 @@ public class ExerciseLogWindow extends JFrame {
     public ExerciseLogWindow(UIController controller) {
     	
         setTitle("dataObjects.Exercise Log");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 14));
         createUI(controller);
     }

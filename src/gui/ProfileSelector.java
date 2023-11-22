@@ -2,6 +2,7 @@ package gui;
 
 import PROJECT.ProfileCreationWindow;
 import controller.DBAccess;
+import controller.DBUser;
 import controller.UIController;
 import dataObjects.User;
 
@@ -23,7 +24,8 @@ public class ProfileSelector extends JFrame{
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainMenu menu = new MainMenu(new UIController(new User(comboBox1.getSelectedItem().toString())));
+                DBUser dbu = new DBUser();
+                MainMenu menu = new MainMenu(new UIController(dbu.loadUser(comboBox1.getSelectedItem().toString())));
                 menu.setContentPane(menu.panel);
                 menu.setVisible(true);
                 menu.setSize(300,300);
@@ -34,7 +36,7 @@ public class ProfileSelector extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainMenu menu = new MainMenu(new UIController(new User(comboBox1.getSelectedItem().toString())));
-                PROJECT.ProfileCreationWindow pcw = new ProfileCreationWindow();
+                PROJECT.ProfileCreationWindow pcw = new ProfileCreationWindow(new UIController(new User(comboBox1.getSelectedItem().toString())));
                 ProfileSelector.super.dispose();
             }
         });

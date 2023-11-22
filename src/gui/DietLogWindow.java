@@ -1,5 +1,7 @@
 package gui;
 
+import controller.DBMeal;
+import controller.UIController;
 import dataObjects.Ingredient;
 import dataObjects.Meal;
 
@@ -22,21 +24,24 @@ import java.util.List;
 public class DietLogWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JTextField dateField;
+    public JTextField dateField;
+    public JTextField tf2;
     private List<JTextField> ingredientFields;
     private List<JTextField> quantityFields;
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
     private GridBagConstraints cons;
     private List<Meal> meals;
+    private UIController uic;
 
     /**
      * Constructor to create the Diet Log Window
      */
-    public DietLogWindow() {
+    public DietLogWindow(UIController uic) {
+        this.uic = uic;
 
         setTitle("Diet Log");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 14)); // Set the font for the entire UI
         createUI();
 
@@ -95,6 +100,7 @@ public class DietLogWindow extends JFrame {
         cons.gridx = 1;  // Set the column to 1 to place it beside the "Save" button
         cons.gridy = 1;  // Set the row to 1 to place it beside the "Save" button
         mainPanel.add(viewMealsButton, cons);
+
         viewMealsButton.setBackground(new Color(0, 102, 204)); // Button color
         viewMealsButton.setForeground(Color.WHITE); // Button text color
         viewMealsButton.setFont(new Font("Arial", Font.BOLD, 14)); // Button font
@@ -161,10 +167,14 @@ public class DietLogWindow extends JFrame {
             double quantity = Double.parseDouble(quantityFields.get(i).getText());
             ingredients.add(new dataObjects.Ingredient(ingredient, quantity));
         }
+        System.out.println(dateField.getText().toString());
 
         // Save meal information with the correct date
-        dataObjects.Meal meal = new dataObjects.Meal(LocalDate.now(), mealType, (ArrayList<dataObjects.Ingredient>) ingredients);
+        dataObjects.Meal meal = new dataObjects.Meal(LocalDate.parse(dateField.getText()), mealType, (ArrayList<dataObjects.Ingredient>) ingredients);
         meals.add(meal);
+
+        DBMeal dbm = new DBMeal();
+        dbm.add(uic.u, meal);
 
         // Optionally, you can display a message to confirm that the data is saved
         JOptionPane.showMessageDialog(this, "Meal information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -202,6 +212,7 @@ public class DietLogWindow extends JFrame {
 
         mealCons.gridx = 1;
         dateField = new JTextField(15);
+        System.out.println("done");
         mealPanel.add(dateField, mealCons);
 
         JButton addIngredientsButton;
@@ -422,14 +433,5 @@ public class DietLogWindow extends JFrame {
         }
     }
 
-    /**
-     * Main method to launch the Diet Log Window.
-     *
-     * @param args Command-line arguments (not used).
-     */
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> new DietLogWindow());
-    }
 }
 

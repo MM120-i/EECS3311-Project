@@ -38,12 +38,14 @@ public class CalorieTrackerUI {
     private JLabel notificationLabel;
     private JLabel result;
 
+    UIController uic;
     /**
      * Constructs a new instance of the CalorieTrackerUI class.
      * Initializes the frame, control panel, and components.
      */
-    public CalorieTrackerUI() {
-    	
+    public CalorieTrackerUI(UIController uic) {
+    	this.uic = uic;
+
         frame = new JFrame("Calorie Tracker");
         frame.setSize(800, 600);
         frame.setLayout(new GridLayout(2,1));
@@ -110,7 +112,6 @@ public class CalorieTrackerUI {
     private PieDataset createDataset(LocalDate l1, LocalDate l2){
 
         DefaultPieDataset dataset=new DefaultPieDataset();
-        UIController uic = new UIController();
 
         sum = uic.getCaloriesConsumed(0, l1, l2);
 
@@ -193,11 +194,11 @@ public class CalorieTrackerUI {
                 // Add visualization logic here.
 
                 createDataset(LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText()));
-                UIController uic = new UIController();
+
                 dataTextArea.append("Calorie Intake: " + sum);
                 dataTextArea.append("\nExercise Calories Per Day: " + uic.getCalsBurned(LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText())));
-                dataTextArea.append("Current avg daily calorie intake: " + uic.getCaloriesConsumed(1, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText())));
-                dataTextArea.append(uic.u.getName());
+                dataTextArea.append("\nCurrent avg daily calorie intake: " + uic.getCaloriesConsumed(1, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText())));
+
 
             }
         }
@@ -215,16 +216,4 @@ public class CalorieTrackerUI {
         button.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
-    /**
-     * The main method to launch the CalorieTrackerUI application.
-     *
-     * @param args Command-line arguments (not used).
-     */
-    public static void main(String[] args) {
-    	
-        SwingUtilities.invokeLater(() -> {
-            CalorieTrackerUI ui = new CalorieTrackerUI();
-            ui.showUI();
-        });
-    }
 }

@@ -29,12 +29,14 @@ public class NutrientVisualizerUI {
     private JTextArea resultTextArea;
     private JLabel notificationLabel;
 
+    UIController uic;
     /**
      * Constructs a new NutrientVisualizerUI.
      * Initializes and sets up the main components of the UI.
      */
-    public NutrientVisualizerUI() {
-    	
+    public NutrientVisualizerUI(UIController uic) {
+    	this.uic = uic;
+
         // Initialize the main frame
         frame = new JFrame("Nutrient Visualizer");
         frame.setSize(800, 600);
@@ -99,8 +101,7 @@ public class NutrientVisualizerUI {
         chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CaloriePie cp = new CaloriePie("Nutrients");
-                cp.start();
+                //new CaloriePie(uic, startDateField.getText(), startDateField.getText()).run(uic, startDateField.getText(), startDateField.getText());
             }
         });
 
@@ -160,9 +161,9 @@ public class NutrientVisualizerUI {
      */
     private Map<String, Double> getSampleNutrientData() {
         Map<String, Double> nutrientData = new HashMap<>();
-        UIController uic = new UIController();
 
-        List<Nutrient> nutrients = uic.getXNutrients(10);
+
+        List<Nutrient> nutrients = uic.getXNutrients(10, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText()));
         for (Nutrient n : nutrients) {
             nutrientData.put(n.getName(), n.getAmount());
         }
@@ -275,17 +276,6 @@ public class NutrientVisualizerUI {
         }
     }
 
-    /**
-     * Main method to launch the NutrientVisualizerUI.
-     *
-     * @param args Command-line arguments (not used).
-     */
-    public static void main(String[] args) {
-    	
-        SwingUtilities.invokeLater(() -> {
-            NutrientVisualizerUI ui = new NutrientVisualizerUI();
-            ui.showUI();
-        });
-    }
+
 }
 
