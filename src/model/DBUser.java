@@ -6,7 +6,7 @@ import java.sql.*;
 import java.time.LocalDate;
 
 /**
- * The type Db user.
+ * Database access class for user-related operations.
  */
 public class DBUser extends DBAccess {
 
@@ -16,10 +16,10 @@ public class DBUser extends DBAccess {
 
 
     /**
-     * Add user
+     * Adds a new user to the database.
      *
-     * @param newUser the new user
-     * @return boolean
+     * @param newUser The new user to be added.
+     * @return True if the user is added successfully, false otherwise.
      */
     public boolean add(User newUser) {
         try {
@@ -45,10 +45,10 @@ public class DBUser extends DBAccess {
     }
 
     /**
-     * Load user user.
+     * Loads a user from the database based on the given name.
      *
-     * @param name the name
-     * @return User user
+     * @param name The name of the user to be loaded.
+     * @return The loaded User object.
      */
     public User loadUser(String name) {
         User u = new User();
@@ -74,11 +74,11 @@ public class DBUser extends DBAccess {
     }
 
     /**
-     * Update user.
+     * Updates user information in the database.
      *
-     * @param newUser   the new user
-     * @param field     the field
-     * @param newObject the new object
+     * @param newUser   The user object with updated information.
+     * @param field     The field to be updated.
+     * @param newObject The new value for the specified field.
      */
     public void updateUser(User newUser, int field, Object newObject) {
         try {
@@ -140,8 +140,9 @@ public class DBUser extends DBAccess {
     }
 
     /**
+     * Deletes a user from the database.
      *
-     * @param newUser the new user
+     * @param newUser The user to be deleted.
      */
     public void deleteUser(User newUser) {
         try {
@@ -158,6 +159,13 @@ public class DBUser extends DBAccess {
     }
 
 
+/**
+ * Checks if it is safe to add a new user by verifying that the provided username
+ * is not already present in the database.
+ *
+ * @param obj The User object to be checked for safe addition.
+ * @return True if it is safe to add the user, false if the username already exists.
+ */
     private static boolean safeToAdd(User obj) {
 
         try {
@@ -177,11 +185,20 @@ public class DBUser extends DBAccess {
         return true;
     }
 
-
+    /**
+     * Gets the currently set user.
+     *
+     * @return The current user.
+     */
     public User getUser() {
         return user;
     }
 
+        /**
+     * Sets the current user.
+     *
+     * @param user The user to be set.
+     */
     public void setUser(User user) {
         this.user = user;
     }
