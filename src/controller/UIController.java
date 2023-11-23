@@ -235,6 +235,7 @@ public class UIController {
         }
     }
 
+
     private int amountPerDay(int totalCals, LocalDate l1, LocalDate l2) {
         long days = DAYS.between(l1, l2) + 1;
         return (int) (totalCals/days);
