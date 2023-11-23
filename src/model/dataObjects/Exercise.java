@@ -1,9 +1,9 @@
-package dataObjects;
+package model.dataObjects;
 
 import java.time.LocalDate;
 
 /**
- * The type dataObjects.Exercise.
+ * The type model.dataObjects.Exercise.
  */
 public class Exercise {
     private LocalDate date;
@@ -11,7 +11,6 @@ public class Exercise {
     private String type;
     private int intensity; //1,2,3,4,5
     private int calBurned;
-
 
 
     /**
@@ -104,6 +103,11 @@ public class Exercise {
         this.calBurned = calBurned;
     }
 
+    /**
+     * Cal burned.
+     *
+     * @param bmr the bmr
+     */
     public void calBurned(double bmr) {
         switch (intensity) {
             case 1:
@@ -123,6 +127,14 @@ public class Exercise {
         }
     }
 
+    /**
+     * Instantiates a new Exercise.
+     *
+     * @param date      the date
+     * @param duration  the duration
+     * @param type      the type
+     * @param intensity the intensity
+     */
     public Exercise( LocalDate date, int duration, String type, int intensity) {
         this.date = date;
         this.duration = duration;
@@ -130,6 +142,15 @@ public class Exercise {
         this.intensity = intensity;
     }
 
+    /**
+     * Instantiates a new Exercise.
+     *
+     * @param date      the date
+     * @param duration  the duration
+     * @param type      the type
+     * @param intensity the intensity
+     * @param calBurned the cal burned
+     */
     public Exercise(LocalDate date, int duration, String type, int intensity, int calBurned) {
         this.date = date;
         this.duration = duration;
@@ -138,6 +159,9 @@ public class Exercise {
         this.calBurned = calBurned;
     }
 
+    /**
+     * Instantiates a new Exercise.
+     */
     public Exercise() {
     }
 }

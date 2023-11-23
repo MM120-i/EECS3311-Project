@@ -1,6 +1,6 @@
-package controller;
+package model;
 
-import dataObjects.*;
+import model.dataObjects.*;
 
 import java.sql.*;
 import java.sql.Date;
@@ -15,6 +15,9 @@ public class DBAccess {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
+    /**
+     * The User.
+     */
     protected User user;
 
 
@@ -102,7 +105,11 @@ public class DBAccess {
         }
     }
 
-
+    /**
+     * Getting all the list of users
+     *
+     * @return List of the names
+     */
     public ArrayList<String> getUsers() {
         ArrayList<String> names = new ArrayList<>();
         try {
@@ -187,6 +194,10 @@ public class DBAccess {
      * Breakdown meal.
      *
      * @param user the user
+     * @param d1   the d 1
+     * @param d2   the d 2
+     * @param obj  the obj
+     * @return the list
      */
     public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
         Date date1 = Date.valueOf(d1);
@@ -246,6 +257,8 @@ public class DBAccess {
      * Find nutrients.
      *
      * @param foodID the food id
+     * @param amount the amount
+     * @return the list
      */
     List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
@@ -267,10 +280,20 @@ public class DBAccess {
         return nutrients;
     }
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * Sets user.
+     *
+     * @param user the user
+     */
     public void setUser(User user) {
         this.user = user;
     }

@@ -1,6 +1,7 @@
-package controller;
+package model;
 
-import dataObjects.*;
+import controller.UIController;
+import model.dataObjects.*;
 
 import java.sql.*;
 import java.sql.Date;
@@ -15,12 +16,26 @@ public class DBMeal extends DBAccess{
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
+    /**
+     * The User.
+     */
     protected User user;
 
+    /**
+     * Instantiates a new Db meal.
+     *
+     * @param uic the uic
+     */
     public DBMeal(UIController uic) {
         super();
     }
 
+    /**
+     * Add meal
+     *
+     * @param newUser the new user
+     * @param obj     meal object
+     */
     public void add(User newUser, Meal obj) {
 
         try {
@@ -157,6 +172,12 @@ public class DBMeal extends DBAccess{
         return nutrients;
     }
 
+    /**
+     * CFG. Get food group breakdown
+     *
+     * @param name the name
+     * @return List of percentages
+     */
     public ArrayList<Double> getTotals(String name) {
         int currentIndex = 0;
         ArrayList<Double> list = new ArrayList<>();
