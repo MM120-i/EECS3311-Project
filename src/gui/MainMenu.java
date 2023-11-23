@@ -52,5 +52,12 @@ public class MainMenu extends JFrame{
                 nvUI.showUI();
             }
         });
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CanadaFoodGuideUI cfgUI = new CanadaFoodGuideUI(uic);
+                cfgUI.showUI();
+            }
+        });
     }
 }

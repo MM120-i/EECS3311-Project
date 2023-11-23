@@ -34,8 +34,8 @@ public class CaloriePie extends JFrame {
      *
      * @param title the title
      */
-    public CaloriePie(UIController uic, String title, String l1, String l2){
-        super(title);
+    public CaloriePie(UIController uic, String l1, String l2){
+        super("Nutrient");
         this.uic = uic;
 
         // Create dataset
@@ -70,6 +70,7 @@ public class CaloriePie extends JFrame {
         // Create Panel
         ChartPanel panel2 = new ChartPanel(chart);
         setContentPane(panel);
+
     }
 
     /**
@@ -83,21 +84,18 @@ public class CaloriePie extends JFrame {
         DefaultPieDataset dataset=new DefaultPieDataset();
 
 
-        List<Nutrient> nutrients = uic.getXNutrients2(10, LocalDate.parse(l1), LocalDate.parse(l2));
-        System.out.println(nutrients.size());
+        List<Nutrient> nutrients = uic.getXNutrients(10, LocalDate.parse(l1), LocalDate.parse(l2));
+
         int counter = 0;
         for (Nutrient n : nutrients) {
-            System.out.println("GETTING ADDED");
+
 
             if (n.getName() == "ENERGY (KILOJOULES)") {
                 sum = (int) (sum + n.getAmount());
             }
-            System.out.println(n.getName());
-            System.out.println(n.getAmount());
             dataset.setValue(n.getName(), (int) n.getAmount());
         }
-        dataset.setValue("Test", 25);
-        System.out.println(dataset.getItemCount());
+
         return dataset;
     }
     /**
@@ -108,7 +106,7 @@ public class CaloriePie extends JFrame {
     public void start(UIController uic, String l1, String l2) {
         SwingUtilities.invokeLater(() -> {
             CaloriePie example = null;
-            example = new CaloriePie(uic, "Nutrients", l1, l2);
+            example = new CaloriePie(uic, l1, l2);
             example.setSize(800, 400);
             example.setLocationRelativeTo(null);
             example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

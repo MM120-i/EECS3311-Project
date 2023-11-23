@@ -29,12 +29,11 @@ public class DBAccess {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
-            System.out.println("FIELD: " + field);
 
             switch (field) {
                 case 1:
                     if (safeToAdd(newUser)) {
-                        statement.execute("update person set name='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                        statement.execute("update person set name='" + newObject + "' where name='" + newUser.getName() + "';");
 
                     } else {
                         System.out.println("The name you are trying to set is already taken.");
@@ -43,8 +42,8 @@ public class DBAccess {
                 case 2:
                     newUser.setIsMale((int) newObject);
                     newUser.calculateBMR();
-                    statement.execute("update person set isMale='" + (String) newObject + "' where name='" + newUser.getName() + "';");
-                    statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set isMale='" + newObject + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newObject + "' where name='" + newUser.getName() + "';");
                     break;
                 case 3:
                     newUser.setDob((LocalDate) newObject);
@@ -56,10 +55,10 @@ public class DBAccess {
                 case 4:
                     newUser.setHeight((int) newObject);
                     newUser.calculateBMR();
-                    System.out.println((Integer) newObject);
+
                     statement.execute("update person set height='" + newUser.getHeight() + "' where name='" + newUser.getName() + "';");
                     statement.execute("update person set bmr='" + newUser.getBMR() + "' where name='" + newUser.getName() + "';");
-                    System.out.println("test");
+
                     break;
                 case 5:
                     newUser.setWeight((int) newObject);
@@ -75,7 +74,7 @@ public class DBAccess {
 
                     break;
                 case 7:
-                    statement.execute("update person set bmr='" + (String) newObject + "' where name='" + newUser.getName() + "';");
+                    statement.execute("update person set bmr='" + newObject + "' where name='" + newUser.getName() + "';");
                     break;
             }
             //CHANGE to delete based on ID NOT name
@@ -115,7 +114,7 @@ public class DBAccess {
             ResultSet rs = statement.executeQuery("select name from person;");
             while (rs.next()) {
                 names.add(rs.getString(1));
-                System.out.println(rs.getString(1));
+
             }
 
         } catch (Exception e) {
@@ -193,6 +192,7 @@ public class DBAccess {
         Date date1 = Date.valueOf(d1);
         Date date2 = Date.valueOf(d2);
         String mealCall = "select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
+
         String exerciseCall = "select * from exercise where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
         List<Nutrient> nutrients = new ArrayList<>();
         List<Exercise> exercises = new ArrayList<>();
@@ -212,13 +212,9 @@ public class DBAccess {
                     for (Nutrient n : temp) {
                         nutrients.add(n);
                     }
-                    System.out.println("ARRAY SIZE: " + nutrients.size());
 
 
                     for (Nutrient n : nutrients) {
-                        //System.out.println(n.getName());
-                        //System.out.println("calories");
-                        //System.out.println(n.getAmount() + n.getUnit());
                         calSum += n.getAmount() * rs.getDouble("amount");
 
                     }
@@ -253,7 +249,7 @@ public class DBAccess {
      */
     List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
-        System.out.println("current food id: " + foodID);
+
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();

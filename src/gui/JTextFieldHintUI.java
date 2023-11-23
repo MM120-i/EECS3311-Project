@@ -12,8 +12,8 @@ import java.awt.event.FocusListener;
  */
 public class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener {
 
-    private String hint;     // The hint text to be displayed
-    private Color hintColor; // The color of the hint text
+    private final String hint;     // The hint text to be displayed
+    private final Color hintColor; // The color of the hint text
 
     /**
      * Constructs a new JTextFieldHintUI with the specified hint text and hint color.
@@ -35,9 +35,7 @@ public class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener 
     @Override
     public void focusGained(FocusEvent e) {
 
-        if (e.getSource() instanceof JTextComponent) {
-
-            JTextComponent textComponent = (JTextComponent) e.getSource();
+        if (e.getSource() instanceof JTextComponent textComponent) {
 
             if (textComponent.getText().equals(hint)) {
 
@@ -55,9 +53,7 @@ public class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener 
     @Override
     public void focusLost(FocusEvent e) {
 
-        if (e.getSource() instanceof JTextComponent) {
-
-            JTextComponent textComponent = (JTextComponent) e.getSource();
+        if (e.getSource() instanceof JTextComponent textComponent) {
 
             if (textComponent.getText().isEmpty()) {
 

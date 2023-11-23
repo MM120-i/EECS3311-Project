@@ -24,15 +24,15 @@ import java.util.List;
 public class DietLogWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    public JTextField dateField;
+    public ArrayList<JTextField> dateFields;
     public JTextField tf2;
-    private List<JTextField> ingredientFields;
-    private List<JTextField> quantityFields;
+    private final List<JTextField> ingredientFields;
+    private final List<JTextField> quantityFields;
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
     private GridBagConstraints cons;
-    private List<Meal> meals;
-    private UIController uic;
+    private final List<Meal> meals;
+    private final UIController uic;
 
     /**
      * Constructor to create the Diet Log Window
@@ -63,12 +63,13 @@ public class DietLogWindow extends JFrame {
 
         // Create a JTabbedPane to organize tabs for different meal types
         tabbedPane = new JTabbedPane();
-
+        int counter = 0;
         // Add tabs for Breakfast, Lunch, Dinner, and Snack
+        dateFields = new ArrayList<>();
         for (String mealType : new String[]{"Breakfast", "Lunch", "Dinner", "Snack"}) {
-
-            JPanel mealPanel = createMealPanel(mealType);
+            JPanel mealPanel = createMealPanel(mealType, counter);
             tabbedPane.addTab(mealType, mealPanel);
+            counter++;
         }
 
         // Add change listener to clear snack fields when switching to the "Snack" tab
@@ -152,13 +153,11 @@ public class DietLogWindow extends JFrame {
      * Save the meal information entered by the user
      */
     private void saveMealInformation() {
-        String date = dateField.getText();
-        System.out.println(date.length());
-        if (dateField.getText() == null) {
-            System.out.println("empty");
-        }
-        System.out.println(date);
+
         int mealType = tabbedPane.getSelectedIndex() + 1;
+        String date = dateFields.get(mealType - 1).getText();
+
+
 
         List<dataObjects.Ingredient> ingredients = new ArrayList<>();
         // Get ingredient and quantity information
@@ -167,13 +166,13 @@ public class DietLogWindow extends JFrame {
             double quantity = Double.parseDouble(quantityFields.get(i).getText());
             ingredients.add(new dataObjects.Ingredient(ingredient, quantity));
         }
-        System.out.println(dateField.getText().toString());
+
 
         // Save meal information with the correct date
-        dataObjects.Meal meal = new dataObjects.Meal(LocalDate.parse(dateField.getText()), mealType, (ArrayList<dataObjects.Ingredient>) ingredients);
+        dataObjects.Meal meal = new dataObjects.Meal(LocalDate.parse(dateFields.get(mealType-1).getText()), mealType, (ArrayList<dataObjects.Ingredient>) ingredients);
         meals.add(meal);
 
-        DBMeal dbm = new DBMeal();
+        DBMeal dbm = new DBMeal(uic);
         dbm.add(uic.u, meal);
 
         // Optionally, you can display a message to confirm that the data is saved
@@ -197,7 +196,7 @@ public class DietLogWindow extends JFrame {
      * @param mealType The type of the meal (e.g., Breakfast, Lunch, Dinner, Snack).
      * @return The created panel for the meal type.
      */
-    private JPanel createMealPanel(String mealType) {
+    private JPanel createMealPanel(String mealType, int mealtype) {
 
         JPanel mealPanel = new JPanel(new GridBagLayout());
         GridBagConstraints mealCons = new GridBagConstraints();
@@ -211,9 +210,10 @@ public class DietLogWindow extends JFrame {
         mealPanel.add(dateLabel, mealCons);
 
         mealCons.gridx = 1;
-        dateField = new JTextField(15);
-        System.out.println("done");
-        mealPanel.add(dateField, mealCons);
+        dateFields.add(new JTextField(15));
+        dateFields.get(mealtype).setText("testing");
+
+        mealPanel.add(dateFields.get(mealtype), mealCons);
 
         JButton addIngredientsButton;
         JButton saveButton = null; // Declare outside the if block
@@ -311,7 +311,8 @@ public class DietLogWindow extends JFrame {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println(dateField.getText());
+                    int mealType = tabbedPane.getSelectedIndex() + 1;
+
                     saveMealInformation();
                 }
             });
