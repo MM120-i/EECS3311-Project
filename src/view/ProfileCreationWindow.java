@@ -197,7 +197,7 @@ public class ProfileCreationWindow extends JFrame {
     }
 
     /**
-     * Message.
+     * Message method shows a confirmation dialog when a profilename is already taken. 
      */
     public void message() {
         int a = JOptionPane.showConfirmDialog(this, "This name is already taken. Do you want to override?", "Name Unavailable", YES_NO_OPTION);
