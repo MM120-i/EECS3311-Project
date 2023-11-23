@@ -17,12 +17,16 @@ public class DBMeal extends DBAccess{
     private static final String DB_PASS = System.getenv("SQLPASS");
     protected User user;
 
+    public DBMeal(UIController uic) {
+        super();
+    }
+
     public void add(User newUser, Meal obj) {
-        System.out.println(newUser.getName());
+
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
-                Meal meal = (Meal) obj;
+                Meal meal = obj;
                 java.sql.Date sqlDate = java.sql.Date.valueOf(meal.getDate());
                 if (safeToAdd(meal, newUser)) {
                     int mid = findNextMealID() + 1;
@@ -54,7 +58,7 @@ public class DBMeal extends DBAccess{
                 //CHANGE to delete based on ID NOT name
                 ResultSet rs = statement.executeQuery("select mealType,date from meals where person = '" +  u.getName() + "';");
                 while (rs.next()) {
-                    System.out.println("Date in question: " + ((Meal) obj).getDate());
+
                     if (rs.getInt("mealtype") == (((Meal) obj).getMealType()) && rs.getString("date").equals
                             (String.valueOf(java.sql.Date.valueOf(((Meal) obj).getDate())))) {
                         System.out.println("This meal has already been entered for this date");
@@ -110,14 +114,11 @@ public class DBMeal extends DBAccess{
                 ResultSet rs = statement.executeQuery(mealCall);
 
                 while (rs.next()) { //for each foodID
-                    DBAccess dba = new DBAccess();
-                    nutrients = dba.findNutrients(
+                    nutrients = this.findNutrients(
                             (rs.getInt("ingredient")),
                             rs.getDouble("amount"));
                     for (Nutrient n : nutrients) {
-                        //System.out.println(n.getName());
-                        //System.out.println("calories");
-                        //System.out.println(n.getAmount() + n.getUnit());
+
 
 
                     }
@@ -131,7 +132,38 @@ public class DBMeal extends DBAccess{
 
     }
 
+
+    /**
+     * Find nutrients.
+     *
+     * @param foodID the food id
+     */
+    List findNutrients(int foodID, double amount) {
+        List<Nutrient> nutrients = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(
+                    "SELECT B.nutrientunit, B.name, B.nutrientunit, A.nutrientvalue * " + amount + " AS modified_value FROM nutrientname B JOIN nutrientamounts A ON B.NutrientID = A.NutrientID WHERE A.nutrientvalue > 0 AND A.FOODID = '" + foodID + "';");
+
+            while (rs.next()) {
+                nutrients.add(new Nutrient(rs.getString("name"), rs.getDouble("modified_value"), rs.getString("nutrientunit")));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Duplicated");
+            e.printStackTrace();
+        }
+        return nutrients;
+    }
+
     public ArrayList<Double> getTotals(String name) {
+        int currentIndex = 0;
+        ArrayList<Double> list = new ArrayList<>();
+        list.add((double) 0);
+        list.add((double) 0);
+        list.add((double) 0);
+        list.add((double) 0);
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
@@ -147,12 +179,30 @@ public class DBMeal extends DBAccess{
                     "JOIN foodname fn ON ft.ingredient = fn.foodID\n" +
                     "GROUP BY fn.foodgroupID\n");
             while (r.next()) {
-                System.out.println(r.getString(1));
-                System.out.println(r.getString(2));
-                System.out.println(r.getString(3));
+
+                double value = r.getDouble(1);
+
+                if (r.getDouble(1) == (9) || r.getDouble(1) == (16) || r.getDouble(1) == (11)) { //veg and fruit
+                    list.set(0, list.get(0) + Double.valueOf(r.getString(3)));
+
+                } else if (r.getDouble(1) == (8) || r.getDouble(1) == (18) || r.getDouble(1) == (19)
+                        || r.getDouble(1) == (20) || r.getDouble(1) == (12)) {//grain
+                    list.set(1, list.get(1) + Double.valueOf(r.getString(3)));
+
+                } else if (r.getDouble(1) == (1)) {// milk and alternatives
+                    list.set(2, list.get(2) + Double.valueOf(r.getString(3)));
+
+                } else {
+
+                    list.set(3, list.get(3) + Double.valueOf(r.getString(3)));
+
+                }
 
             }
 
+
+
+        return list;
         } catch (Exception e) {
             System.out.println("Duplicated");
             e.printStackTrace();
@@ -167,4 +217,5 @@ public class DBMeal extends DBAccess{
     public void setUser(User user) {
         this.user = user;
     }
+
 }

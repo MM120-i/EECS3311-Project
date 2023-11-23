@@ -30,13 +30,14 @@ import java.time.format.DateTimeParseException;
  */
 public class CalorieTrackerUI {
     int sum;
-    private JFrame frame;
-    private JPanel controlPanel;
-    private JButton visualizeButton;
-    private JTextField startDateField, endDateField;
-    private JTextArea dataTextArea;
-    private JLabel notificationLabel;
-    private JLabel result;
+    private final JFrame frame;
+    private final JPanel controlPanel;
+    private final JButton visualizeButton;
+    private final JTextField startDateField;
+    private final JTextField endDateField;
+    private final JTextArea dataTextArea;
+    private final JLabel notificationLabel;
+    private final JLabel result;
 
     UIController uic;
     /**
@@ -115,8 +116,6 @@ public class CalorieTrackerUI {
 
         sum = uic.getCaloriesConsumed(0, l1, l2);
 
-
-        System.out.println(sum);
 
         dataset.setValue("Burned", sum);
         return dataset;

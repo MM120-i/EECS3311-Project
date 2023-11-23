@@ -1,9 +1,7 @@
-package PROJECT;
+package gui;
 
-import com.sun.tools.javac.Main;
 import controller.UIController;
 import gui.MainMenu;
-import gui.ProfileSelector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,12 +17,16 @@ import static javax.swing.JOptionPane.YES_NO_OPTION;
 public class ProfileCreationWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JTextField dateOfBirthField, heightField, weightField;
-    private JRadioButton maleRadioButton, femaleRadioButton;
-    private ButtonGroup genderGroup;
-    private JRadioButton metricRadioButton, imperialRadioButton;
-    private ButtonGroup unitsGroup;
-    private UIController uic;
+    private final JTextField dateOfBirthField;
+    private final JTextField heightField;
+    private final JTextField weightField;
+    private final JRadioButton maleRadioButton;
+    private final JRadioButton femaleRadioButton;
+    private final ButtonGroup genderGroup;
+    private final JRadioButton metricRadioButton;
+    private final JRadioButton imperialRadioButton;
+    private final ButtonGroup unitsGroup;
+    private final UIController uic;
     private String date;
     private String name;
     private boolean male;

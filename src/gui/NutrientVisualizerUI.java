@@ -22,12 +22,14 @@ import javax.swing.JTextField;
  */
 public class NutrientVisualizerUI {
 
-    private JFrame frame;
-    private JPanel controlPanel;
-    private JButton visualizeButton;
-    private JTextField startDateField, endDateField;
-    private JTextArea resultTextArea;
-    private JLabel notificationLabel;
+    private final JFrame frame;
+    private final JPanel controlPanel;
+    private final JButton visualizeButton;
+    private final JTextField startDateField;
+    private final JTextField endDateField;
+    private final JTextArea resultTextArea;
+    private final JLabel notificationLabel;
+    List<Nutrient> nutrients;
 
     UIController uic;
     /**
@@ -101,7 +103,11 @@ public class NutrientVisualizerUI {
         chart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new CaloriePie(uic, startDateField.getText(), startDateField.getText()).run(uic, startDateField.getText(), startDateField.getText());
+                getSampleNutrientData();
+                if (validateInput() && nutrients.size() > 0) {
+                    CaloriePie cp = new CaloriePie(uic, startDateField.getText(), endDateField.getText());
+                    cp.start(uic, startDateField.getText(), endDateField.getText());
+                }
             }
         });
 
@@ -133,17 +139,17 @@ public class NutrientVisualizerUI {
         // Display the top 5 nutrients (can be changed to top 10).
         resultText.append("\nTop 5 Nutrients:\n");
 
-        for (Map.Entry<String, Double> entry : nutrientData.entrySet()) {
-        	
-            if (count >= 5) {
-                break;
+        ArrayList<Nutrient> topFive = uic.findFiveTop((ArrayList<Nutrient>) nutrients);
+
+        for (Nutrient n : topFive) {
+            if (n.getName() != "Null") {
+
+                double percentage = (n.getAmount() / total) * 100;
+                resultText.append(n.getName()).append(": ")
+                        .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
+
+
             }
-
-            double percentage = (entry.getValue() / total) * 100;
-            resultText.append(entry.getKey()).append(": ")
-                    .append(String.format(Locale.US, "%.2f", percentage)).append("%\n");
-
-            count++;
         }
 
         // Display notification based on total percentage
@@ -163,13 +169,19 @@ public class NutrientVisualizerUI {
         Map<String, Double> nutrientData = new HashMap<>();
 
 
-        List<Nutrient> nutrients = uic.getXNutrients(10, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText()));
-        for (Nutrient n : nutrients) {
-            nutrientData.put(n.getName(), n.getAmount());
+        nutrients = uic.getXNutrients(10, LocalDate.parse(startDateField.getText()), LocalDate.parse(endDateField.getText()));
+
+        if (nutrients.size() == 0) {
+            JOptionPane.showMessageDialog(frame, "Nothing has been entered yet.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            for (Nutrient n : nutrients) {
+                nutrientData.put(n.getName(), n.getAmount());
+            }
+            // Replace this with the backend logic to fetch nutrient data
+
+
         }
-        // Replace this with the backend logic to fetch nutrient data
-
-
         return nutrientData;
     }
 

@@ -17,14 +17,16 @@ import java.time.Period;
  * the estimated fat loss based on the provided formula (1 kg of fat = 7,700 kcal).
  */
 public class FatLossEstimatorUI {
-    private UIController uic;
-    private JFrame frame;
-    private JPanel controlPanel;
-    private JButton calculateButton;
-    private JTextField exerciseLogField, calorieIntakeField;
-    private JTextArea resultTextArea;
-    private JLabel futureDateLabel, notificationLabel;
-    private JTextField futureDateField;
+    private final UIController uic;
+    private final JFrame frame;
+    private final JPanel controlPanel;
+    private final JButton calculateButton;
+    private final JTextField exerciseLogField;
+    private final JTextField calorieIntakeField;
+    private final JTextArea resultTextArea;
+    private final JLabel futureDateLabel;
+    private final JLabel notificationLabel;
+    private final JTextField futureDateField;
 
     /**
      * Constructs a new instance of the class.
@@ -214,15 +216,26 @@ public class FatLossEstimatorUI {
 
         double exerciseLogValue = uic.getCalsBurned(LocalDate.now().minusMonths(1), LocalDate.now());
         double calorieIntakeValue = uic.getCaloriesConsumed(1, LocalDate.now().minusMonths(1), LocalDate.now());
-        String futureDate = futureDateField.getText().trim();
+        if (exerciseLogValue == 0 || calorieIntakeValue == 0) {
+            JOptionPane.showMessageDialog(frame, "Insufficient Information. Enter some more information first.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            String futureDate = futureDateField.getText().trim();
 
-        int days = Period.between(LocalDate.now(), LocalDate.parse(futureDate)).getDays();
+            int days = Period.between(LocalDate.now(), LocalDate.parse(futureDate)).getDays();
 
-        // Calculate fat loss based on the provided formula (1 kg of fat = 7,700 kcal)
-        double fatLoss = (calorieIntakeValue - exerciseLogValue) / 7700;
+            if (days < 1) {
+                JOptionPane.showMessageDialog(frame, "Set a date in the future", "Error", JOptionPane.ERROR_MESSAGE);
 
-        // Display the result
-        resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss * days) + " kg");
+            } else {
+
+                // Calculate fat loss based on the provided formula (1 kg of fat = 7,700 kcal)
+                double fatLoss = (calorieIntakeValue - exerciseLogValue) / 7700;
+
+                // Display the result
+                resultTextArea.setText("Estimated Fat Loss by " + futureDate + ":\n" + String.format("%.2f", fatLoss * days) + " kg");
+            }
+        }
+
     }
 
     public static void main(String[] args) {
@@ -240,9 +253,9 @@ public class FatLossEstimatorUI {
      */
     class JTextFieldHintUI extends BasicTextFieldUI implements FocusListener {
 
-        private JTextField textField; // The text field to which the hint is applied
-        private String hint;           // The hint text to be displayed
-        private Color hintColor;       // The color of the hint text
+        private final JTextField textField; // The text field to which the hint is applied
+        private final String hint;           // The hint text to be displayed
+        private final Color hintColor;       // The color of the hint text
 
         /**
          * Constructs a new JTextFieldHintUI with the specified text field, hint text, and hint color.

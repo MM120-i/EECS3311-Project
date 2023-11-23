@@ -1,6 +1,5 @@
 package controller;
 
-import PROJECT.ProfileCreationWindow;
 import dataObjects.Exercise;
 import dataObjects.Meal;
 import dataObjects.Nutrient;
@@ -13,8 +12,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -35,11 +33,11 @@ public class UIController {
         u.setHeight(Integer.parseInt(height));
         u.setWeight(Integer.parseInt(weight));
         u.calculateBMR();
-        System.out.println(u.getName());
+
         DBUser da = new DBUser();
-        System.out.println("Here");
+
         if (!da.add(u)) {
-            System.out.println("Here2");
+
             MainMenu mm = new MainMenu(this);
             return true;
         }
@@ -55,17 +53,17 @@ public class UIController {
         } else {
             u.setMale(0);
         }
-        System.out.println("formatted date 2 : " + dob);
+
         u.setDob(LocalDate.parse(dob));
         u.setHeight(Integer.parseInt(height));
         u.setWeight(Integer.parseInt(weight));
         u.calculateBMR();
-        System.out.println(u.getName());
+
         DBUser da = new DBUser();
         da.deleteUser(u);
-        System.out.println("Here");
+
         if (!da.add(u)) {
-            System.out.println("Here2");
+
             MainMenu mm = new MainMenu(this);
             return true;
         }
@@ -73,12 +71,12 @@ public class UIController {
     }
 
     public void exerciseCreation(LocalDate date, LocalTime time, int intensity, int duration, String type) {
-        System.out.println("name: " + u.getName());
+
         u.calculateBMR();
         Exercise e = new Exercise(date, duration, type, intensity);
-        System.out.println("bmr: " + u.getBMR());
+
         e.calBurned(u.getBMR());
-        System.out.println("Burned: " + e.getCalBurned());
+
         DBExercise da = new DBExercise();
         da.add(u, e);
     }
@@ -90,9 +88,9 @@ public class UIController {
 
     public double getRegularBurnOverTime(List<Exercise> exercises) {
         long total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), DAYS);
-        System.out.println(total);
+
         double totalCals = (total * 2000);
-        System.out.println(totalCals);
+
         return totalCals;
     }
 
@@ -100,7 +98,7 @@ public class UIController {
         List<Nutrient> result = new ArrayList<>();
         DBAccess da = new DBAccess();
         List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
-        System.out.println("NAME: " + u.getName());
+
         for (int i = 0; i < amount && i < nutrients.size(); i++) {
             if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
                 nutrients.remove(i);
@@ -137,8 +135,8 @@ public class UIController {
         List<Nutrient> result = new ArrayList<>();
         DBAccess da = new DBAccess();
         List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
-        for (int i = 0; i < nutrients.size(); i++) {
-            System.out.println(nutrients.get(i).getName() + " " + nutrients.get(i).getAmount());
+        for (int i = 0; i < nutrients.size() && i < 20; i++) {
+
             result.add(nutrients.get(i));
 
         }
@@ -150,12 +148,12 @@ public class UIController {
         DBAccess da = new DBAccess();
         int sum = 0;
         List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
-        System.out.println("ALREADY CALLED.");
+
         for (int i = 0; i < nutrients.size(); i++) {
 
             if (nutrients.get(i).getName().contains("KILOJOULES")) {
 
-                System.out.println("INSIDE" + sum);
+
                 sum += (int) nutrients.get(i).getAmount();
             }
             result.add(nutrients.get(i));
@@ -178,5 +176,21 @@ public class UIController {
     }
 
     public UIController() {
+    }
+
+
+    public ArrayList<Nutrient> findFiveTop(ArrayList<Nutrient> list) {
+        ArrayList<Nutrient> result = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Nutrient max = new Nutrient("Null", 0, "");
+            for (Nutrient n : list) {
+                if (n.getAmount() > max.getAmount()) {
+                    max = n;
+                }
+            }
+            list.remove(max);
+            result.add(max);
+        }
+        return result;
     }
 }
