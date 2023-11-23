@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import controller.UIController;
 
@@ -15,7 +15,7 @@ import java.util.Enumeration;
 /**
  * Use Case 3
  * A GUI window for logging exercise details and calculating calories burnt and BMR.
-*/
+ */
 public class ExerciseLogWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -23,13 +23,15 @@ public class ExerciseLogWindow extends JFrame {
     private JComboBox<String> exerciseTypeComboBox, intensityComboBox;
     private JLabel caloriesBurntLabel, bmrLabel;
     private UIController controller;
-    
+
     /**
      * Constructs a new gui.ExerciseLogWindow.
-    */
+     *
+     * @param controller the controller
+     */
     public ExerciseLogWindow(UIController controller) {
     	
-        setTitle("dataObjects.Exercise Log");
+        setTitle("model.dataObjects.Exercise Log");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 14));
         createUI(controller);
@@ -67,7 +69,7 @@ public class ExerciseLogWindow extends JFrame {
 
         cons.gridx = 0;
         cons.gridy = 2;
-        JLabel exerciseTypeLabel = new JLabel("dataObjects.Exercise Type:");
+        JLabel exerciseTypeLabel = new JLabel("model.dataObjects.Exercise Type:");
         mainPanel.add(exerciseTypeLabel, cons);
 
         cons.gridx = 1;
@@ -148,12 +150,12 @@ public class ExerciseLogWindow extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
     /**
      * Sets the font for the entire Swing UI.
      *
      * @param f The FontUIResource to set as the default font.
-    */
+     */
     public static void setUIFont(javax.swing.plaf.FontUIResource f) {
     	
         Enumeration<Object> keys = UIManager.getDefaults().keys();
@@ -168,17 +170,22 @@ public class ExerciseLogWindow extends JFrame {
             }
         }
     }
-    
+
     /**
      * Main method to launch the gui.ExerciseLogWindow.
      *
      * @param args Command-line arguments (not used).
-    */
+     */
     public static void main(String[] args) {
     	
         SwingUtilities.invokeLater(() -> new ExerciseLogWindow(null));
     }
 
+    /**
+     * Call.
+     *
+     * @param controller the controller
+     */
     public void call(UIController controller) {
 
         SwingUtilities.invokeLater(() -> new ExerciseLogWindow(controller));

@@ -1,14 +1,6 @@
-package gui;
+package view;
 
 import controller.UIController;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
@@ -16,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -29,6 +20,9 @@ import java.time.format.DateTimeParseException;
  * data for that time range.
  */
 public class CalorieTrackerUI {
+    /**
+     * The Sum.
+     */
     int sum;
     private final JFrame frame;
     private final JPanel controlPanel;
@@ -39,10 +33,16 @@ public class CalorieTrackerUI {
     private final JLabel notificationLabel;
     private final JLabel result;
 
+    /**
+     * The Uic.
+     */
     UIController uic;
+
     /**
      * Constructs a new instance of the CalorieTrackerUI class.
      * Initializes the frame, control panel, and components.
+     *
+     * @param uic the uic
      */
     public CalorieTrackerUI(UIController uic) {
     	this.uic = uic;

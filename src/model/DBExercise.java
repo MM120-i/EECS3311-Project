@@ -1,6 +1,6 @@
-package controller;
+package model;
 
-import dataObjects.*;
+import model.dataObjects.*;
 
 import java.sql.*;
 import java.sql.Date;
@@ -15,8 +15,18 @@ public class DBExercise extends DBAccess{
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
+    /**
+     * The User.
+     */
     protected User user;
 
+    /**
+     * Add Exercise
+     *
+     * @param newUser the new user
+     * @param obj     (exercise)
+     * @return boolean
+     */
     public boolean add(User newUser, Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);

@@ -1,6 +1,5 @@
-package gui;
+package view;
 
-import java.awt.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +9,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import controller.UIController;
-import dataObjects.Nutrient;
+import model.dataObjects.Nutrient;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -27,12 +26,17 @@ import org.jfree.data.general.PieDataset;
  */
 public class CaloriePie extends JFrame {
 
+    /**
+     * The Uic.
+     */
     UIController uic;
 
     /**
      * Instantiates a new Pie chart example.
      *
-     * @param title the title
+     * @param uic the uic
+     * @param l1  the l 1
+     * @param l2  the l 2
      */
     public CaloriePie(UIController uic, String l1, String l2){
         super("Nutrient");
@@ -98,10 +102,13 @@ public class CaloriePie extends JFrame {
 
         return dataset;
     }
+
     /**
      * The entry point of application.
      *
-     * @param args the input arguments
+     * @param uic the uic
+     * @param l1  the l 1
+     * @param l2  the l 2
      */
     public void start(UIController uic, String l1, String l2) {
         SwingUtilities.invokeLater(() -> {

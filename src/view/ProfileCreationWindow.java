@@ -1,7 +1,6 @@
-package gui;
+package view;
 
 import controller.UIController;
-import gui.MainMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,11 +33,16 @@ public class ProfileCreationWindow extends JFrame {
     private String heightA;
     private String weightA;
     private String metric;
+    /**
+     * The Full name field.
+     */
     JTextField fullNameField;
 
     /**
      * Constructor for the ProfileCreationWindow.
      * Sets up the UI components for profile creation.
+     *
+     * @param uic the uic
      */
     public ProfileCreationWindow(UIController uic) {
 
@@ -192,6 +196,9 @@ public class ProfileCreationWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Message.
+     */
     public void message() {
         int a = JOptionPane.showConfirmDialog(this, "This name is already taken. Do you want to override?", "Name Unavailable", YES_NO_OPTION);
         if (a == 0) {

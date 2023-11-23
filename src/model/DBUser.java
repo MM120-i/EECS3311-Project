@@ -1,10 +1,13 @@
-package controller;
+package model;
 
-import dataObjects.User;
+import model.dataObjects.User;
 
 import java.sql.*;
 import java.time.LocalDate;
 
+/**
+ * The type Db user.
+ */
 public class DBUser extends DBAccess {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/nutrientapp";
@@ -12,6 +15,12 @@ public class DBUser extends DBAccess {
     private static final String DB_PASS = System.getenv("SQLPASS");
 
 
+    /**
+     * Add user
+     *
+     * @param newUser the new user
+     * @return boolean
+     */
     public boolean add(User newUser) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -36,9 +45,10 @@ public class DBUser extends DBAccess {
     }
 
     /**
+     * Load user user.
      *
-     * @param name
-     * @return User
+     * @param name the name
+     * @return User user
      */
     public User loadUser(String name) {
         User u = new User();

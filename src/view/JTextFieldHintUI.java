@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.JTextComponent;

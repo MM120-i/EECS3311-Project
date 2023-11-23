@@ -1,9 +1,9 @@
-package gui;
+package view;
 
-import controller.DBMeal;
+import model.DBMeal;
 import controller.UIController;
-import dataObjects.Ingredient;
-import dataObjects.Meal;
+import model.dataObjects.Ingredient;
+import model.dataObjects.Meal;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -19,12 +19,17 @@ import java.util.List;
 
 /**
  * Use Case 2: Diet Log Window
- *
  */
 public class DietLogWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * The Date fields.
+     */
     public ArrayList<JTextField> dateFields;
+    /**
+     * The Tf 2.
+     */
     public JTextField tf2;
     private final List<JTextField> ingredientFields;
     private final List<JTextField> quantityFields;
@@ -36,6 +41,8 @@ public class DietLogWindow extends JFrame {
 
     /**
      * Constructor to create the Diet Log Window
+     *
+     * @param uic the uic
      */
     public DietLogWindow(UIController uic) {
         this.uic = uic;
@@ -159,17 +166,17 @@ public class DietLogWindow extends JFrame {
 
 
 
-        List<dataObjects.Ingredient> ingredients = new ArrayList<>();
+        List<model.dataObjects.Ingredient> ingredients = new ArrayList<>();
         // Get ingredient and quantity information
         for (int i = 0; i < ingredientFields.size(); i++) {
             int ingredient = Integer.parseInt(ingredientFields.get(i).getText());
             double quantity = Double.parseDouble(quantityFields.get(i).getText());
-            ingredients.add(new dataObjects.Ingredient(ingredient, quantity));
+            ingredients.add(new model.dataObjects.Ingredient(ingredient, quantity));
         }
 
 
         // Save meal information with the correct date
-        dataObjects.Meal meal = new dataObjects.Meal(LocalDate.parse(dateFields.get(mealType-1).getText()), mealType, (ArrayList<dataObjects.Ingredient>) ingredients);
+        model.dataObjects.Meal meal = new model.dataObjects.Meal(LocalDate.parse(dateFields.get(mealType-1).getText()), mealType, (ArrayList<model.dataObjects.Ingredient>) ingredients);
         meals.add(meal);
 
         DBMeal dbm = new DBMeal(uic);

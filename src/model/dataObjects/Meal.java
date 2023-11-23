@@ -1,10 +1,10 @@
-package dataObjects;
+package model.dataObjects;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * The type dataObjects.Meal.
+ * The type model.dataObjects.Meal.
  */
 public class Meal {
     private int mealID;
@@ -86,7 +86,7 @@ public class Meal {
     }
 
     /**
-     * Instantiates a new dataObjects.Meal.
+     * Instantiates a new model.dataObjects.Meal.
      *
      * @param mealID      the meal id
      * @param date        the date
@@ -100,12 +100,22 @@ public class Meal {
         this.ingredients = ingredients;
     }
 
+    /**
+     * Instantiates a new Meal.
+     *
+     * @param date        the date
+     * @param mealType    the meal type
+     * @param ingredients the ingredients
+     */
     public Meal(LocalDate date, int mealType, ArrayList<Ingredient> ingredients) {
         this.date = date;
         this.mealType = mealType;
         this.ingredients = ingredients;
     }
 
+    /**
+     * Instantiates a new Meal.
+     */
     public Meal() {
     }
 }

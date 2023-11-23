@@ -1,7 +1,7 @@
-package dataObjects;
+package model.dataObjects;
 
 /**
- * The type dataObjects.Ingredient.
+ * The type model.dataObjects.Ingredient.
  */
 public class Ingredient {
     private int ingredientNum;
@@ -44,7 +44,7 @@ public class Ingredient {
     }
 
     /**
-     * Instantiates a new dataObjects.Ingredient.
+     * Instantiates a new model.dataObjects.Ingredient.
      *
      * @param ingredientNum the ingredient num
      * @param amount        the amount

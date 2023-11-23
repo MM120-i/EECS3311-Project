@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import controller.UIController;
-import dataObjects.Exercise;
+import model.dataObjects.Exercise;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -26,9 +26,19 @@ import org.jfree.data.general.PieDataset;
  */
 public class ExercisePie extends JFrame {
 
+    /**
+     * The Sum.
+     */
     int sum = 0;
+    /**
+     * The Total.
+     */
     long total;
+    /**
+     * The Total cals.
+     */
     int totalCals = 0;
+
     /**
      * Instantiates a new Pie chart example.
      *
@@ -93,6 +103,7 @@ public class ExercisePie extends JFrame {
 
         return dataset;
     }
+
     /**
      * The entry point of application.
      *

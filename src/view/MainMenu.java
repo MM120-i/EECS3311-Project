@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import controller.UIController;
 
@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The type Main menu.
+ */
 public class MainMenu extends JFrame{
     private JButton mealsButton;
     private JButton exerciseButton;
@@ -13,8 +16,16 @@ public class MainMenu extends JFrame{
     private JButton estimationsButton;
     private JButton calorieVsExerciseButton;
     private JButton nutrientIntakeButton;
+    /**
+     * The Panel.
+     */
     public JPanel panel;
 
+    /**
+     * Instantiates a new Main menu.
+     *
+     * @param uic the uic
+     */
     public MainMenu(UIController uic) {
         mealsButton.addActionListener(new ActionListener() {
             @Override

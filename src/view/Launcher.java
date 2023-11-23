@@ -1,15 +1,18 @@
-package gui;
+package view;
 
-import controller.DBAccess;
-import controller.DBUser;
+import model.DBAccess;
+import model.DBUser;
 import controller.UIController;
-import dataObjects.User;
+import model.dataObjects.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * The type Launcher.
+ */
 public class Launcher extends JFrame{
     private JPanel mainpanel;
     private JLabel label1;
@@ -17,6 +20,9 @@ public class Launcher extends JFrame{
     private JButton button1;
     private JButton button2;
 
+    /**
+     * Instantiates a new Launcher.
+     */
     public Launcher() {
         DBAccess dba = new DBAccess();
         dba.getUsers();
@@ -41,6 +47,11 @@ public class Launcher extends JFrame{
         });
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Launcher ps = new Launcher();
         DBAccess dba = new DBAccess();
