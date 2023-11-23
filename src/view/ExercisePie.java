@@ -22,27 +22,27 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 /**
- * The type Pie chart example.
+ * The ExercisePie class extends JFrame and represents a pie chart displaying calories burnt through exercises.
  */
 public class ExercisePie extends JFrame {
 
     /**
-     * The Sum.
+     * The total sum of calories burnt through exercises.
      */
     int sum = 0;
     /**
-     * The Total.
+     * The total number of days for which exercises are considered.
      */
     long total;
     /**
-     * The Total cals.
+     * The total calories burnt over time.
      */
     int totalCals = 0;
 
     /**
-     * Instantiates a new Pie chart example.
+     * Instantiates a new ExercisePie chart.
      *
-     * @param title the title
+     * @param title The title of the chart.
      */
     public ExercisePie(String title){
         super(title);
@@ -105,9 +105,9 @@ public class ExercisePie extends JFrame {
     }
 
     /**
-     * The entry point of application.
+     * The main method, the entry point of the ExercisePie application.
      *
-     * @param args the input arguments
+     * @param args The input arguments.
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
