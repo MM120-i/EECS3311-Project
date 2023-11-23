@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * The type Database access.
+  * The Database Access class for meals, is responsible for interacting with the database to store and retrieve meal-related information.
  */
 public class DBMeal extends DBAccess{
 
@@ -22,19 +22,19 @@ public class DBMeal extends DBAccess{
     protected User user;
 
     /**
-     * Instantiates a new Db meal.
+     * Constructs a new instance of DBMeal.
      *
-     * @param uic the uic
+     * @param uic the UIController
      */
     public DBMeal(UIController uic) {
         super();
     }
 
     /**
-     * Add meal
+     * Adds a meal entry to the database.
      *
-     * @param newUser the new user
-     * @param obj     meal object
+     * @param newUser the user for whom the meal is added
+     * @param obj     the meal object to be added
      */
     public void add(User newUser, Meal obj) {
 
@@ -60,6 +60,13 @@ public class DBMeal extends DBAccess{
         }
     }
 
+    /**
+ * Checks if it is safe to add the provided meal for the given user by querying the database.
+ *
+ * @param obj The meal object to be added.
+ * @param u   The user for whom the meal is being added.
+ * @return True if it is safe to add the meal, false otherwise.
+ */
     private static boolean safeToAdd(Object obj, User u) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -111,9 +118,13 @@ public class DBMeal extends DBAccess{
     }
 
     /**
-     * Breakdown meal.
+     * Retrieves meal information from the database between two specified dates.
      *
-     * @param user the user
+     * @param user the user for whom meals are retrieved
+     * @param d1   the starting date
+     * @param d2   the ending date
+     * @param obj  the object
+     * @return the list of nutrients
      */
     public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
         Date date1 = Date.valueOf(d1);
@@ -231,10 +242,21 @@ public class DBMeal extends DBAccess{
         return null;
     }
 
+    
+    /**
+     * Gets the user associated with this DBMeal instance.
+     *
+     * @return the user
+     */
     public User getUser() {
         return user;
     }
-
+    
+    /**
+     * Sets the user associated with this DBMeal instance.
+     *
+     * @param user the user to set
+     */
     public void setUser(User user) {
         this.user = user;
     }
