@@ -17,24 +17,25 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 
 /**
- * The type Ui controller.
+ * The UIController class manages user interface-related operations, including profile creation, exercise logging,
+ * and nutrient consumption analysis.
  */
 public class UIController {
 
     /**
-     * The U.
+     * The User object associated with the UIController.
      */
     public User u;
 
     /**
-     * Create a profile.
+     * Creates a user profile with the specified details.
      *
-     * @param name   the name
-     * @param maleRB the male rb
-     * @param height the height
-     * @param weight the weight
-     * @param dob    the dob
-     * @return boolean
+     * @param name   The name of the user.
+     * @param maleRB The gender of the user.
+     * @param height The height of the user.
+     * @param weight The weight of the user.
+     * @param dob    The date of birth of the user.
+     * @return True if the profile creation is successful, false otherwise.
      */
     public boolean profileCreation(String name, Boolean maleRB, String height, String weight, String dob) {
         u = new User();
@@ -61,15 +62,15 @@ public class UIController {
 
 
     /**
-     * Create a profile with existing name already (update)
+     * Creates or updates a user profile with the specified details.
      *
-     * @param override the override
-     * @param name     the name
-     * @param maleRB   the male rb
-     * @param height   the height
-     * @param weight   the weight
-     * @param dob      the dob
-     * @return boolean
+     * @param override Flag indicating whether to override an existing profile.
+     * @param name     The name of the user.
+     * @param maleRB   The gender of the user.
+     * @param height   The height of the user.
+     * @param weight   The weight of the user.
+     * @param dob      The date of birth of the user.
+     * @return True if the profile creation/update is successful, false otherwise.
      */
     public boolean profileCreation(int override, String name, Boolean maleRB, String height, String weight, String dob) {
 
@@ -99,13 +100,13 @@ public class UIController {
 
 
     /**
-     * Exercise creation
+     * Logs an exercise activity for the user.
      *
-     * @param date      the date
-     * @param time      the time
-     * @param intensity the intensity
-     * @param duration  the duration
-     * @param type      the type
+     * @param date      The date of the exercise.
+     * @param time      The time of the exercise.
+     * @param intensity The intensity of the exercise.
+     * @param duration  The duration of the exercise.
+     * @param type      The type of exercise.
      */
     public void exerciseCreation(LocalDate date, LocalTime time, int intensity, int duration, String type) {
 
@@ -119,9 +120,9 @@ public class UIController {
     }
 
     /**
-     * Get list of exercises
+     * Retrieves a list of exercises logged by the user.
      *
-     * @return exercises
+     * @return A list of Exercise objects.
      */
     public List getExercises() {
         DBAccess da = new DBAccess();
@@ -129,10 +130,10 @@ public class UIController {
     }
 
     /**
-     * Get regular burn rate.
+     * Calculates the total regular burn rate over a specified time period.
      *
-     * @param exercises the exercises
-     * @return regular burn over time
+     * @param exercises The list of exercises.
+     * @return The total regular burn rate.
      */
     public double getRegularBurnOverTime(List<Exercise> exercises) {
         long total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), DAYS);
@@ -143,12 +144,12 @@ public class UIController {
     }
 
     /**
-     * Alternative Getting nutrients method
+     * Retrieves a list of nutrients consumed by the user within a specified time period.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return x nutrients 2
+     * @param amount The number of nutrients to retrieve.
+     * @param l1     The start date.
+     * @param l2     The end date.
+     * @return A list of Nutrient objects.
      */
     public List getXNutrients2(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -165,11 +166,11 @@ public class UIController {
     }
 
     /**
-     * Get total cals burned per day
+     * Calculates the total calories burned by the user within a specified time period.
      *
-     * @param l1 the l 1
-     * @param l2 the l 2
-     * @return cals burned
+     * @param l1 The start date.
+     * @param l2 The end date.
+     * @return The total calories burned.
      */
     public int getCalsBurned(LocalDate l1, LocalDate l2) {
         DBAccess da = new DBAccess();
@@ -185,12 +186,12 @@ public class UIController {
     }
 
     /**
-     * Getting list of nutrients and values
+     * Retrieves a list of nutrients consumed by the user within a specified time period.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return x nutrients
+     * @param amount The number of nutrients to retrieve.
+     * @param l1     The start date.
+     * @param l2     The end date.
+     * @return A list of Nutrient objects.
      */
     public List getXNutrients(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -205,12 +206,12 @@ public class UIController {
     }
 
     /**
-     * Getting calories consumed
+     * Calculates the total calories consumed by the user within a specified time period.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return calories consumed
+     * @param amount The number of nutrients to retrieve.
+     * @param l1     The start date.
+     * @param l2     The end date.
+     * @return The total calories consumed.
      */
     public int getCaloriesConsumed(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -235,33 +236,40 @@ public class UIController {
         }
     }
 
-
+    /**
+     * Calculates the average amount per day given the total amount and time period.
+     *
+     * @param totalCals The total amount.
+     * @param l1        The start date.
+     * @param l2        The end date.
+     * @return The average amount per day.
+     */
     private int amountPerDay(int totalCals, LocalDate l1, LocalDate l2) {
         long days = DAYS.between(l1, l2) + 1;
         return (int) (totalCals/days);
     }
 
     /**
-     * Instantiates a new Ui controller.
+     * Instantiates a new UIController with the specified user.
      *
-     * @param u the u
+     * @param u The User object.
      */
     public UIController(User u) {
         this.u = u;
     }
 
     /**
-     * Instantiates a new Ui controller.
+     * Instantiates a new UIController.
      */
     public UIController() {
     }
 
 
     /**
-     * Find 5 top nutrients
+     * Finds the top five nutrients from the given list.
      *
-     * @param list the list
-     * @return array list
+     * @param list The list of nutrients.
+     * @return An ArrayList of the top five nutrients.
      */
     public ArrayList<Nutrient> findFiveTop(ArrayList<Nutrient> list) {
         ArrayList<Nutrient> result = new ArrayList<>();
