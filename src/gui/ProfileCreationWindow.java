@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 /**
+ * Use case 1
  * This class represents a Profile Creation Window for a user's profile information.
  * It allows users to input their gender, date of birth, height, weight, and units of measurement.
  */
