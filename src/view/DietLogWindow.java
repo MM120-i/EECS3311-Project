@@ -195,16 +195,20 @@ public class DietLogWindow extends JFrame {
             ingredients.add(new model.dataObjects.Ingredient(ingredient, quantity));
         }
 
-
+        Meal meal = new Meal();
         // Save meal information with the correct date
-        model.dataObjects.Meal meal = new model.dataObjects.Meal(LocalDate.parse(dateFields.get(mealType-1).getText()), mealType, (ArrayList<model.dataObjects.Ingredient>) ingredients);
-        meals.add(meal);
+        try {
+            meal = new model.dataObjects.Meal(LocalDate.parse(dateFields.get(mealType - 1).getText()), mealType, (ArrayList<model.dataObjects.Ingredient>) ingredients);
+            meals.add(meal);
 
-        DBMeal dbm = new DBMeal(uic);
-        dbm.add(uic.u, meal);
+            DBMeal dbm = new DBMeal(uic);
+            dbm.add(uic.u, meal);
+            // Optionally, you can display a message to confirm that the data is saved
+            JOptionPane.showMessageDialog(this, "Meal information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Missing Information. Enter Again");
+        }
 
-        // Optionally, you can display a message to confirm that the data is saved
-        JOptionPane.showMessageDialog(this, "Meal information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
 
         int counter = 0;

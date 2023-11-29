@@ -135,10 +135,14 @@ public class ExerciseLogWindow extends JFrame {
                 DateTimeFormatter formatter
                         = DateTimeFormatter.ISO_LOCAL_TIME;
                 Exercise ex = new Exercise();
-                ex = controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
-
-                caloriesBurntLabel.setText(String.valueOf(ex.getCalBurned()));
-                bmrLabel.setText(String.valueOf(controller.u.getBMR()));
+                try {
+                    ex = controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
+                    caloriesBurntLabel.setText(String.valueOf(ex.getCalBurned()));
+                    bmrLabel.setText(String.valueOf(controller.u.getBMR()));
+                } catch (Exception exception) {
+                    // Optionally, you can display a message to confirm that the data is saved
+                   msg();
+                };
             }
         });
 
@@ -193,5 +197,10 @@ public class ExerciseLogWindow extends JFrame {
     public void call(UIController controller) {
 
         SwingUtilities.invokeLater(() -> new ExerciseLogWindow(controller));
+    }
+
+    public void msg() {
+        // Optionally, you can display a message to confirm that the data is saved
+        JOptionPane.showMessageDialog(this, "Missing Information. Try Again", "Failure", JOptionPane.INFORMATION_MESSAGE);
     }
 }

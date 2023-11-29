@@ -6,8 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Objects;
 
-import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.*;
 
 /**
  * Use case 1
@@ -149,21 +152,34 @@ public class ProfileCreationWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 date = dateOfBirthField.getText();
-                name = fullNameField.getText();
-                male = maleRadioButton.isSelected();
-                heightA = heightField.getText();
-                weightA = weightField.getText();
-                metric = String.valueOf(metricRadioButton.isSelected());
-                if (uic.profileCreation(name, male, heightA, weightA, date)) {
-                    message();
-                } else {
-                    MainMenu mm = new MainMenu(uic);
-                    mm.setContentPane(mm.panel);
-                    mm.setVisible(true);
-                    mm.setSize(300,300);
+
+                try {
+                    LocalDate.parse(date);
+                    name = fullNameField.getText();
+                    male = maleRadioButton.isSelected();
+                    heightA = heightField.getText();
+                    weightA = weightField.getText();
+                    metric = String.valueOf(metricRadioButton.isSelected());
+
+                    if (Objects.equals(name, "")) {
+                        missingMSG();
+                    }
+
+
+                    if (uic.profileCreation(name, male, heightA, weightA, date)) {
+                        message();
+                    } else {
+                        MainMenu mm = new MainMenu(uic);
+                        mm.setContentPane(mm.panel);
+                        mm.setVisible(true);
+                        mm.setSize(300,300);
+                    }
+                    // Handle user inputs here:
+                } catch (Exception ex) {
+                    dateMSG();
                 }
-                // Handle user inputs here:
             }
         });
 
@@ -220,6 +236,20 @@ public class ProfileCreationWindow extends JFrame {
             this.dispose();
         }
 
+    }
+
+    /**
+     * Message.
+     */
+    public void dateMSG() {
+        JOptionPane.showMessageDialog(this, "Invalid Date. Enter YYYY-MM-DD");
+    }
+
+    /**
+     * Message.
+     */
+    public void missingMSG() {
+        JOptionPane.showMessageDialog(this, "Missing Information. Enter Again");
     }
 }
 

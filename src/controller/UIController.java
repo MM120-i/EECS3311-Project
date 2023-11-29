@@ -46,6 +46,7 @@ public class UIController {
         } else {
             u.setMale(0);
         }
+
         u.setDob(LocalDate.parse(dob));
         u.setHeight(Integer.parseInt(height));
         u.setWeight(Integer.parseInt(weight));
