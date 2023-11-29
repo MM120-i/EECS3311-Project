@@ -4,6 +4,7 @@ import model.dataObjects.Exercise;
 import model.dataObjects.Meal;
 import model.dataObjects.Nutrient;
 import model.dataObjects.User;
+import view.Launcher;
 import view.MainMenu;
 import model.DBAccess;
 import model.DBExercise;
@@ -88,13 +89,11 @@ public class UIController {
 
         DBUser da = new DBUser();
         da.deleteUser(u);
-
-        if (!da.add(u)) {
-
-            MainMenu mm = new MainMenu(this);
+        if (da.add(u)) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 

@@ -1,18 +1,18 @@
 NutrientSourceID,NutrientSourceCode,NutrientSourceDescription,NutrientSourc DescriptionF
 0,0,No change from USDA,Provient int�gralement de l'USDA
-1,1,dataObjects.Nutrient levels changed to meet the canadian regulations ,Teneur en nutriments modifi�e pour satisfaire la r�glementation canadienne
-2,2,dataObjects.Nutrient calculated from data other than USDA,Nutriment calcul� avec des donn�es autres que l'USDA
-3,3,dataObjects.Nutrient analyzed in a Canadian government lab,Nutriment analys� en laboratoire du gouvernement canadien
-4,4,dataObjects.Nutrient calculated from USDA data,Nutriment calcul� d'apr�s les donn�es de l'USDA
-5,5,dataObjects.Nutrient imputed from a similar USDA food,Nutriment imput� d'un aliment semblable du USDA
-6,6,dataObjects.Nutrient from canadian industry. Documentation incomplete.,Nutriment provenant de l'industrie canadienne. Documentation incompl�te.
-7,7,dataObjects.Nutrient analyzed in Canadian product (non-government lab). Documentation complete.,Nutriment analys� d'un produit canadien (labo non gouvernemental). Documentation compl�te.
-8,8,dataObjects.Nutrient value of food created for the Nutrition Canada Survey,Nutriment provenant d'un aliment cr�� pour l'Enqu�te Nutrition Canada
-9,9,dataObjects.Nutrient from the label declaration,Nutriment tir� de l'information nutritionnelle de l'�tiquette
-10,10,dataObjects.Nutrient derived from scientific literature,Nutriment provenant de la litt�rature scientifique
-12,12,dataObjects.Nutrient value is an assumed zero,Nutriment estim� � z�ro
+1,1,model.dataObjects.Nutrient levels changed to meet the canadian regulations ,Teneur en nutriments modifi�e pour satisfaire la r�glementation canadienne
+2,2,model.dataObjects.Nutrient calculated from data other than USDA,Nutriment calcul� avec des donn�es autres que l'USDA
+3,3,model.dataObjects.Nutrient analyzed in a Canadian government lab,Nutriment analys� en laboratoire du gouvernement canadien
+4,4,model.dataObjects.Nutrient calculated from USDA data,Nutriment calcul� d'apr�s les donn�es de l'USDA
+5,5,model.dataObjects.Nutrient imputed from a similar USDA food,Nutriment imput� d'un aliment semblable du USDA
+6,6,model.dataObjects.Nutrient from canadian industry. Documentation incomplete.,Nutriment provenant de l'industrie canadienne. Documentation incompl�te.
+7,7,model.dataObjects.Nutrient analyzed in Canadian product (non-government lab). Documentation complete.,Nutriment analys� d'un produit canadien (labo non gouvernemental). Documentation compl�te.
+8,8,model.dataObjects.Nutrient value of food created for the Nutrition Canada Survey,Nutriment provenant d'un aliment cr�� pour l'Enqu�te Nutrition Canada
+9,9,model.dataObjects.Nutrient from the label declaration,Nutriment tir� de l'information nutritionnelle de l'�tiquette
+10,10,model.dataObjects.Nutrient derived from scientific literature,Nutriment provenant de la litt�rature scientifique
+12,12,model.dataObjects.Nutrient value is an assumed zero,Nutriment estim� � z�ro
 14,14,Provisional data,Donn�e provisoire
-15,15,dataObjects.Nutrient value imputed from data other than USDA,Nutriment imput� de source autre que l'USDA
+15,15,model.dataObjects.Nutrient value imputed from data other than USDA,Nutriment imput� de source autre que l'USDA
 82,82,Danish Food Composition Databank (revision 5.0)   Danish Institute for Food and Veterinary Research (revision 5),Base de donn�es danoise sur la composition des aliments. Institut danois sur la recherche alimentaire et v�t�rinaire.
 83,83,Fineli.  Finnish food composition database.  National Public Health Institute.,Fineli: Base de donn�es finlandaise sur la composition des aliments. Institut National de la Sant� Publique
 102,51,Calculated using a recipe,Calcul� d'apr�s une recette

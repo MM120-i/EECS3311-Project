@@ -41,6 +41,7 @@ public class DBUser extends DBAccess {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("returned true");
         return true;
     }
 

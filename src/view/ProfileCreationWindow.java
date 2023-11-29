@@ -157,6 +157,11 @@ public class ProfileCreationWindow extends JFrame {
                 metric = String.valueOf(metricRadioButton.isSelected());
                 if (uic.profileCreation(name, male, heightA, weightA, date)) {
                     message();
+                } else {
+                    MainMenu mm = new MainMenu(uic);
+                    mm.setContentPane(mm.panel);
+                    mm.setVisible(true);
+                    mm.setSize(300,300);
                 }
                 // Handle user inputs here:
             }
