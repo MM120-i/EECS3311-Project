@@ -4,6 +4,7 @@ import model.DBMeal;
 import controller.UIController;
 import model.dataObjects.Ingredient;
 import model.dataObjects.Meal;
+import model.dataObjects.Nutrient;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -45,6 +46,7 @@ public class DietLogWindow extends JFrame {
      * @param uic the uic
      */
     public DietLogWindow(UIController uic) {
+        System.out.println(uic.u);
         this.uic = uic;
 
         setTitle("Diet Log");
@@ -134,6 +136,11 @@ public class DietLogWindow extends JFrame {
      */
     private void viewMealsInformation() {
         StringBuilder message = new StringBuilder("Saved Meals:\n\n");
+
+        LocalDate d1 = LocalDate.now();
+        DBMeal dbm = new DBMeal(uic);
+        ArrayList<Meal> meals = (ArrayList<Meal>) dbm.findAll();
+
 
         for (Meal meal : meals) {
             message.append("Date: ").append(meal.getDate()).append("\n");
@@ -246,7 +253,7 @@ public class DietLogWindow extends JFrame {
 
         mealCons.gridx = 1;
         dateFields.add(new JTextField(15));
-        dateFields.get(mealtype).setText("testing");
+        dateFields.get(mealtype).setText("");
 
         mealPanel.add(dateFields.get(mealtype), mealCons);
 
