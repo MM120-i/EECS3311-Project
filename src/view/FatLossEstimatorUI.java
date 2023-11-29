@@ -21,8 +21,6 @@ public class FatLossEstimatorUI {
     private final JFrame frame;
     private final JPanel controlPanel;
     private final JButton calculateButton;
-    private final JTextField exerciseLogField;
-    private final JTextField calorieIntakeField;
     private final JTextArea resultTextArea;
     private final JLabel futureDateLabel;
     private final JLabel notificationLabel;
@@ -49,15 +47,6 @@ public class FatLossEstimatorUI {
         cons.fill = GridBagConstraints.HORIZONTAL;
         cons.insets = new Insets(5, 5, 5, 5);
 
-        // Labels and text fields for exercise log, calorie intake, and future date
-        JLabel exerciseLogLabel = new JLabel("Exercise Log (kcal):");
-        exerciseLogField = new JTextField(15);
-        exerciseLogField.setUI(new JTextFieldHintUI(exerciseLogField, "Enter Exercise Log (kcal)", Color.gray));
-
-        JLabel calorieIntakeLabel = new JLabel("Caloric Intake (kcal):");
-        calorieIntakeField = new JTextField(15);
-        calorieIntakeField.setUI(new JTextFieldHintUI(calorieIntakeField, "Enter Caloric Intake (kcal)", Color.gray));
-
         futureDateLabel = new JLabel("Select Future Date:");
         futureDateField = new JTextField(10);
         futureDateField.setUI(new JTextFieldHintUI(futureDateField, "yyyy-MM-dd", Color.gray));
@@ -70,17 +59,15 @@ public class FatLossEstimatorUI {
         // Add components to the control panel
         cons.gridx = 0;
         cons.gridy = 0;
-        controlPanel.add(exerciseLogLabel, cons);
 
         cons.gridx = 1;
-        controlPanel.add(exerciseLogField, cons);
 
         cons.gridx = 0;
         cons.gridy = 1;
-        controlPanel.add(calorieIntakeLabel, cons);
+
 
         cons.gridx = 1;
-        controlPanel.add(calorieIntakeField, cons);
+
 
         cons.gridx = 0;
         cons.gridy = 2;
@@ -144,35 +131,8 @@ public class FatLossEstimatorUI {
      * @return true if input is valid, false otherwise.
      */
     private boolean validateInput() {
-    	
-        String exerciseLog = exerciseLogField.getText().trim();
-        String calorieIntake = calorieIntakeField.getText().trim();
+
         String futureDate = futureDateField.getText().trim();
-
-        // Check if exercise log, calorie intake, and future date are not empty
-        if (exerciseLog.isEmpty() || calorieIntake.isEmpty() || futureDate.isEmpty()) {
-        	
-            showError("Please enter values for all fields.");
-            return false;
-        }
-
-        // Check if exercise log and calorie intake are numeric
-        try {
-        	
-            double exerciseLogValue = Double.parseDouble(exerciseLog);
-            double calorieIntakeValue = Double.parseDouble(calorieIntake);
-
-            if(exerciseLogValue < 0|| calorieIntakeValue < 0) {
-            	
-            	showError("Exercise log and calorie intake must be non-negative values.");
-            	return false;
-            }
-
-        } catch (NumberFormatException ex) {
-        	
-            showError("Exercise log and calorie intake must be numeric.");
-            return false;
-        }
 
         // Check if future date is in a valid format (add more validation if needed)
         if (!isValidDateFormat(futureDate)) {
