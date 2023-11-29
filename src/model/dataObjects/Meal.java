@@ -117,5 +117,6 @@ public class Meal {
      * Instantiates a new Meal.
      */
     public Meal() {
+        mealID = -1;
     }
 }

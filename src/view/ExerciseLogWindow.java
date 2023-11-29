@@ -1,6 +1,7 @@
 package view;
 
 import controller.UIController;
+import model.dataObjects.Exercise;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,7 +70,7 @@ public class ExerciseLogWindow extends JFrame {
 
         cons.gridx = 0;
         cons.gridy = 2;
-        JLabel exerciseTypeLabel = new JLabel("model.dataObjects.Exercise Type:");
+        JLabel exerciseTypeLabel = new JLabel("Exercise Type:");
         mainPanel.add(exerciseTypeLabel, cons);
 
         cons.gridx = 1;
@@ -133,8 +134,11 @@ public class ExerciseLogWindow extends JFrame {
                 // Update caloriesBurntLabel and bmrLabel accordingly
                 DateTimeFormatter formatter
                         = DateTimeFormatter.ISO_LOCAL_TIME;
-                controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
-            	
+                Exercise ex = new Exercise();
+                ex = controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
+
+                caloriesBurntLabel.setText(String.valueOf(ex.getCalBurned()));
+                bmrLabel.setText(String.valueOf(controller.u.getBMR()));
             }
         });
 

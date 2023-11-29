@@ -237,7 +237,7 @@ public class User {
     public void calculateBMR() {
         LocalDate currentDate = LocalDate.now();
         int age = (Period.between(getDob(), currentDate)).getYears();
-        if (prefersMetric == 1) {
+        if (prefersMetric == 0) {
             if (isMale == 1) {
                 setBMR(10 * getWeight() + 6.25 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears());
             } else {

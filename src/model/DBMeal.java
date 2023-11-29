@@ -28,6 +28,7 @@ public class DBMeal extends DBAccess{
      */
     public DBMeal(UIController uic) {
         super();
+        user = uic.u;
     }
 
     /**
@@ -158,6 +159,74 @@ public class DBMeal extends DBAccess{
 
     }
 
+    public List findAll() {
+        System.out.println( "select date from meals where person='" + user.getName() +"';");
+        String mealCall = "select date from meals where person='" + user.getName() +"';";
+        boolean flag = false;
+        ArrayList<LocalDate> dates = new ArrayList<>();
+        ArrayList<Meal> meals = new ArrayList<>();
+        double calSum = 0;
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = statement.executeQuery(mealCall);
+
+            while (rs.next()) { //for each foodID
+
+                for (LocalDate ld : dates) {
+
+                    if (LocalDate.parse(rs.getString("date")).equals(ld)) {
+                        flag = true;
+                    }
+                }
+
+                if (!flag) {
+                    dates.add(LocalDate.parse(rs.getString(1)));
+                }
+                flag = false;
+            }
+
+            for (LocalDate ld : dates) {
+                for (int i = 1; i < 5; i++) {
+                    if (findMeal(ld, i).getMealID() != -1) {
+                        meals.add(findMeal(ld, i));
+                    }
+                }
+
+            }
+            return meals;
+        } catch (Exception e) {
+            System.out.println("Duplicated");
+            e.printStackTrace();
+        }
+        return meals;
+
+    }
+
+    public Meal findMeal(LocalDate date, int type) {
+        System.out.println("select * from meals where person='" + user.getName() +"' and date='"  + java.sql.Date.valueOf(date) + "' and mealType='" + type + "';");
+        String mealCall = "select * from meals where person='" + user.getName() +"' and date='"  + java.sql.Date.valueOf(date) + "' and mealType='" + type + "';";
+        Meal result = new Meal();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = statement.executeQuery(mealCall);
+
+            while (rs.next()) { //for each foodID
+                System.out.println(rs.getString("ingredient"));
+                ingredients.add(new Ingredient(rs.getInt("ingredient"), rs.getInt("amount")));
+
+                result = new Meal(date, rs.getInt("mealType"), ingredients);
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println("Duplicated");
+            e.printStackTrace();
+        }
+        return result;
+
+    }
 
     /**
      * Find nutrients.

@@ -107,15 +107,16 @@ public class UIController {
      * @param duration  The duration of the exercise.
      * @param type      The type of exercise.
      */
-    public void exerciseCreation(LocalDate date, LocalTime time, int intensity, int duration, String type) {
+    public Exercise exerciseCreation(LocalDate date, LocalTime time, int intensity, double duration, String type) {
 
         u.calculateBMR();
-        Exercise e = new Exercise(date, duration, type, intensity);
+        Exercise e = new Exercise(date, (int) duration, type, intensity);
 
-        e.calBurned(u.getBMR());
+        e.calBurned((double) (u.getBMR()/24)  * ((duration)/60));
 
         DBExercise da = new DBExercise();
         da.add(u, e);
+        return e;
     }
 
     /**
