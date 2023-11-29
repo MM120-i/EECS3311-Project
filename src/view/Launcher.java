@@ -41,8 +41,8 @@ public class Launcher extends JFrame{
         button2.addActionListener(new ActionListener() {  // ActionListener for creating a new user profile
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainMenu menu = new MainMenu(new UIController(new User(comboBox1.getSelectedItem().toString())));
-                ProfileCreationWindow pcw = new ProfileCreationWindow(new UIController(new User(comboBox1.getSelectedItem().toString())));
+                MainMenu menu = new MainMenu(new UIController(new User("")));
+                ProfileCreationWindow pcw = new ProfileCreationWindow(new UIController(new User("")));
                 Launcher.super.dispose();
             }
         });

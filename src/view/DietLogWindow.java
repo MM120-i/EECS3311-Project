@@ -137,7 +137,21 @@ public class DietLogWindow extends JFrame {
 
         for (Meal meal : meals) {
             message.append("Date: ").append(meal.getDate()).append("\n");
-            message.append("Meal Type: ").append(meal.getMealType()).append("\n");
+            switch (meal.getMealType()) {
+                case 1:
+                    message.append("Meal Type: ").append("Breakfast").append("\n");
+                    break;
+                case 2:
+                    message.append("Meal Type: ").append("Lunch").append("\n");
+                    break;
+                case 3:
+                    message.append("Meal Type: ").append("Dinner").append("\n");
+                    break;
+                default:
+                    message.append("Meal Type: ").append("Snack").append("\n");
+                    break;
+            }
+
 
             List<Ingredient> ingredients = meal.getIngredients();
 
@@ -184,6 +198,20 @@ public class DietLogWindow extends JFrame {
 
         // Optionally, you can display a message to confirm that the data is saved
         JOptionPane.showMessageDialog(this, "Meal information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+
+        int counter = 0;
+        mainPanel.remove(tabbedPane);
+        tabbedPane = new JTabbedPane();
+        dateFields = new ArrayList<>();
+        for (String mealt : new String[]{"Breakfast", "Lunch", "Dinner", "Snack"}) {
+            JPanel mealPanel = createMealPanel(mealt, counter);
+            tabbedPane.addTab(mealt, mealPanel);
+            counter++;
+        };
+        mainPanel.add(tabbedPane, cons);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
 

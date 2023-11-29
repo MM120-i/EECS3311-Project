@@ -4579,7 +4579,7 @@ FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDa
 6291,6291,1,9,"Kefir, (2-3.9% M.F.)","K�fir, (2-3,9% M.G.)",2007-06-28,,,
 6292,6292,18,0,"Cookie, chocolate chip, refrigerated dough, baked","Biscuit, grains de chocolat, p�te r�frig�r�e, cuit",2007-06-28,,18164,
 6298,6298,11,36,"Artichoke, marinated",Artichaut marin�,2007-06-29,,,
-501097,6303,8,38,"dataObjects.Meal replacement (cereal), ready to eat, Vector, Kellogg's","Substitut de repas (c�r�ale), pr�te-�-manger, Vector, Kellogg's",2007-07-23,2011-02-17,,
+501097,6303,8,38,"model.dataObjects.Meal replacement (cereal), ready to eat, Vector, Kellogg's","Substitut de repas (c�r�ale), pr�te-�-manger, Vector, Kellogg's",2007-07-23,2011-02-17,,
 501098,6304,11,24,"Cabbage, napa, raw","Chou, napa, cru",2007-09-14,,,Brassica pekinensis
 501502,6306,7,38,"Deli-meat, prosciutto (parma ham) dry-cured","Charcuterie, prosciutto, (jambon de Parme), sal� � sec",2008-04-16,,,
 501505,6308,1,0,"Cheese, parmesan, dry grated, reduced fat","Fromage, parmesan, r�p�, teneur r�duite en gras",2008-05-26,2007-09-01,01204,
@@ -5110,7 +5110,7 @@ FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDa
 502123,6915,8,38,"Cereal, ready to eat, Corn Flakes: Frosted, Compliments","C�r�ale, pr�te-�-manger, Flocons de mais: givr�, Compliments",2011-03-08,2011-02-17,,
 502124,6916,8,38,"Cereal, ready to eat, Crispy Rice, Compliments","C�r�ale, pr�te-�-manger, Riz croustillant, Compliments",2011-03-08,2011-02-17,,
 502125,6917,8,38,"Cereal, ready to eat, Maximum Raisin Bran Flakes, Compliments","C�r�ale, pr�te-�-manger, Flocons de son � l'avalanche de raisins sec, Compliments",2011-03-08,2011-02-17,,
-502126,6918,8,38,"dataObjects.Meal replacement (cereal), ready to eat, Force Active, President's Choice","Substitut de repas (c�r�ale, pr�te-�-manger, Force active, Choix du pr�sident",2011-03-08,2011-02-17,,
+502126,6918,8,38,"model.dataObjects.Meal replacement (cereal), ready to eat, Force Active, President's Choice","Substitut de repas (c�r�ale, pr�te-�-manger, Force active, Choix du pr�sident",2011-03-08,2011-02-17,,
 502127,6919,8,38,"Cereal, ready to  eat, On Track, President's Choice","C�r�ale-pr�te-�-manger, Victoire, Choix du pr�sident",2011-03-08,2011-02-17,,
 502128,6920,8,38,"Cereal, ready to eat, Wheat Squares, Organics, President's Choice","C�r�ale, pr�te-�-manger, Carr�s de bl�, Biologique, Choix du Pr�sident",2011-03-10,2011-02-17,,
 502129,6921,8,38,"Cereal, ready to eat, Puffed Wheat, Safeway","C�r�ale, pr�te-�-manger, Bl�, Souffl�, Safeway",2011-03-10,2011-02-17,,
