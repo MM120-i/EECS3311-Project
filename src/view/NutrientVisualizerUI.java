@@ -9,11 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.awt.Color;
-import javax.swing.JTextField;
+import java.util.*;
 
 /**
  * Use Case 5:

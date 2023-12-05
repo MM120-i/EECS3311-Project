@@ -1,11 +1,13 @@
 package model;
 
-import model.dataObjects.*;
+import model.dataObjects.Exercise;
+import model.dataObjects.Nutrient;
+import model.dataObjects.User;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Database access.
@@ -49,14 +51,12 @@ public class DBExercise extends DBAccess{
      *
      * @param user the user
      */
-    public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
+    public List findBetween(User user, LocalDate d1, LocalDate d2) {
         Date date1 = Date.valueOf(d1);
         Date date2 = Date.valueOf(d2);
-        String mealCall = "select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
         String exerciseCall = "select * from exercise where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
         List<Nutrient> nutrients = null;
         List<Exercise> exercises = new ArrayList<>();
-        double calSum = 0;
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);

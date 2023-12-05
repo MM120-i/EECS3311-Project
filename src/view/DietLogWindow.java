@@ -1,15 +1,13 @@
 package view;
 
-import model.DBMeal;
 import controller.UIController;
+import model.DBMeal;
 import model.dataObjects.Ingredient;
 import model.dataObjects.Meal;
-import model.dataObjects.Nutrient;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +44,7 @@ public class DietLogWindow extends JFrame {
      * @param uic the uic
      */
     public DietLogWindow(UIController uic) {
-        System.out.println(uic.u);
+        System.out.println(uic.getU());
         this.uic = uic;
 
         setTitle("Diet Log");
@@ -144,20 +142,7 @@ public class DietLogWindow extends JFrame {
 
         for (Meal meal : meals) {
             message.append("Date: ").append(meal.getDate()).append("\n");
-            switch (meal.getMealType()) {
-                case 1:
-                    message.append("Meal Type: ").append("Breakfast").append("\n");
-                    break;
-                case 2:
-                    message.append("Meal Type: ").append("Lunch").append("\n");
-                    break;
-                case 3:
-                    message.append("Meal Type: ").append("Dinner").append("\n");
-                    break;
-                default:
-                    message.append("Meal Type: ").append("Snack").append("\n");
-                    break;
-            }
+            message.append("Meal Type: ").append(mapMealTypeToString(meal.getMealType())).append("\n");
 
 
             List<Ingredient> ingredients = meal.getIngredients();
@@ -173,6 +158,19 @@ public class DietLogWindow extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         JOptionPane.showMessageDialog(this, scrollPane, "View Meals", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private String mapMealTypeToString(int mealType) {
+        switch (mealType) {
+            case 1:
+                return "Breakfast";
+            case 2:
+                return "Lunch";
+            case 3:
+                return "Dinner";
+            default:
+                return "Snack";
+        }
     }
 
 
@@ -202,7 +200,7 @@ public class DietLogWindow extends JFrame {
             meals.add(meal);
 
             DBMeal dbm = new DBMeal(uic);
-            dbm.add(uic.u, meal);
+            dbm.add(uic.getU(), meal);
             // Optionally, you can display a message to confirm that the data is saved
             JOptionPane.showMessageDialog(this, "Meal information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
@@ -219,7 +217,7 @@ public class DietLogWindow extends JFrame {
             JPanel mealPanel = createMealPanel(mealt, counter);
             tabbedPane.addTab(mealt, mealPanel);
             counter++;
-        };
+        }
         mainPanel.add(tabbedPane, cons);
         mainPanel.revalidate();
         mainPanel.repaint();

@@ -1,18 +1,16 @@
 package controller;
 
+import model.DBExercise;
+import model.DBMeal;
+import model.DBUser;
 import model.dataObjects.Exercise;
-import model.dataObjects.Meal;
 import model.dataObjects.Nutrient;
 import model.dataObjects.User;
-import view.Launcher;
 import view.MainMenu;
-import model.DBAccess;
-import model.DBExercise;
-import model.DBUser;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -25,7 +23,7 @@ public class UIController {
     /**
      * The U.
      */
-    public User u;
+    private User u;
 
     /**
      * Create a profile.
@@ -37,64 +35,14 @@ public class UIController {
      * @param dob    the dob
      * @return boolean
      */
-    public boolean profileCreation(String name, Boolean maleRB, String height, String weight, String dob) {
-        u = new User();
-        u.setName(name);
-        if (maleRB) {
-            u.setMale(1);
-        } else {
-            u.setMale(0);
-        }
-
-        u.setDob(LocalDate.parse(dob));
-        u.setHeight(Integer.parseInt(height));
-        u.setWeight(Integer.parseInt(weight));
+    public boolean profileCreation(User u) {
         u.calculateBMR();
-
         DBUser da = new DBUser();
-
         if (!da.add(u)) {
-
-            MainMenu mm = new MainMenu(this);
+            new MainMenu(this);
             return true;
         }
         return false;
-    }
-
-
-    /**
-     * Create a profile with existing name already (update)
-     *
-     * @param override the override
-     * @param name     the name
-     * @param maleRB   the male rb
-     * @param height   the height
-     * @param weight   the weight
-     * @param dob      the dob
-     * @return boolean
-     */
-    public boolean profileCreation(int override, String name, Boolean maleRB, String height, String weight, String dob) {
-
-        u = new User();
-        u.setName(name);
-        if (maleRB) {
-            u.setMale(1);
-        } else {
-            u.setMale(0);
-        }
-
-        u.setDob(LocalDate.parse(dob));
-        u.setHeight(Integer.parseInt(height));
-        u.setWeight(Integer.parseInt(weight));
-        u.calculateBMR();
-
-        DBUser da = new DBUser();
-        da.deleteUser(u);
-        if (da.add(u)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 
@@ -107,16 +55,15 @@ public class UIController {
      * @param duration  the duration
      * @param type      the type
      */
-    public Exercise exerciseCreation(LocalDate date, LocalTime time, int intensity, double duration, String type) {
+    public Exercise exerciseCreation(Exercise exercise) {
 
         u.calculateBMR();
-        Exercise e = new Exercise(date, (int) duration, type, intensity);
 
-        e.calBurned((double) (u.getBMR()/24)  * ((duration)/60));
+        exercise.calBurned((u.getBMR()/24) * ((exercise.getDuration())/60));
 
         DBExercise da = new DBExercise();
-        da.add(u, e);
-        return e;
+        da.add(u, exercise);
+        return exercise;
     }
 
     /**
@@ -125,8 +72,8 @@ public class UIController {
      * @return exercises
      */
     public List getExercises() {
-        DBAccess da = new DBAccess();
-        return da.findBetween(u, LocalDate.of(2021, 05, 28), LocalDate.of(2023, 11,20), new Exercise());
+        DBExercise da = new DBExercise();
+        return da.findBetween(u, LocalDate.of(2021, 05, 28), LocalDate.of(2023, 11,20));
     }
 
     /**
@@ -153,8 +100,8 @@ public class UIController {
      */
     public List getXNutrients2(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
-        DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
+        DBMeal da = new DBMeal();
+        List<Nutrient> nutrients = da.findBetween(u, l1, l2);
 
         for (int i = 0; i < amount && i < nutrients.size(); i++) {
             if (nutrients.get(i).getName().equals("ENERGY (KILOCALORIES)")) {
@@ -173,8 +120,8 @@ public class UIController {
      * @return cals burned
      */
     public int getCalsBurned(LocalDate l1, LocalDate l2) {
-        DBAccess da = new DBAccess();
-        List<Exercise> exercises = da.findBetween(u, l1, l2, new Exercise());
+        DBExercise da = new DBExercise();
+        List<Exercise> exercises = da.findBetween(u, l1, l2);
 
         int result = 0;
         for (Exercise e : exercises) {
@@ -195,8 +142,8 @@ public class UIController {
      */
     public List getXNutrients(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
-        DBAccess da = new DBAccess();
-        List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
+        DBMeal da = new DBMeal();
+        List<Nutrient> nutrients = da.findBetween(u, l1, l2);
         for (int i = 0; i < nutrients.size() && i < 20; i++) {
 
             result.add(nutrients.get(i));
@@ -215,9 +162,9 @@ public class UIController {
      */
     public int getCaloriesConsumed(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
-        DBAccess da = new DBAccess();
+        DBMeal da = new DBMeal();
         int sum = 0;
-        List<Nutrient> nutrients = da.findBetween(u, l1, l2, new Meal());
+        List<Nutrient> nutrients = da.findBetween(u, l1, l2);
 
         for (int i = 0; i < nutrients.size(); i++) {
 
@@ -277,5 +224,13 @@ public class UIController {
             result.add(max);
         }
         return result;
+    }
+
+    public User getU() {
+        return u;
+    }
+
+    public void setU(User u) {
+        this.u = u;
     }
 }

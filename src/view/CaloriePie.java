@@ -1,13 +1,5 @@
 package view;
 
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-
 import controller.UIController;
 import model.dataObjects.Nutrient;
 import org.jfree.chart.ChartFactory;
@@ -20,6 +12,11 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
+
+import javax.swing.*;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * The type Pie chart example.

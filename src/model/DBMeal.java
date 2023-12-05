@@ -1,12 +1,16 @@
 package model;
 
 import controller.UIController;
-import model.dataObjects.*;
+import model.dataObjects.Ingredient;
+import model.dataObjects.Meal;
+import model.dataObjects.Nutrient;
+import model.dataObjects.User;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Database access.
@@ -28,7 +32,11 @@ public class DBMeal extends DBAccess{
      */
     public DBMeal(UIController uic) {
         super();
-        user = uic.u;
+        user = uic.getU();
+    }
+
+    public DBMeal() {
+
     }
 
     /**
@@ -61,13 +69,13 @@ public class DBMeal extends DBAccess{
         }
     }
 
-    private static boolean safeToAdd(Object obj, User u) {
+    private static boolean safeToAdd(Meal obj, User u) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
             Statement statement = connection.createStatement();
 
-                if (((Meal) obj).getMealType() == 4) {
+                if (( obj).getMealType() == 4) {
                     return true;
                 }
 
@@ -75,8 +83,8 @@ public class DBMeal extends DBAccess{
                 ResultSet rs = statement.executeQuery("select mealType,date from meals where person = '" +  u.getName() + "';");
                 while (rs.next()) {
 
-                    if (rs.getInt("mealtype") == (((Meal) obj).getMealType()) && rs.getString("date").equals
-                            (String.valueOf(java.sql.Date.valueOf(((Meal) obj).getDate())))) {
+                    if (rs.getInt("mealtype") == (obj.getMealType()) && rs.getString("date").equals
+                            (String.valueOf(java.sql.Date.valueOf(obj.getDate())))) {
                         System.out.println("This meal has already been entered for this date");
                         return false;
 
@@ -116,14 +124,11 @@ public class DBMeal extends DBAccess{
      *
      * @param user the user
      */
-    public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
+    public List findBetween(User user, LocalDate d1, LocalDate d2) {
         Date date1 = Date.valueOf(d1);
         Date date2 = Date.valueOf(d2);
         String mealCall = "select * from meals where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
-        String exerciseCall = "select * from exercise where date between '" + date1 + "' AND '" + date2 + "' AND person='" + user.getName() + "';";
         List<Nutrient> nutrients = null;
-        List<Exercise> exercises = new ArrayList<>();
-        double calSum = 0;
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -254,6 +259,13 @@ public class DBMeal extends DBAccess{
         list.add((double) 0);
         list.add((double) 0);
         list.add((double) 0);
+
+        Map<Double, Integer> groupIndexMap = Map.of(
+                9.0, 0, 16.0, 0, 11.0, 0, // veg and fruit
+                8.0, 1, 18.0, 1, 19.0, 1, 20.0, 1, 12.0, 1, // grain
+                1.0, 2 // milk and alternatives
+        );
+
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
@@ -268,36 +280,22 @@ public class DBMeal extends DBAccess{
                     ") ft\n" +
                     "JOIN foodname fn ON ft.ingredient = fn.foodID\n" +
                     "GROUP BY fn.foodgroupID\n");
+
             while (r.next()) {
+                double foodGroupID = r.getDouble(1);
 
-                double value = r.getDouble(1);
+                // Get the corresponding list index from the map, defaulting to 3 if not found
+                int listIndex = groupIndexMap.getOrDefault(foodGroupID, 3);
 
-                if (r.getDouble(1) == (9) || r.getDouble(1) == (16) || r.getDouble(1) == (11)) { //veg and fruit
-                    list.set(0, list.get(0) + Double.valueOf(r.getString(3)));
-
-                } else if (r.getDouble(1) == (8) || r.getDouble(1) == (18) || r.getDouble(1) == (19)
-                        || r.getDouble(1) == (20) || r.getDouble(1) == (12)) {//grain
-                    list.set(1, list.get(1) + Double.valueOf(r.getString(3)));
-
-                } else if (r.getDouble(1) == (1)) {// milk and alternatives
-                    list.set(2, list.get(2) + Double.valueOf(r.getString(3)));
-
-                } else {
-
-                    list.set(3, list.get(3) + Double.valueOf(r.getString(3)));
-
-                }
-
+                // Update the list based on the list index
+                list.set(listIndex, list.get(listIndex) + Double.valueOf(r.getString(3)));
             }
-
-
-
-        return list;
         } catch (Exception e) {
             System.out.println("Duplicated");
             e.printStackTrace();
         }
-        return null;
+
+        return list;
     }
 
     public User getUser() {

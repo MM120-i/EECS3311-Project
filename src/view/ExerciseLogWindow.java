@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 
@@ -134,15 +133,17 @@ public class ExerciseLogWindow extends JFrame {
                 // Update caloriesBurntLabel and bmrLabel accordingly
                 DateTimeFormatter formatter
                         = DateTimeFormatter.ISO_LOCAL_TIME;
-                Exercise ex = new Exercise();
+
                 try {
-                    ex = controller.exerciseCreation(LocalDate.parse(dateField.getText()), LocalTime.parse(timeField.getText(), formatter), intensityComboBox.getSelectedIndex() + 1, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()));
+                    LocalDate date = LocalDate.parse(dateField.getText());
+                    Exercise ex = new Exercise(date, Integer.parseInt(durationField.getText()), String.valueOf(exerciseTypeComboBox.getSelectedItem()), intensityComboBox.getSelectedIndex() + 1 );
+                    ex = controller.exerciseCreation(ex);
                     caloriesBurntLabel.setText(String.valueOf(ex.getCalBurned()));
-                    bmrLabel.setText(String.valueOf(controller.u.getBMR()));
+                    bmrLabel.setText(String.valueOf(controller.getU().getBMR()));
                 } catch (Exception exception) {
                     // Optionally, you can display a message to confirm that the data is saved
                    msg();
-                };
+                }
             }
         });
 
