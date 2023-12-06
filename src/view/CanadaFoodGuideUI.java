@@ -138,11 +138,4 @@ public class CanadaFoodGuideUI {
                 resultTextArea.append("\nYour Diet: \n" + String.format("%.2f", list.get(0)) + "% Vegetables and Fruits \n" + String.format("%.2f", list.get(1))
                         + "% Grain Products, \n" + String.format("%.2f", list.get(2)) + "% Milk and Alternatives, and \n" + String.format("%.2f", list.get(3)) + "% Meat and Alternatives\n");
         }
-
-    /**
-     * Entry point for the CanadaFoodGuideUI application. Creates an instance of
-     * the CanadaFoodGuideUI class and displays the UI.
-     *
-     * @param args Command-line arguments (not used).
-     */
 }
