@@ -19,21 +19,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The type Pie chart example.
+ * The CaloriePie class extends JFrame and represents a pie chart displaying nutrient information based on a user's diet.
  */
 public class CaloriePie extends JFrame {
 
     /**
-     * The Uic.
+     * The UIController instance associated with the pie chart.
      */
     UIController uic;
 
     /**
-     * Instantiates a new Pie chart example.
+     * Instantiates a new CaloriePie chart.
      *
-     * @param uic the uic
-     * @param l1  the l 1
-     * @param l2  the l 2
+     * @param uic The UIController instance.
+     * @param l1  The start date for nutrient retrieval.
+     * @param l2  The end date for nutrient retrieval.
      */
     public CaloriePie(UIController uic, String l1, String l2){
         super("Nutrient");
@@ -77,6 +77,8 @@ public class CaloriePie extends JFrame {
     /**
      * Creates a PieDataset for the chart by retrieving nutrient information from the database.
      *
+     * @param l1 The start date for nutrient retrieval.
+     * @param l2 The end date for nutrient retrieval.
      * @return A PieDataset containing nutrient names and their corresponding amounts.
      */
     private PieDataset createDataset(String l1, String l2){
@@ -101,11 +103,11 @@ public class CaloriePie extends JFrame {
     }
 
     /**
-     * The entry point of application.
+     * Starts the application and displays the pie chart.
      *
-     * @param uic the uic
-     * @param l1  the l 1
-     * @param l2  the l 2
+     * @param uic The UIController instance.
+     * @param l1  The start date for nutrient retrieval.
+     * @param l2  The end date for nutrient retrieval.
      */
     public void start(UIController uic, String l1, String l2) {
         SwingUtilities.invokeLater(() -> {
