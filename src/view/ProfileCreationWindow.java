@@ -45,7 +45,7 @@ public class ProfileCreationWindow extends JFrame {
      * Constructor for the ProfileCreationWindow.
      * Sets up the UI components for profile creation.
      *
-     * @param uic the uic
+     * @param uic the UIController instance for handling user interface actions and interactions.
      */
     public ProfileCreationWindow(UIController uic) {
 
@@ -218,7 +218,8 @@ public class ProfileCreationWindow extends JFrame {
     }
 
     /**
-     * Message method shows a confirmation dialog when a profilename is already taken. 
+     * Message method shows a confirmation dialog when a profilename is already taken.
+     * If the user chooses to override, it updates the user profile and opens the MainMenu.
      */
     public void message() {
         int a = JOptionPane.showConfirmDialog(this, "This name is already taken. Do you want to override?", "Name Unavailable", YES_NO_OPTION);
@@ -239,14 +240,14 @@ public class ProfileCreationWindow extends JFrame {
     }
 
     /**
-     * Message.
+     * Message method displays an error dialog for an invalid date format.
      */
     public void dateMSG() {
         JOptionPane.showMessageDialog(this, "Invalid Date. Enter YYYY-MM-DD");
     }
 
     /**
-     * Message.
+     * Message method displays an error dialog for missing information during profile creation.
      */
     public void missingMSG() {
         JOptionPane.showMessageDialog(this, "Missing Information. Enter Again");
