@@ -41,6 +41,10 @@ public class CanadaFoodGuideUI {
         addEventListeners();
     }
 
+ /**
+ * Initializes the main frame, control panel, and various UI components, such as buttons and text areas.
+ * Sets the layout for UI components and organizes them within the frame and control panel.
+ */
     private void initializeUIComponents() {
         // Initialize the main frame
         frame = new JFrame("Canada Food Guide Analyzer");
@@ -74,10 +78,16 @@ public class CanadaFoodGuideUI {
         frame.add(resultTextArea, BorderLayout.CENTER);
     }
 
+/**
+ * Sets the visual styles for UI components, such as buttons and text areas.
+ */
     private void setComponentStyles() {
         setButtonStyle(visualizeButton);
     }
 
+ /**
+ * Adds event listeners to UI components, such as buttons.
+ */
     private void addEventListeners() {
         visualizeButton.addActionListener(new VisualizeButtonListener());
     }
