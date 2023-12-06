@@ -159,7 +159,13 @@ public class DietLogWindow extends JFrame {
 
         JOptionPane.showMessageDialog(this, scrollPane, "View Meals", JOptionPane.PLAIN_MESSAGE);
     }
-
+    
+/**
+ * Maps a numeric representation of a meal type to its corresponding string representation.
+ *
+ * @param mealType The numeric representation of the meal type.
+ * @return The string representation of the meal type (e.g., "Breakfast", "Lunch", "Dinner", or "Snack").
+ */
     private String mapMealTypeToString(int mealType) {
         switch (mealType) {
             case 1:
