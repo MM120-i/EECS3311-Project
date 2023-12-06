@@ -128,9 +128,6 @@ public class ExerciseLogWindow extends JFrame {
         	
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
-                // Handle calculations for calories burnt and BMR here
-                // Update caloriesBurntLabel and bmrLabel accordingly
                 DateTimeFormatter formatter
                         = DateTimeFormatter.ISO_LOCAL_TIME;
 
@@ -141,7 +138,6 @@ public class ExerciseLogWindow extends JFrame {
                     caloriesBurntLabel.setText(String.valueOf(ex.getCalBurned()));
                     bmrLabel.setText(String.valueOf(controller.getU().getBMR()));
                 } catch (Exception exception) {
-                    // Optionally, you can display a message to confirm that the data is saved
                    msg();
                 }
             }
@@ -190,16 +186,20 @@ public class ExerciseLogWindow extends JFrame {
         SwingUtilities.invokeLater(() -> new ExerciseLogWindow(null));
     }
 
-    /**
-     * Call.
-     *
-     * @param controller the controller
-     */
+/**
+ * Calls the ExerciseLogWindow GUI in the event dispatch thread.
+ *
+ * @param controller The UIController to be associated with the ExerciseLogWindow.
+ */
     public void call(UIController controller) {
 
         SwingUtilities.invokeLater(() -> new ExerciseLogWindow(controller));
     }
-
+    
+/**
+ * Displays an informational message dialog indicating missing information.
+ * Used in case of an exception during exercise calculation.
+ */
     public void msg() {
         // Optionally, you can display a message to confirm that the data is saved
         JOptionPane.showMessageDialog(this, "Missing Information. Try Again", "Failure", JOptionPane.INFORMATION_MESSAGE);
