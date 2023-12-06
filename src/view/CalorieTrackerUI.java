@@ -139,7 +139,14 @@ public class CalorieTrackerUI {
 
         return !areDatesEmpty(startDateStr, endDateStr) && areDatesValid(startDateStr, endDateStr);
     }
-
+    
+/**
+ * Validates if the input dates are empty.
+ *
+ * @param startDateStr The string representation of the start date.
+ * @param endDateStr   The string representation of the end date.
+ * @return True if any of the dates is empty, false otherwise.
+ */
     private boolean areDatesEmpty(String startDateStr, String endDateStr) {
         if (startDateStr.isEmpty() || endDateStr.isEmpty()) {
             showError("Please enter both start and end dates.");
@@ -147,7 +154,14 @@ public class CalorieTrackerUI {
         }
         return false;
     }
-
+    
+/**
+ * Validates if the input dates are valid and in the correct format.
+ *
+ * @param startDateStr The string representation of the start date.
+ * @param endDateStr   The string representation of the end date.
+ * @return True if the dates are valid, false otherwise.
+ */
     private boolean areDatesValid(String startDateStr, String endDateStr) {
         try {
             LocalDate startDate = LocalDate.parse(startDateStr);
@@ -165,6 +179,13 @@ public class CalorieTrackerUI {
         return true;
     }
 
+    /**
+ * Checks if the start date is after the end date.
+ *
+ * @param startDate The start date.
+ * @param endDate   The end date.
+ * @return True if the start date is after the end date, false otherwise.
+ */
     private boolean isStartDateAfterEndDate(LocalDate startDate, LocalDate endDate) {
         return startDate.isAfter(endDate);
     }
