@@ -183,7 +183,6 @@ public class NutrientVisualizerUI {
             for (Nutrient n : nutrients) {
                 nutrientData.put(n.getName(), n.getAmount());
             }
-            // Replace this with the backend logic to fetch nutrient data
 
 
         }
