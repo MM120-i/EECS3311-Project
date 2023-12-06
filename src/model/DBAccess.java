@@ -8,8 +8,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * The Database Access class provides methods to interact with the database, including adding, updating,
- * and deleting user information, retrieving user lists, and finding data between specific dates.
+ * The type Database access.
  */
 public class DBAccess {
 
@@ -17,17 +16,17 @@ public class DBAccess {
     private static final String DB_USER = "root";
     private static final String DB_PASS = System.getenv("SQLPASS");
     /**
-     * The User object associated with the database access.
+     * The User.
      */
     protected User user;
 
 
     /**
-     * Updates the user information based on the specified field and new value.
+     * Update user.
      *
-     * @param newUser   The User object to be updated.
-     * @param field     The field to be updated.
-     * @param newObject The new value for the specified field.
+     * @param newUser   the new user
+     * @param field     the field
+     * @param newObject the new object
      */
     public void updateUser(User newUser, int field, Object newObject) {
         try {
@@ -88,9 +87,9 @@ public class DBAccess {
     }
 
     /**
-     * Deletes the specified user from the database.
+     * Delete user.
      *
-     * @param newUser The User object to be deleted.
+     * @param newUser the new user
      */
     public void deleteUser(User newUser) {
         try {
@@ -107,9 +106,9 @@ public class DBAccess {
     }
 
     /**
-     * Retrieves a list of user names from the database.
+     * Getting all the list of users
      *
-     * @return A list of user names.
+     * @return List of the names
      */
     public ArrayList<String> getUsers() {
         ArrayList<String> names = new ArrayList<>();
@@ -131,12 +130,7 @@ public class DBAccess {
         return names;
     }
     
-    /**
-     * Checks if it is safe to add the specified object to the database.
-     *
-     * @param obj The object to be checked.
-     * @return True if it is safe to add the object, false otherwise.
-     */
+
     private static boolean safeToAdd(Object obj) {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -178,7 +172,7 @@ public class DBAccess {
     /**
      * Finds the next available meal ID in the database.
      *
-     * @return The next available meal ID.
+     * @return the next available meal ID
      */
     private static int findNextMealID() {
         try {
@@ -197,13 +191,13 @@ public class DBAccess {
     }
 
     /**
-     * Retrieves data (nutrients or exercises) between two specified dates for a given user.
+     * Breakdown meal.
      *
-     * @param user The user for whom the data is retrieved.
-     * @param d1   The start date.
-     * @param d2   The end date.
-     * @param obj  The type of data (Meal or Exercise).
-     * @return A list of Nutrient objects or Exercise objects.
+     * @param user the user
+     * @param d1   the d 1
+     * @param d2   the d 2
+     * @param obj  the obj
+     * @return the list
      */
     public List findBetween(User user, LocalDate d1, LocalDate d2, Object obj) {
         Date date1 = Date.valueOf(d1);
@@ -260,11 +254,11 @@ public class DBAccess {
     }
 
     /**
-     * Retrieves a list of nutrients for a given food item and amount.
+     * Find nutrients.
      *
-     * @param foodID The ID of the food item.
-     * @param amount The amount of the food item.
-     * @return A list of Nutrient objects.
+     * @param foodID the food id
+     * @param amount the amount
+     * @return the list
      */
     List findNutrients(int foodID, double amount) {
         List<Nutrient> nutrients = new ArrayList<>();
@@ -287,18 +281,18 @@ public class DBAccess {
     }
 
     /**
-     * Gets the User object associated with the database access.
+     * Gets user.
      *
-     * @return The User object.
+     * @return the user
      */
     public User getUser() {
         return user;
     }
 
     /**
-     * Sets the User object associated with the database access.
+     * Sets user.
      *
-     * @param user The User object to be set.
+     * @param user the user
      */
     public void setUser(User user) {
         this.user = user;

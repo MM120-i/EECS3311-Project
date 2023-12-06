@@ -119,4 +119,5 @@ public class Meal {
     public Meal() {
         mealID = -1;
     }
+
 }

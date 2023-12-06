@@ -1,6 +1,7 @@
 package view;
-import model.DBMeal;
+
 import controller.UIController;
+import model.DBMeal;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,12 +20,12 @@ import java.util.ArrayList;
  */
 public class CanadaFoodGuideUI {
 
-    private JFrame frame;
-    private JPanel controlPanel;
-    private JButton visualizeButton;
-    private JTextArea resultTextArea;
+    private final JFrame frame;
+    private final JPanel controlPanel;
+    private final JButton visualizeButton;
+    private final JTextArea resultTextArea;
 
-    private UIController uic;
+    private final UIController uic;
 
     /**
      * Constructs a new CanadaFoodGuideUI. Initializes the main frame, control
@@ -132,7 +133,7 @@ public class CanadaFoodGuideUI {
         DBMeal dbm = new DBMeal(uic);
 
         ArrayList<Double> list = new ArrayList<>();
-        list = dbm.getTotals(uic.u.getName());
+        list = dbm.getTotals(uic.getU().getName());
 
                 resultTextArea.append("\nYour Diet: \n" + String.format("%.2f", list.get(0)) + "% Vegetables and Fruits \n" + String.format("%.2f", list.get(1))
                         + "% Grain Products, \n" + String.format("%.2f", list.get(2)) + "% Milk and Alternatives, and \n" + String.format("%.2f", list.get(3)) + "% Meat and Alternatives\n");

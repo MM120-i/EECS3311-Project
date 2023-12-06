@@ -134,38 +134,41 @@ public class CalorieTrackerUI {
      * @return true if input is valid, false otherwise.
      */
     private boolean validateInput() {
-    	
         String startDateStr = startDateField.getText().trim();
         String endDateStr = endDateField.getText().trim();
 
-        // Check if start and end dates are not empty
-        if (startDateStr.isEmpty() || endDateStr.isEmpty()) {
-        	
-            showError("Please enter both start and end dates.");
-            return false;
-        }
+        return !areDatesEmpty(startDateStr, endDateStr) && areDatesValid(startDateStr, endDateStr);
+    }
 
-        // Check if start and end dates are in a valid format (add more validation if needed)
+    private boolean areDatesEmpty(String startDateStr, String endDateStr) {
+        if (startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            showError("Please enter both start and end dates.");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean areDatesValid(String startDateStr, String endDateStr) {
         try {
-        	
             LocalDate startDate = LocalDate.parse(startDateStr);
             LocalDate endDate = LocalDate.parse(endDateStr);
 
-            // Check if start date is before or equal to end date
-            if (startDate.isAfter(endDate)) {
-            	
+            if (isStartDateAfterEndDate(startDate, endDate)) {
                 showError("Start date must be before or equal to end date.");
                 return false;
             }
 
         } catch (DateTimeParseException e) {
-        	
             showError("Invalid date format. Please use yyyy-MM-dd.");
             return false;
         }
-
         return true;
     }
+
+    private boolean isStartDateAfterEndDate(LocalDate startDate, LocalDate endDate) {
+        return startDate.isAfter(endDate);
+    }
+
 
     /**
      * Displays an error message dialog with the given message.

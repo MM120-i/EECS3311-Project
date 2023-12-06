@@ -1,16 +1,16 @@
 package view;
 
 import controller.UIController;
+import model.dataObjects.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 /**
  * Use case 1
@@ -156,19 +156,18 @@ public class ProfileCreationWindow extends JFrame {
                 date = dateOfBirthField.getText();
 
                 try {
-                    LocalDate.parse(date);
                     name = fullNameField.getText();
                     male = maleRadioButton.isSelected();
                     heightA = heightField.getText();
                     weightA = weightField.getText();
                     metric = String.valueOf(metricRadioButton.isSelected());
+                    User newUser = new User(name, male, heightA, weightA, LocalDate.parse(date));
 
                     if (Objects.equals(name, "")) {
                         missingMSG();
                     }
 
-
-                    if (uic.profileCreation(name, male, heightA, weightA, date)) {
+                    if (uic.profileCreation(newUser))  {
                         message();
                     } else {
                         MainMenu mm = new MainMenu(uic);
@@ -178,6 +177,7 @@ public class ProfileCreationWindow extends JFrame {
                     }
                     // Handle user inputs here:
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     dateMSG();
                 }
             }
@@ -227,7 +227,7 @@ public class ProfileCreationWindow extends JFrame {
             System.out.println(heightA);
             System.out.println(weightA);
             System.out.println("formatted date: " + date);
-            uic.profileCreation(a, name, male, heightA, weightA, date);
+            uic.profileCreation(new User(name, male, heightA, weightA, LocalDate.parse(date)));
 
             MainMenu mm = new MainMenu(uic);
             mm.setContentPane(mm.panel);

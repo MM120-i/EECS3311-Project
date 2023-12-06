@@ -1,8 +1,8 @@
 package view;
 
+import controller.UIController;
 import model.DBAccess;
 import model.DBUser;
-import controller.UIController;
 import model.dataObjects.User;
 
 import javax.swing.*;
@@ -65,5 +65,4 @@ public class Launcher extends JFrame{
         ps.setSize(300,300);
         ps.setVisible(true);
     }
-
 }

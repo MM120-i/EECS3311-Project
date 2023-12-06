@@ -24,6 +24,8 @@ public class User {
     private double BMR;
     private ArrayList<Meal> meals = new ArrayList<>();
 
+
+
     /**
      * Sets is male.
      *
@@ -218,6 +220,21 @@ public class User {
         this.BMR = BMR;
     }
 
+
+    public User(String name, boolean male, String heightA, String weightA, LocalDate date) {
+        this.name = name;
+        if (male) {
+            this.isMale = 1;
+        } else {
+            this.isMale = 0;
+        }
+        this.dob = date;
+        this.height = height;
+        this.weight = weight;
+        this.prefersMetric = prefersMetric;
+        this.BMR = BMR;
+    }
+
     /**
      * Instantiates a new model.dataObjects.User.
      */
@@ -236,7 +253,6 @@ public class User {
      */
     public void calculateBMR() {
         LocalDate currentDate = LocalDate.now();
-        int age = (Period.between(getDob(), currentDate)).getYears();
         if (prefersMetric == 0) {
             if (isMale == 1) {
                 setBMR(10 * getWeight() + 6.25 * getHeight() - 5 * (Period.between(getDob(), currentDate)).getYears());
