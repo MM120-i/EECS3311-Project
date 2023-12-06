@@ -20,12 +20,12 @@ import java.util.ArrayList;
  */
 public class CanadaFoodGuideUI {
 
-    private final JFrame frame;
-    private final JPanel controlPanel;
-    private final JButton visualizeButton;
-    private final JTextArea resultTextArea;
+    private  JFrame frame;
+    private  JPanel controlPanel;
+    private  JButton visualizeButton;
+    private  JTextArea resultTextArea;
 
-    private final UIController uic;
+    private  UIController uic;
 
     /**
      * Constructs a new CanadaFoodGuideUI. Initializes the main frame, control
@@ -36,6 +36,12 @@ public class CanadaFoodGuideUI {
      */
     public CanadaFoodGuideUI(UIController uic) {
         this.uic = uic;
+        initializeUIComponents();
+        setComponentStyles();
+        addEventListeners();
+    }
+
+    private void initializeUIComponents() {
         // Initialize the main frame
         frame = new JFrame("Canada Food Guide Analyzer");
         frame.setSize(600, 400);
@@ -45,16 +51,14 @@ public class CanadaFoodGuideUI {
         controlPanel = new JPanel();
         controlPanel.setLayout(new GridBagLayout());
 
-        GridBagConstraints cons = new GridBagConstraints();
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        cons.insets = new Insets(5, 5, 5, 5);
-
-        // Button for visualizing food group alignment
+        // Initialize components
         visualizeButton = new JButton("Visualize");
         resultTextArea = new JTextArea(10, 40);
 
-
         // Add components to the control panel
+        GridBagConstraints cons = new GridBagConstraints();
+        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.insets = new Insets(5, 5, 5, 5);
         cons.gridx = 0;
         cons.gridy = 0;
         controlPanel.add(visualizeButton, cons);
@@ -62,20 +66,20 @@ public class CanadaFoodGuideUI {
         cons.gridx = 0;
         cons.gridy = 1;
 
-
         cons.gridx = 1;
         cons.gridy = 1;
 
         // Add components to the main frame
         frame.add(controlPanel, BorderLayout.NORTH);
         frame.add(resultTextArea, BorderLayout.CENTER);
+    }
 
-        // Add action listener for the visualize button
-        visualizeButton.addActionListener(new VisualizeButtonListener());
-
-        // Set the style for the visualize button
+    private void setComponentStyles() {
         setButtonStyle(visualizeButton);
+    }
 
+    private void addEventListeners() {
+        visualizeButton.addActionListener(new VisualizeButtonListener());
     }
 
     /**
@@ -87,15 +91,6 @@ public class CanadaFoodGuideUI {
         button.setBackground(new Color(0, 102, 204));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16)); // Increased font size
-    }
-
-    /**
-     * Sets the visual style for a label.
-     *
-     * @param label The label to set the style for.
-     */
-    private void setLabelStyle(JLabel label) {
-        label.setFont(new Font("Arial", Font.PLAIN, 14)); // Increased font size
     }
 
     /**
@@ -113,7 +108,6 @@ public class CanadaFoodGuideUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             visualizeFoodGuideAlignment();
-
         }
     }
 
@@ -122,20 +116,18 @@ public class CanadaFoodGuideUI {
      * recommendations. Displays the result in the result text area.
      */
     private void visualizeFoodGuideAlignment() {
-        // You can implement the visualization logic here based on the CFG recommendations
-        // For simplicity, this example just displays a message in the result text area
-        int val1 = (int) (8.0/22 * 100);
-        int val2 = (int) (7.0/22 * 100);
-        int val3 = (int) (4.0/22 * 100);
-        int val4 = (int) (3.0/22 * 100);
+        int val1 = (int) (8.0 / 22 * 100);
+        int val2 = (int) (7.0 / 22 * 100);
+        int val3 = (int) (4.0 / 22 * 100);
+        int val4 = (int) (3.0 / 22 * 100);
         resultTextArea.setText("CFG Recommends: \n" + val1 + "% Vegetables and Fruits \n" + val2
                 + "% Grain Products, \n" + val3 + "% Milk and Alternatives, and \n" + val4 + "% Meat and Alternatives\n");
+
         DBMeal dbm = new DBMeal(uic);
+        ArrayList<Double> list = dbm.getTotals(uic.getU().getName());
 
-        ArrayList<Double> list = new ArrayList<>();
-        list = dbm.getTotals(uic.getU().getName());
-
-                resultTextArea.append("\nYour Diet: \n" + String.format("%.2f", list.get(0)) + "% Vegetables and Fruits \n" + String.format("%.2f", list.get(1))
-                        + "% Grain Products, \n" + String.format("%.2f", list.get(2)) + "% Milk and Alternatives, and \n" + String.format("%.2f", list.get(3)) + "% Meat and Alternatives\n");
-        }
+        resultTextArea.append("\nYour Diet: \n" + String.format("%.2f", list.get(0)) + "% Vegetables and Fruits \n"
+                + String.format("%.2f", list.get(1)) + "% Grain Products, \n" + String.format("%.2f", list.get(2))
+                + "% Milk and Alternatives, and \n" + String.format("%.2f", list.get(3)) + "% Meat and Alternatives\n");
+    }
 }
