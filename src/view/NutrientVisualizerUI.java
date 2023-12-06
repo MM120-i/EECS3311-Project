@@ -39,7 +39,7 @@ public class NutrientVisualizerUI {
      * Constructs a new NutrientVisualizerUI.
      * Initializes and sets up the main components of the UI.
      *
-     * @param uic the uic
+     * @param uic the UIController instance for handling user interface actions and interactions.
      */
     public NutrientVisualizerUI(UIController uic) {
     	this.uic = uic;
