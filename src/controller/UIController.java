@@ -28,12 +28,8 @@ public class UIController {
     /**
      * Create a profile.
      *
-     * @param name   the name
-     * @param maleRB the male rb
-     * @param height the height
-     * @param weight the weight
-     * @param dob    the dob
-     * @return boolean
+     * @param u The user object containing profile information.
+     * @return True if the profile creation is successful; false otherwise.
      */
     public boolean profileCreation(User u) {
         u.calculateBMR();
@@ -47,13 +43,10 @@ public class UIController {
 
 
     /**
-     * Exercise creation
+     * Exercise creation.
      *
-     * @param date      the date
-     * @param time      the time
-     * @param intensity the intensity
-     * @param duration  the duration
-     * @param type      the type
+     * @param exercise The Exercise object containing exercise details.
+     * @return The created Exercise object.
      */
     public Exercise exerciseCreation(Exercise exercise) {
 
@@ -67,9 +60,9 @@ public class UIController {
     }
 
     /**
-     * Get list of exercises
+     * Get list of exercises between specified dates.
      *
-     * @return exercises
+     * @return List of Exercise objects.
      */
     public List getExercises() {
         DBExercise da = new DBExercise();
@@ -77,10 +70,10 @@ public class UIController {
     }
 
     /**
-     * Get regular burn rate.
+     * Get regular burn rate over time.
      *
-     * @param exercises the exercises
-     * @return regular burn over time
+     * @param exercises List of Exercise objects.
+     * @return Regular burn over time.
      */
     public double getRegularBurnOverTime(List<Exercise> exercises) {
         long total = LocalDate.of(2021, 5, 28).until(LocalDate.of(2023, 11,20), DAYS);
@@ -91,12 +84,12 @@ public class UIController {
     }
 
     /**
-     * Alternative Getting nutrients method
+     * Alternative method for getting nutrients.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return x nutrients 2
+     * @param amount The number of nutrients to retrieve.
+     * @param l1     The starting date.
+     * @param l2     The ending date.
+     * @return List of Nutrient objects.
      */
     public List getXNutrients2(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -113,11 +106,11 @@ public class UIController {
     }
 
     /**
-     * Get total cals burned per day
+     * Get total calories burned per day between specified dates.
      *
-     * @param l1 the l 1
-     * @param l2 the l 2
-     * @return cals burned
+     * @param l1 The starting date.
+     * @param l2 The ending date.
+     * @return Total calories burned per day.
      */
     public int getCalsBurned(LocalDate l1, LocalDate l2) {
         DBExercise da = new DBExercise();
@@ -133,12 +126,12 @@ public class UIController {
     }
 
     /**
-     * Getting list of nutrients and values
+     * Get list of nutrients and values between specified dates.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return x nutrients
+     * @param amount The number of nutrients to retrieve.
+     * @param l1     The starting date.
+     * @param l2     The ending date.
+     * @return List of Nutrient objects.
      */
     public List getXNutrients(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -153,12 +146,12 @@ public class UIController {
     }
 
     /**
-     * Getting calories consumed
+     * Get calories consumed between specified dates.
      *
-     * @param amount the amount
-     * @param l1     the l 1
-     * @param l2     the l 2
-     * @return calories consumed
+     * @param amount The number of calories to retrieve.
+     * @param l1     The starting date.
+     * @param l2     The ending date.
+     * @return Calories consumed.
      */
     public int getCaloriesConsumed(int amount, LocalDate l1, LocalDate l2) {
         List<Nutrient> result = new ArrayList<>();
@@ -183,16 +176,23 @@ public class UIController {
         }
     }
 
-
+    /**
+     * Calculate amount per day.
+     *
+     * @param totalCals The total calories.
+     * @param l1        The starting date.
+     * @param l2        The ending date.
+     * @return Amount per day.
+     */
     private int amountPerDay(int totalCals, LocalDate l1, LocalDate l2) {
         long days = DAYS.between(l1, l2) + 1;
         return (int) (totalCals/days);
     }
 
     /**
-     * Instantiates a new Ui controller.
+     * Instantiates a new Ui controller with the specified user.
      *
-     * @param u the u
+     * @param u The User object.
      */
     public UIController(User u) {
         this.u = u;
@@ -206,10 +206,10 @@ public class UIController {
 
 
     /**
-     * Find 5 top nutrients
+     * Find 5 top nutrients from the given list.
      *
-     * @param list the list
-     * @return array list
+     * @param list The list of Nutrient objects.
+     * @return An ArrayList containing the top 5 nutrients.
      */
     public ArrayList<Nutrient> findFiveTop(ArrayList<Nutrient> list) {
         ArrayList<Nutrient> result = new ArrayList<>();
@@ -226,10 +226,20 @@ public class UIController {
         return result;
     }
 
+    /**
+     * Get the current user associated with this UIController.
+     *
+     * @return The User object.
+     */
     public User getU() {
         return u;
     }
-
+    
+    /**
+     * Set the user associated with this UIController.
+     *
+     * @param u The User object to set.
+     */
     public void setU(User u) {
         this.u = u;
     }
